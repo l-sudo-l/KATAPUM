@@ -7,13 +7,11 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
-### Agregado
-- Estructura inicial de módulos del proyecto (`core`, `desktop`, `server`).
-
 ## [0.1.0] - 2026-09-08
 
 ### Agregado
-- Inicialización del proyecto con el framework LibGDX 1.12.1.
+- Inicialización del proyecto con el framework LibGDX 1.14.2 y la plataforma de escritorio LWJGL3.
+- Estructura de módulos del proyecto: `core`, `lwjgl3`, `server`, `shared`.
 - Configuración del repositorio en GitHub para control de versiones.
 - Archivo `.gitignore` adecuado para proyectos LibGDX.
 - Archivo `README.md` con la información general del proyecto.
