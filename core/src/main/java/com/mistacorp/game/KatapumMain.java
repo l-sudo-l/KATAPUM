@@ -1,32 +1,69 @@
 package com.mistacorp.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.mistacorp.game.screens.MenuScreen;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class KatapumMain extends ApplicationAdapter {
+/**
+ * Punto de entrada de la aplicación, compartido por todas las plataformas
+ * (por ahora, escritorio vía LWJGL3). Extiende {@link Game} para delegar el
+ * ciclo de vida en pantallas ({@link com.badlogic.gdx.Screen}) en lugar de
+ * manejar todo en una única clase.
+ * <p>
+ * También administra los recursos "caros" que conviene crear una sola vez
+ * y compartir entre pantallas: el {@link SpriteBatch}, la fuente por
+ * defecto y una textura de 1x1 blanca que se tiñe por color para dibujar
+ * los placeholders de tanques, paredes y proyectiles sin depender de
+ * archivos de imagen externos.
+ */
+public class KatapumMain extends Game {
+
     private SpriteBatch batch;
-    private Texture image;
+    private BitmapFont font;
+    private Texture pixel;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        image = new Texture("libgdx.png");
+        font = new BitmapFont();
+        font.getData().setScale(1.2f);
+        pixel = createPixelTexture();
+
+        setScreen(new MenuScreen(this));
     }
 
-    @Override
-    public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        batch.begin();
-        batch.draw(image, 140, 210);
-        batch.end();
+    private Texture createPixelTexture() {
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.fill();
+        Texture texture = new Texture(pixmap);
+        pixmap.dispose();
+        return texture;
+    }
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
+    public BitmapFont getFont() {
+        return font;
+    }
+
+    public Texture getPixel() {
+        return pixel;
     }
 
     @Override
     public void dispose() {
+        if (getScreen() != null) {
+            getScreen().dispose();
+        }
         batch.dispose();
-        image.dispose();
+        font.dispose();
+        pixel.dispose();
     }
 }
