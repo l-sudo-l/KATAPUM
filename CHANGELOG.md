@@ -7,6 +7,30 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.2.0] - 2026-09-09
+
+### Agregado
+- Arquitectura `Game`/`Screen`: `KatapumMain` pasó de `ApplicationAdapter` a `Game`, administrando los recursos compartidos (`SpriteBatch`, `BitmapFont`, textura placeholder).
+- `MenuScreen`: pantalla inicial con título, resumen de controles e inicio de partida.
+- `GameScreen`: bucle principal del prototipo jugable (mecánica central de combate de tanques).
+- `GameOverScreen`: pantalla de fin de partida con el nombre del ganador.
+- `PlayerInputHandler`: clase dedicada al manejo de teclado (basada en `InputAdapter`), una instancia por jugador, permitiendo modo local con dos esquemas de teclas simultáneos.
+- `Tank`: entidad jugador con movimiento, colisión eje por eje, vidas y dirección de disparo.
+- `Projectile`: entidad de proyectil con movimiento rectilíneo y detección de colisión.
+- `Arena` y `Wall`: entorno de juego con obstáculos fijos e indestructibles.
+- `Hud`: interfaz fija en pantalla con las vidas de cada jugador y el estado de pausa, usando un `Viewport` independiente del mundo de juego.
+- `GameConfig`: constantes centralizadas de tamaños, velocidades y colores.
+- Cámara y `FitViewport` para adaptar el mundo de juego a distintas resoluciones de ventana.
+- Estado de pausa (tecla ESC) dentro de la pantalla de juego.
+
+### Cambiado
+- `README.md` actualizado: estado del prototipo, lista de funcionalidades implementadas, controles y espacio para el enlace del video de demostración.
+
+### Pendiente (próxima entrega)
+- Animación a partir de spritesheet.
+- Música y efectos de sonido.
+- Capa de red cliente-servidor (reemplazo del modo local por partidas entre dos computadoras).
+
 ## [0.1.0] - 2026-09-08
 
 ### Agregado

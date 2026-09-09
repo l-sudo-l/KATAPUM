@@ -4,7 +4,34 @@
 - Rodriguez Marquez Luis Manuel 
 
 ## Descripción Corta del Videojuego
-Katapum es un videojuego multijugador de tanques en 2D con vista top-down (cenital), pensado para ser jugado a través de una red local. Dos jugadores se enfrentan controlando cada uno un tanque en un mapa de batalla, con el objetivo de eliminar al oponente disparando proyectiles y esquivando los ataques entrantes. El mapa cuenta con obstáculos fijos e indestructibles que funcionan como cobertura táctica. Cada tanque tiene 3 vidas; cuando un jugador las pierde todas, su oponente es declarado ganador.
+Katapum es un videojuego de tanques en 2D con vista top-down (cenital). Dos jugadores se enfrentan controlando cada uno un tanque en un mapa de batalla, con el objetivo de eliminar al oponente disparando proyectiles y esquivando los ataques entrantes. El mapa cuenta con obstáculos fijos e indestructibles que funcionan como cobertura táctica. Cada tanque tiene 3 vidas; cuando un jugador las pierde todas, su oponente es declarado ganador.
+
+> **Nota sobre el alcance actual:** la propuesta original plantea que ambos jugadores se conecten desde computadoras distintas por red (cliente-servidor). Para este prototipo (Pre entrega N°2) se implementó primero toda la mecánica central en **modo local (hotseat, mismo teclado)**, ya que las pautas de esta entrega piden demostrar la jugabilidad del núcleo del juego, no la capa de red. El módulo `server` y la comunicación por sockets se incorporarán en una entrega posterior reemplazando el `PlayerInputHandler` del Jugador 2 por la entrada recibida desde la red, sin tener que rehacer la lógica de juego.
+
+## Estado actual del prototipo (Pre entrega N°2)
+Funcionalidades implementadas hasta el momento:
+- Arquitectura basada en `Game`/`Screen` de LibGDX, con tres pantallas: **Menú**, **Juego** y **Fin de partida**.
+- Manejo de entradas mediante una clase dedicada (`PlayerInputHandler`, basada en `InputAdapter`), una instancia por jugador.
+- Movimiento de dos tanques en modo local (mismo teclado), con colisión resuelta eje por eje contra las paredes y contra el tanque rival (permite "deslizar" al tocar un obstáculo en diagonal).
+- Sistema de disparo: cada tanque dispara proyectiles en la dirección hacia la que está orientado.
+- Detección de colisiones: proyectil contra pared (se destruye), proyectil contra tanque rival (resta una vida) y tanque contra pared/tanque rival (bloquea el movimiento).
+- Mapa/arena con obstáculos fijos e indestructibles, dentro de una cámara con `Viewport` (`FitViewport`) que se adapta al tamaño de la ventana.
+- HUD fijo en pantalla (vidas de cada jugador), con su propio `Viewport` independiente de la cámara del mundo.
+- Estado de pausa (tecla ESC) dentro de la pantalla de juego.
+- Condición de victoria: al perder sus 3 vidas, un jugador pierde la partida y se muestra la pantalla de Fin de partida con el nombre del ganador.
+
+Pendiente para próximas entregas: animación por spritesheet, música y efectos de sonido, y la capa de red (cliente-servidor) que reemplace el modo local por partidas entre dos computadoras.
+
+## Controles
+| Acción | Jugador 1 | Jugador 2 |
+|---|---|---|
+| Mover arriba/abajo/izquierda/derecha | `W` `A` `S` `D` | Flechas |
+| Disparar | `Espacio` | `Ctrl derecho` |
+| Confirmar (menú / fin de partida) | `Enter` | `Enter` |
+| Pausar / reanudar | `Esc` | `Esc` |
+
+## Video de demostración
+🎥 [Video de demostración de la Pre entrega N°2](AGREGAR_ENLACE_AQUI) <!-- Completar con el enlace de YouTube/Drive con permisos de visualización habilitados -->
 
 ## Tecnologías Principales
 - **Framework:** LibGDX 1.14.2
@@ -43,10 +70,16 @@ En Linux/macOS:
 ```
 
 ### Estructura del proyecto
-- `core/`: lógica compartida del juego (modelo, entidades, reglas).
+- `core/`: lógica del juego (independiente de la plataforma), organizada en paquetes:
+  - `com.mistacorp.game`: clase principal (`KatapumMain`) y configuración (`GameConfig`).
+  - `com.mistacorp.game.screens`: pantallas del juego (`MenuScreen`, `GameScreen`, `GameOverScreen`).
+  - `com.mistacorp.game.entities`: objetos del mundo de juego (`Tank`, `Projectile`).
+  - `com.mistacorp.game.world`: entorno y mapa (`Arena`, `Wall`).
+  - `com.mistacorp.game.input`: manejo de entradas (`PlayerInputHandler`).
+  - `com.mistacorp.game.ui`: interfaz de usuario en pantalla (`Hud`).
 - `lwjgl3/`: cliente de escritorio con interfaz gráfica (LibGDX + LWJGL3).
-- `server/`: servidor headless que coordina el estado de la partida.
-- `shared/`: clases y utilidades compartidas entre cliente y servidor.
+- `server/`: servidor headless que coordinará el estado de la partida en red (aún sin implementar; próximas entregas).
+- `shared/`: clases y utilidades que compartirán cliente y servidor una vez incorporada la red.
 
 ## Estado del proyecto
-Proyecto en desarrollo — Pre entrega N°1: Configuración Inicial del Proyecto y Repositorio.
+Proyecto en desarrollo — Pre entrega N°2: prototipo jugable local con mecánica central de combate de tanques.
