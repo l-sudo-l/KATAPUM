@@ -7,7 +7,7 @@ if (JavaVersion.current().isJava9Compatible()) {
         compileJava.options.release.set(8)
 }
 
-application.mainClass = 'com.mistacorp.game.server.ServerLauncher'
+application.mainClass = 'com.mistacorp.game.servidor.LanzadorServidor'
 application.applicationName = appName
 eclipse.project.name = appName + '-server'
 
