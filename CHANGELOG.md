@@ -7,6 +7,10 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+### Cambiado
+- Todo el código fuente (clases, variables, métodos y subpaquetes propios) traducido de inglés a español, manteniendo el paquete raíz `com.mistacorp.game` tal como lo generó el asistente de configuración de LibGDX (gdx-liftoff) al crear el proyecto. Se mantienen en inglés únicamente los métodos heredados de la API de LibGDX (`create`, `render`, `dispose`, `keyDown`, etc.), que no se pueden renombrar sin romper el contrato de las clases base.
+- Actualizadas las referencias `application.mainClass` en `lwjgl3/build.gradle` y `server/build.gradle` para que apunten a las clases con su nuevo nombre.
+
 ## [0.2.0] - 2026-09-09
 
 ### Agregado

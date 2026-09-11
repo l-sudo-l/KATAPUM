@@ -71,14 +71,14 @@ En Linux/macOS:
 
 ### Estructura del proyecto
 - `core/`: lógica del juego (independiente de la plataforma), organizada en paquetes:
-  - `com.mistacorp.game`: clase principal (`KatapumMain`) y configuración (`GameConfig`).
-  - `com.mistacorp.game.screens`: pantallas del juego (`MenuScreen`, `GameScreen`, `GameOverScreen`).
-  - `com.mistacorp.game.entities`: objetos del mundo de juego (`Tank`, `Projectile`).
-  - `com.mistacorp.game.world`: entorno y mapa (`Arena`, `Wall`).
-  - `com.mistacorp.game.input`: manejo de entradas (`PlayerInputHandler`).
-  - `com.mistacorp.game.ui`: interfaz de usuario en pantalla (`Hud`).
-- `lwjgl3/`: cliente de escritorio con interfaz gráfica (LibGDX + LWJGL3).
-- `server/`: servidor headless que coordinará el estado de la partida en red (aún sin implementar; próximas entregas).
+  - `com.mistacorp.game`: clase principal (`KatapumPrincipal`) y configuración (`ConfiguracionJuego`).
+  - `com.mistacorp.game.pantallas`: pantallas del juego (`PantallaMenu`, `PantallaJuego`, `PantallaFinPartida`).
+  - `com.mistacorp.game.entidades`: objetos del mundo de juego (`Tanque`, `Proyectil`).
+  - `com.mistacorp.game.mundo`: entorno y mapa (`Arena`, `Pared`).
+  - `com.mistacorp.game.entrada`: manejo de entradas (`ManejadorEntradaJugador`).
+  - `com.mistacorp.game.interfaz`: interfaz de usuario en pantalla (`Hud`).
+- `lwjgl3/`: cliente de escritorio (LibGDX + LWJGL3). Clase principal: `LanzadorLwjgl3`.
+- `server/`: servidor headless que coordinará el estado de la partida en red (aún sin implementar; próximas entregas). Clase principal: `LanzadorServidor`.
 - `shared/`: clases y utilidades que compartirán cliente y servidor una vez incorporada la red.
 
 ## Estado del proyecto
