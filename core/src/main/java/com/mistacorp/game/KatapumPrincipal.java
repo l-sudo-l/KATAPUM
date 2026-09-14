@@ -1,9 +1,6 @@
 package com.mistacorp.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mistacorp.game.pantallas.PantallaMenu;
@@ -12,25 +9,16 @@ public class KatapumPrincipal extends Game {
 
     private SpriteBatch lote;
     private BitmapFont fuente;
-    private Texture pixel;
+    private RecursosGraficos recursos;
 
     @Override
     public void create() {
         lote = new SpriteBatch();
         fuente = new BitmapFont();
         fuente.getData().setScale(1.2f);
-        pixel = crearTexturaPixel();
+        recursos = new RecursosGraficos();
 
         setScreen(new PantallaMenu(this));
-    }
-
-    private Texture crearTexturaPixel() {
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        Texture textura = new Texture(pixmap);
-        pixmap.dispose();
-        return textura;
     }
 
     public SpriteBatch obtenerLote() {
@@ -41,8 +29,8 @@ public class KatapumPrincipal extends Game {
         return fuente;
     }
 
-    public Texture obtenerPixel() {
-        return pixel;
+    public RecursosGraficos obtenerRecursos() {
+        return recursos;
     }
 
     @Override
@@ -52,6 +40,6 @@ public class KatapumPrincipal extends Game {
         }
         lote.dispose();
         fuente.dispose();
-        pixel.dispose();
+        recursos.dispose();
     }
 }
