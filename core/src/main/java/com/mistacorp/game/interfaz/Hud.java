@@ -1,20 +1,27 @@
 package com.mistacorp.game.interfaz;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mistacorp.game.RecursosGraficos;
 import com.mistacorp.game.entidades.Tanque;
 
 public class Hud {
 
+    private static final float TAMANO_CORAZON = 18f;
+    private static final float SEPARACION_CORAZON = 22f;
+
     private final OrthographicCamera camara = new OrthographicCamera();
     private final Viewport ventanaGrafica = new ScreenViewport(camara);
     private final BitmapFont fuente;
+    private final Texture texturaCorazon;
 
-    public Hud(BitmapFont fuente) {
+    public Hud(BitmapFont fuente, RecursosGraficos recursos) {
         this.fuente = fuente;
+        this.texturaCorazon = recursos.obtenerTexturaCorazon();
     }
 
     public void redimensionar(int ancho, int alto) {
@@ -26,8 +33,8 @@ public class Hud {
         lote.setProjectionMatrix(camara.combined);
         lote.begin();
 
-        fuente.draw(lote, etiquetaVidas(jugador1), 16, ventanaGrafica.getWorldHeight() - 16);
-        fuente.draw(lote, etiquetaVidas(jugador2), ventanaGrafica.getWorldWidth() - 220, ventanaGrafica.getWorldHeight() - 16);
+        dibujarPanelJugador(lote, jugador1, 16);
+        dibujarPanelJugador(lote, jugador2, ventanaGrafica.getWorldWidth() - 220);
 
         if (pausado) {
             fuente.draw(lote, "PAUSA - ESC para continuar",
@@ -37,11 +44,13 @@ public class Hud {
         lote.end();
     }
 
-    private String etiquetaVidas(Tanque tanque) {
-        StringBuilder corazones = new StringBuilder();
+    private void dibujarPanelJugador(SpriteBatch lote, Tanque tanque, float x) {
+        float topeSuperior = ventanaGrafica.getWorldHeight() - 16;
+        fuente.draw(lote, tanque.obtenerNombre(), x, topeSuperior);
+
+        float y = topeSuperior - 30;
         for (int i = 0; i < tanque.obtenerVidas(); i++) {
-            corazones.append("<3 ");
+            lote.draw(texturaCorazon, x + i * SEPARACION_CORAZON, y, TAMANO_CORAZON, TAMANO_CORAZON);
         }
-        return tanque.obtenerNombre() + "  " + corazones.toString().trim();
     }
 }
