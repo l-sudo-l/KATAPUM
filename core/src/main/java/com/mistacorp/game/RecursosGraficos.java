@@ -35,6 +35,11 @@ public class RecursosGraficos {
     private final Texture texturaBarril;
     private final Texture texturaCorazon;
 
+    private final Texture texturaGanadorJugador1;
+    private final Texture texturaGanadorJugador2;
+    private final Texture texturaBotonVolverJugar;
+    private final Texture texturaBotonVolverMenu;
+
     public RecursosGraficos() {
         texturaTanqueVerde = cargar("tanque_verde.png");
         texturaTanqueAzul = cargar("tanque_azul.png");
@@ -63,6 +68,11 @@ public class RecursosGraficos {
         texturaCaja = cargar("caja.png");
         texturaBarril = cargar("barril.png");
         texturaCorazon = cargar("corazon.png");
+
+        texturaGanadorJugador1 = cargar("ganador_jugador1.png");
+        texturaGanadorJugador2 = cargar("ganador_jugador2.png");
+        texturaBotonVolverJugar = cargar("volver_jugar.png");
+        texturaBotonVolverMenu = cargar("volver_menu.png");
     }
 
     private Texture cargar(String nombreArchivo) {
@@ -149,6 +159,22 @@ public class RecursosGraficos {
         return texturaCorazon;
     }
 
+    public Texture obtenerTexturaGanadorJugador1() {
+        return texturaGanadorJugador1;
+    }
+
+    public Texture obtenerTexturaGanadorJugador2() {
+        return texturaGanadorJugador2;
+    }
+
+    public Texture obtenerTexturaBotonVolverJugar() {
+        return texturaBotonVolverJugar;
+    }
+
+    public Texture obtenerTexturaBotonVolverMenu() {
+        return texturaBotonVolverMenu;
+    }
+
     public void dispose() {
         texturaTanqueVerde.dispose();
         texturaTanqueAzul.dispose();
@@ -168,5 +194,9 @@ public class RecursosGraficos {
         texturaCaja.dispose();
         texturaBarril.dispose();
         texturaCorazon.dispose();
+        texturaGanadorJugador1.dispose();
+        texturaGanadorJugador2.dispose();
+        texturaBotonVolverJugar.dispose();
+        texturaBotonVolverMenu.dispose();
     }
 }

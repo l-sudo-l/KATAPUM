@@ -10,6 +10,7 @@ public class KatapumPrincipal extends Game {
     private SpriteBatch lote;
     private BitmapFont fuente;
     private RecursosGraficos recursos;
+    private RecursosSonido sonidos;
 
     @Override
     public void create() {
@@ -17,6 +18,7 @@ public class KatapumPrincipal extends Game {
         fuente = new BitmapFont();
         fuente.getData().setScale(1.2f);
         recursos = new RecursosGraficos();
+        sonidos = new RecursosSonido();
 
         setScreen(new PantallaMenu(this));
     }
@@ -33,6 +35,10 @@ public class KatapumPrincipal extends Game {
         return recursos;
     }
 
+    public RecursosSonido obtenerSonidos() {
+        return sonidos;
+    }
+
     @Override
     public void dispose() {
         if (getScreen() != null) {
@@ -41,5 +47,6 @@ public class KatapumPrincipal extends Game {
         lote.dispose();
         fuente.dispose();
         recursos.dispose();
+        sonidos.dispose();
     }
 }
