@@ -7,6 +7,23 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.3.0] - 2026-09-16
+
+### Agregado
+- `RecursosGraficos`: carga todos los sprites y arma las animaciones (`Animation<TextureRegion>`) a partir de los spritesheets de explosión (4 frames) y de vuelo del proyectil (2 frames).
+- `RecursosSonido`: carga los efectos (`Sound`: disparo, impacto, muerte, victoria) y la música en loop (`Music`: menú y partida).
+- `ControlVolumen`: estado compartido de volumen (0-1) y silenciado, con controles por teclado (`+`, `-`, `M`) disponibles tanto en el menú como durante la partida; el volumen actual se muestra en el HUD.
+- `Efecto`: imagen breve para el fogonazo de disparo y el destello de impacto.
+- `Tanque`: ahora dibuja el sprite real rotado según su dirección (cada instancia tiene su propio ángulo base de sprite) y reproduce una animación de 4 cuadros (normal → cargando → estallido → carcasa quemada) al perder su última vida; recién al terminar esa animación se pasa a la pantalla de fin de partida.
+- `Proyectil`: vuela con una animación de 2 cuadros, rotada según su dirección de disparo.
+- `Arena`: pinta suelo y paredes con texturas reales tileadas en 32×32 (sin estirar), y agrega elementos decorativos no colisionables (arbustos, cajas, barriles).
+- `Hud`: reemplaza el texto `<3` por el ícono real de corazón.
+- `PantallaFinPartida`: banner fijo según el ganador (`ganador_jugador1.png` / `ganador_jugador2.png`) y botones visuales `volver_jugar.png` / `volver_menu.png`, etiquetados con sus teclas (`ENTER` / `ESC`).
+- `CREDITOS.md`: atribución de autor, licencia y fuente de cada pista de audio (OpenGameArt.org).
+
+### Quitado
+- El placeholder de textura de 1×1 (`pixel`) usado para dibujar todo con color sólido: ya no hace falta, todo el dibujado usa los sprites reales.
+
 ### Cambiado
 - Todo el código fuente (clases, variables, métodos y subpaquetes propios) traducido de inglés a español, manteniendo el paquete raíz `com.mistacorp.game` tal como lo generó el asistente de configuración de LibGDX (gdx-liftoff) al crear el proyecto. Se mantienen en inglés únicamente los métodos heredados de la API de LibGDX (`create`, `render`, `dispose`, `keyDown`, etc.), que no se pueden renombrar sin romper el contrato de las clases base.
 - Actualizadas las referencias `application.mainClass` en `lwjgl3/build.gradle` y `server/build.gradle` para que apunten a las clases con su nuevo nombre.

@@ -11,24 +11,30 @@ Katapum es un videojuego de tanques en 2D con vista top-down (cenital). Dos juga
 ## Estado actual del prototipo (Pre entrega N°2)
 Funcionalidades implementadas hasta el momento:
 - Arquitectura basada en `Game`/`Screen` de LibGDX, con tres pantallas: **Menú**, **Juego** y **Fin de partida**.
-- Manejo de entradas mediante una clase dedicada (`PlayerInputHandler`, basada en `InputAdapter`), una instancia por jugador.
+- Manejo de entradas mediante una clase dedicada (`ManejadorEntradaJugador`, basada en `InputAdapter`), una instancia por jugador.
 - Movimiento de dos tanques en modo local (mismo teclado), con colisión resuelta eje por eje contra las paredes y contra el tanque rival (permite "deslizar" al tocar un obstáculo en diagonal).
-- Sistema de disparo: cada tanque dispara proyectiles en la dirección hacia la que está orientado.
+- Sprites reales para tanques, proyectiles, paredes, suelo y elementos decorativos (arbustos, cajas, barriles), con el tanque rotando según hacia dónde apunta.
+- Animación por spritesheet: cada tanque tiene una secuencia de 4 cuadros (normal → cargando → estallido → carcasa quemada) que se reproduce al perder su última vida, y el proyectil vuela con una animación de 2 cuadros.
+- Sistema de disparo: cada tanque dispara proyectiles animados en la dirección hacia la que está orientado, con fogonazo al salir y destello al impactar.
 - Detección de colisiones: proyectil contra pared (se destruye), proyectil contra tanque rival (resta una vida) y tanque contra pared/tanque rival (bloquea el movimiento).
 - Mapa/arena con obstáculos fijos e indestructibles, dentro de una cámara con `Viewport` (`FitViewport`) que se adapta al tamaño de la ventana.
-- HUD fijo en pantalla (vidas de cada jugador), con su propio `Viewport` independiente de la cámara del mundo.
+- HUD fijo en pantalla (vidas de cada jugador con iconos de corazón, volumen actual), con su propio `Viewport` independiente de la cámara del mundo.
+- Música de fondo (menú y partida) y efectos de sonido (disparo, impacto, muerte, victoria), con controles de volumen y silencio.
 - Estado de pausa (tecla ESC) dentro de la pantalla de juego.
-- Condición de victoria: al perder sus 3 vidas, un jugador pierde la partida y se muestra la pantalla de Fin de partida con el nombre del ganador.
+- Condición de victoria: al perder sus 3 vidas, un jugador pierde la partida (se reproduce su animación de explosión completa) y se muestra la pantalla de Fin de partida con el banner del ganador.
 
-Pendiente para próximas entregas: animación por spritesheet, música y efectos de sonido, y la capa de red (cliente-servidor) que reemplace el modo local por partidas entre dos computadoras.
+Pendiente para próximas entregas: la capa de red (cliente-servidor) que reemplace el modo local por partidas entre dos computadoras.
 
 ## Controles
 | Acción | Jugador 1 | Jugador 2 |
 |---|---|---|
 | Mover arriba/abajo/izquierda/derecha | `W` `A` `S` `D` | Flechas |
 | Disparar | `Espacio` | `Ctrl derecho` |
-| Confirmar (menú / fin de partida) | `Enter` | `Enter` |
-| Pausar / reanudar | `Esc` | `Esc` |
+| Confirmar / jugar de nuevo | `Enter` | `Enter` |
+| Pausar / reanudar (durante la partida) | `Esc` | `Esc` |
+| Volver al menú (en la pantalla de fin de partida) | `Esc` | `Esc` |
+| Subir / bajar volumen | `+` / `-` | `+` / `-` |
+| Silenciar / activar sonido | `M` | `M` |
 
 ## Video de demostración
 🎥 [Video de demostración de la Pre entrega N°2](AGREGAR_ENLACE_AQUI) <!-- Completar con el enlace de YouTube/Drive con permisos de visualización habilitados -->
@@ -80,6 +86,7 @@ En Linux/macOS:
 - `lwjgl3/`: cliente de escritorio (LibGDX + LWJGL3). Clase principal: `LanzadorLwjgl3`.
 - `server/`: servidor headless que coordinará el estado de la partida en red (aún sin implementar; próximas entregas). Clase principal: `LanzadorServidor`.
 - `shared/`: clases y utilidades que compartirán cliente y servidor una vez incorporada la red.
+- `assets/`: sprites, texturas y audio del juego. Ver [`CREDITOS.md`](CREDITOS.md) para la atribución de los assets de audio de terceros (OpenGameArt.org).
 
 ## Estado del proyecto
-Proyecto en desarrollo — Pre entrega N°2: prototipo jugable local con mecánica central de combate de tanques.
+Proyecto en desarrollo — Pre entrega N°2: prototipo jugable local con mecánica central de combate de tanques, sprites y animaciones reales, y sonido.
