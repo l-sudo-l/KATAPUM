@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mistacorp.game.ControlVolumen;
 import com.mistacorp.game.RecursosGraficos;
 import com.mistacorp.game.entidades.Tanque;
 
@@ -41,7 +42,17 @@ public class Hud {
                 ventanaGrafica.getWorldWidth() / 2f - 110, ventanaGrafica.getWorldHeight() / 2f);
         }
 
+        fuente.draw(lote, textoVolumen(), 16, 24);
+
         lote.end();
+    }
+
+    private String textoVolumen() {
+        if (ControlVolumen.estaSilenciado()) {
+            return "Volumen: silenciado (M)";
+        }
+        int porcentaje = Math.round(ControlVolumen.obtenerVolumen() * 100);
+        return "Volumen: " + porcentaje + "% (+/- , M)";
     }
 
     private void dibujarPanelJugador(SpriteBatch lote, Tanque tanque, float x) {

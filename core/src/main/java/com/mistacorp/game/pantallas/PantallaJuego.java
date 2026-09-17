@@ -14,8 +14,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mistacorp.game.ConfiguracionJuego;
+import com.mistacorp.game.ControlVolumen;
 import com.mistacorp.game.KatapumPrincipal;
 import com.mistacorp.game.RecursosGraficos;
+import com.mistacorp.game.RecursosSonido;
 import com.mistacorp.game.entidades.Efecto;
 import com.mistacorp.game.entidades.Proyectil;
 import com.mistacorp.game.entidades.Tanque;
@@ -27,6 +29,7 @@ public class PantallaJuego extends ScreenAdapter {
 
     private final KatapumPrincipal juego;
     private final RecursosGraficos recursos;
+    private final RecursosSonido sonidos;
 
     private final OrthographicCamera camara = new OrthographicCamera();
     private final Viewport ventanaGrafica = new FitViewport(ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO, camara);
@@ -47,6 +50,7 @@ public class PantallaJuego extends ScreenAdapter {
     public PantallaJuego(KatapumPrincipal juego) {
         this.juego = juego;
         this.recursos = juego.obtenerRecursos();
+        this.sonidos = juego.obtenerSonidos();
 
         float posicionY = ConfiguracionJuego.ALTO_MUNDO / 2f - ConfiguracionJuego.TAMANO_TANQUE / 2f;
         jugador1 = new Tanque("Jugador 1", recursos.obtenerTexturaTanqueVerde(), recursos.obtenerTexturaTanqueVerdeDestruido(),
@@ -65,6 +69,13 @@ public class PantallaJuego extends ScreenAdapter {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(new InputMultiplexer(entrada1, entrada2));
+        sonidos.obtenerMusicaJuego().setVolume(ControlVolumen.obtenerVolumenEfectivo());
+        sonidos.obtenerMusicaJuego().play();
+    }
+
+    @Override
+    public void hide() {
+        sonidos.obtenerMusicaJuego().stop();
     }
 
     @Override
@@ -78,6 +89,8 @@ public class PantallaJuego extends ScreenAdapter {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             pausado = !pausado;
         }
+        manejarControlesDeVolumen();
+        sonidos.obtenerMusicaJuego().setVolume(ControlVolumen.obtenerVolumenEfectivo());
 
         if (!pausado) {
             actualizar(delta);
@@ -133,6 +146,7 @@ public class PantallaJuego extends ScreenAdapter {
             Vector2 posicionCanon = tanque.obtenerPosicionCanon();
             proyectiles.add(new Proyectil(posicionCanon, tanque.obtenerDireccion(), tanque, animacionVuelo));
             efectos.add(new Efecto(flash, posicionCanon, 16, 16));
+            sonidos.obtenerSonidoDisparo().play(ControlVolumen.obtenerVolumenEfectivo());
         }
     }
 
@@ -156,6 +170,7 @@ public class PantallaJuego extends ScreenAdapter {
                     if (!objetivo.estaVivo()) {
                         objetivo.iniciarExplosion();
                         ganadorPendiente = proyectil.obtenerPropietario().obtenerNombre();
+                        sonidos.obtenerSonidoMuerte().play(ControlVolumen.obtenerVolumenEfectivo());
                     }
                 }
             }
@@ -170,6 +185,7 @@ public class PantallaJuego extends ScreenAdapter {
         boolean esJugador1 = proyectil.obtenerPropietario() == jugador1;
         Texture impacto = esJugador1 ? recursos.obtenerTexturaImpactoRojo() : recursos.obtenerTexturaImpactoAzul();
         efectos.add(new Efecto(impacto, proyectil.obtenerCentro(), 16, 16));
+        sonidos.obtenerSonidoImpacto().play(ControlVolumen.obtenerVolumenEfectivo());
     }
 
     private void actualizarEfectos(float delta) {
@@ -189,6 +205,18 @@ public class PantallaJuego extends ScreenAdapter {
         Tanque tanqueDestruido = jugador1.estaVivo() ? jugador2 : jugador1;
         if (tanqueDestruido.explosionTerminada()) {
             juego.setScreen(new PantallaFinPartida(juego, ganadorPendiente));
+        }
+    }
+
+    private void manejarControlesDeVolumen() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+            ControlVolumen.alternarSilencio();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS)) {
+            ControlVolumen.subirVolumen();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS)) {
+            ControlVolumen.bajarVolumen();
         }
     }
 }
