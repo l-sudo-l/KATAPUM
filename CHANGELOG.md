@@ -7,6 +7,17 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.4.0] - 2026-09-18
+
+### Cambiado
+- Mecánica de movimiento de los tanques reemplazada por completo: de desplazamiento por ejes fijos (4 direcciones discretas) a rotación libre estilo vehículo real. `A`/`D` giran el tanque sobre su propio eje sin desplazarlo; `W`/`S` avanzan o retroceden según el ángulo actual, calculado con trigonometría (`MathUtils.cosDeg`/`sinDeg`) en vez de vectores fijos por eje.
+- `Tanque`: se elimina el enum `Direccion` (4 valores fijos) y se reemplaza por un campo `angulo` continuo (con wrap correcto al cruzar 360°/0°). El sprite rota visualmente sobre su propio centro, y el punto de disparo (`obtenerPosicionCanon()`) queda siempre sincronizado con esa rotación.
+- `Proyectil`: ahora recibe un ángulo (float) en vez de `Tanque.Direccion`; su velocidad y su rotación visual salen del ángulo con el que fue disparado.
+- `ManejadorEntradaJugador`: `obtenerMovimientoX()`/`obtenerMovimientoY()` renombrados a `obtenerGiro()`/`obtenerAvance()`.
+
+### Nota de diseño
+- La colisión sigue usando el rectángulo (AABB) de 40×40 del tanque sin rotar, aunque el sprite ya gire libremente. Es una simplificación deliberada para no tener que implementar colisión de rectángulos rotados (OBB) en esta etapa del prototipo.
+
 ## [0.3.0] - 2026-09-16
 
 ### Agregado

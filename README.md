@@ -12,7 +12,7 @@ Katapum es un videojuego de tanques en 2D con vista top-down (cenital). Dos juga
 Funcionalidades implementadas hasta el momento:
 - Arquitectura basada en `Game`/`Screen` de LibGDX, con tres pantallas: **Menú**, **Juego** y **Fin de partida**.
 - Manejo de entradas mediante una clase dedicada (`ManejadorEntradaJugador`, basada en `InputAdapter`), una instancia por jugador.
-- Movimiento de dos tanques en modo local (mismo teclado), con colisión resuelta eje por eje contra las paredes y contra el tanque rival (permite "deslizar" al tocar un obstáculo en diagonal).
+- Movimiento de dos tanques en modo local (mismo teclado): rotación libre sobre el propio eje (girar) y avance/retroceso según el ángulo actual (como un vehículo real, no por ejes fijos), con colisión resuelta eje por eje contra las paredes y contra el tanque rival (permite "deslizar" al tocar un obstáculo).
 - Sprites reales para tanques, proyectiles, paredes, suelo y elementos decorativos (arbustos, cajas, barriles), con el tanque rotando según hacia dónde apunta.
 - Animación por spritesheet: cada tanque tiene una secuencia de 4 cuadros (normal → cargando → estallido → carcasa quemada) que se reproduce al perder su última vida, y el proyectil vuela con una animación de 2 cuadros.
 - Sistema de disparo: cada tanque dispara proyectiles animados en la dirección hacia la que está orientado, con fogonazo al salir y destello al impactar.
@@ -28,13 +28,18 @@ Pendiente para próximas entregas: la capa de red (cliente-servidor) que reempla
 ## Controles
 | Acción | Jugador 1 | Jugador 2 |
 |---|---|---|
-| Mover arriba/abajo/izquierda/derecha | `W` `A` `S` `D` | Flechas |
-| Disparar | `Espacio` | `Ctrl derecho` |
+| Avanzar (en la dirección hacia la que apunta el tanque) | `W` | Flecha arriba |
+| Retroceder (dirección contraria a la que apunta) | `S` | Flecha abajo |
+| Girar sobre el propio eje (izquierda) | `A` | Flecha izquierda |
+| Girar sobre el propio eje (derecha) | `D` | Flecha derecha |
+| Disparar (en la dirección hacia la que apunta) | `Espacio` | `Ctrl derecho` |
 | Confirmar / jugar de nuevo | `Enter` | `Enter` |
 | Pausar / reanudar (durante la partida) | `Esc` | `Esc` |
 | Volver al menú (en la pantalla de fin de partida) | `Esc` | `Esc` |
 | Subir / bajar volumen | `+` / `-` | `+` / `-` |
 | Silenciar / activar sonido | `M` | `M` |
+
+> El tanque se mueve como un vehículo real: `A`/`D` solo rotan el tanque sobre su propio eje (no desplazan lateralmente), y `W`/`S` avanzan o retroceden según hacia dónde esté apuntando en ese momento. El cañón y la dirección de disparo siempre coinciden con la orientación actual del tanque.
 
 ## Video de demostración
 🎥 [Video de demostración de la Pre entrega N°2](AGREGAR_ENLACE_AQUI) <!-- Completar con el enlace de YouTube/Drive con permisos de visualización habilitados -->
