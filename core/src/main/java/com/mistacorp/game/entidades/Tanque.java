@@ -73,7 +73,7 @@ public class Tanque {
 
     private boolean estaLibre(Rectangle intento, Arena arena, Tanque otro) {
         return arena.estaDentroDeLimites(intento)
-            && !arena.colisionaConParedes(intento)
+            && !arena.colisionaConObstaculos(intento)
             && !intento.overlaps(otro.limites);
     }
 

@@ -14,13 +14,11 @@ public class Arena {
     }
 
     private static class Decoracion {
-        final float x;
-        final float y;
+        final Rectangle limites;
         final TipoDecoracion tipo;
 
         Decoracion(float x, float y, TipoDecoracion tipo) {
-            this.x = x;
-            this.y = y;
+            this.limites = new Rectangle(x, y, TAMANO_TILE, TAMANO_TILE);
             this.tipo = tipo;
         }
     }
@@ -62,9 +60,14 @@ public class Arena {
         return limitesMundo.contains(limites);
     }
 
-    public boolean colisionaConParedes(Rectangle limites) {
+    public boolean colisionaConObstaculos(Rectangle limites) {
         for (Pared pared : paredes) {
             if (pared.obtenerLimites().overlaps(limites)) {
+                return true;
+            }
+        }
+        for (Decoracion decoracion : decoraciones) {
+            if (decoracion.limites.overlaps(limites)) {
                 return true;
             }
         }
@@ -81,7 +84,7 @@ public class Arena {
 
         for (Decoracion decoracion : decoraciones) {
             Texture textura = texturaDeDecoracion(recursos, decoracion.tipo);
-            lote.draw(textura, decoracion.x, decoracion.y, TAMANO_TILE, TAMANO_TILE);
+            lote.draw(textura, decoracion.limites.x, decoracion.limites.y, TAMANO_TILE, TAMANO_TILE);
         }
     }
 
