@@ -54,10 +54,10 @@ public class PantallaJuego extends ScreenAdapter {
 
         float posicionY = ConfiguracionJuego.ALTO_MUNDO / 2f - ConfiguracionJuego.TAMANO_TANQUE / 2f;
         jugador1 = new Tanque("Jugador 1", recursos.obtenerTexturaTanqueVerde(), recursos.obtenerTexturaTanqueVerdeDestruido(),
-            recursos.obtenerAnimacionExplosionVerde(), 0f, 60, posicionY, Tanque.Direccion.DERECHA);
+            recursos.obtenerAnimacionExplosionVerde(), 0f, 60, posicionY, 0f);
         jugador2 = new Tanque("Jugador 2", recursos.obtenerTexturaTanqueAzul(), recursos.obtenerTexturaTanqueAzulDestruido(),
             recursos.obtenerAnimacionExplosionAzul(), 180f,
-            ConfiguracionJuego.ANCHO_MUNDO - 60 - ConfiguracionJuego.TAMANO_TANQUE, posicionY, Tanque.Direccion.IZQUIERDA);
+            ConfiguracionJuego.ANCHO_MUNDO - 60 - ConfiguracionJuego.TAMANO_TANQUE, posicionY, 180f);
 
         entrada1 = new ManejadorEntradaJugador(Input.Keys.W, Input.Keys.S, Input.Keys.A, Input.Keys.D, Input.Keys.SPACE);
         entrada2 = new ManejadorEntradaJugador(Input.Keys.UP, Input.Keys.DOWN, Input.Keys.LEFT, Input.Keys.RIGHT,
@@ -135,7 +135,17 @@ public class PantallaJuego extends ScreenAdapter {
             return;
         }
 
-        tanque.intentarMover(entrada.obtenerMovimientoX(), entrada.obtenerMovimientoY(), delta, arena, otro);
+        float giro = entrada.obtenerGiro();
+        if (giro != 0) {
+            tanque.rotar(giro, delta);
+        }
+
+        float avance = entrada.obtenerAvance();
+        if (avance > 0) {
+            tanque.avanzar(delta, arena, otro);
+        } else if (avance < 0) {
+            tanque.retroceder(delta, arena, otro);
+        }
 
         if (entrada.consumirDisparo()) {
             boolean esJugador1 = tanque == jugador1;
@@ -144,7 +154,7 @@ public class PantallaJuego extends ScreenAdapter {
             Texture flash = esJugador1 ? recursos.obtenerTexturaFlashRojo() : recursos.obtenerTexturaFlashAzul();
 
             Vector2 posicionCanon = tanque.obtenerPosicionCanon();
-            proyectiles.add(new Proyectil(posicionCanon, tanque.obtenerDireccion(), tanque, animacionVuelo));
+            proyectiles.add(new Proyectil(posicionCanon, tanque.obtenerAngulo(), tanque, animacionVuelo));
             efectos.add(new Efecto(flash, posicionCanon, 16, 16));
             sonidos.obtenerSonidoDisparo().play(ControlVolumen.obtenerVolumenEfectivo());
         }

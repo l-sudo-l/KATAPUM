@@ -51,18 +51,18 @@ public class ManejadorEntradaJugador extends InputAdapter {
             || keycode == teclaDisparo;
     }
 
-    public float obtenerMovimientoX() {
-        float x = 0;
-        if (teclasPresionadas.contains(teclaDerecha)) x += 1;
-        if (teclasPresionadas.contains(teclaIzquierda)) x -= 1;
-        return x;
+    public float obtenerGiro() {
+        float giro = 0;
+        if (teclasPresionadas.contains(teclaDerecha)) giro += 1;
+        if (teclasPresionadas.contains(teclaIzquierda)) giro -= 1;
+        return giro;
     }
 
-    public float obtenerMovimientoY() {
-        float y = 0;
-        if (teclasPresionadas.contains(teclaArriba)) y += 1;
-        if (teclasPresionadas.contains(teclaAbajo)) y -= 1;
-        return y;
+    public float obtenerAvance() {
+        float avance = 0;
+        if (teclasPresionadas.contains(teclaArriba)) avance += 1;
+        if (teclasPresionadas.contains(teclaAbajo)) avance -= 1;
+        return avance;
     }
 
     public boolean consumirDisparo() {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mistacorp.game.ConfiguracionJuego;
@@ -11,24 +12,10 @@ import com.mistacorp.game.mundo.Arena;
 
 public class Tanque {
 
-    public enum Direccion {
-        ARRIBA(0, 1, 90f), ABAJO(0, -1, 270f), IZQUIERDA(-1, 0, 180f), DERECHA(1, 0, 0f);
-
-        public final float dx;
-        public final float dy;
-        public final float angulo;
-
-        Direccion(float dx, float dy, float angulo) {
-            this.dx = dx;
-            this.dy = dy;
-            this.angulo = angulo;
-        }
-    }
-
     private final String nombre;
     private final Vector2 posicion;
     private final Rectangle limites;
-    private Direccion direccion;
+    private float angulo;
     private int vidas;
 
     private final Texture texturaNormal;
@@ -39,7 +26,7 @@ public class Tanque {
 
     public Tanque(String nombre, Texture texturaNormal, Texture texturaDestruido,
                   Animation<TextureRegion> animacionExplosion, float anguloBaseSprite,
-                  float x, float y, Direccion direccion) {
+                  float x, float y, float anguloInicial) {
         this.nombre = nombre;
         this.texturaNormal = texturaNormal;
         this.texturaDestruido = texturaDestruido;
@@ -47,32 +34,41 @@ public class Tanque {
         this.anguloBaseSprite = anguloBaseSprite;
         this.posicion = new Vector2(x, y);
         this.limites = new Rectangle(x, y, ConfiguracionJuego.TAMANO_TANQUE, ConfiguracionJuego.TAMANO_TANQUE);
-        this.direccion = direccion;
+        this.angulo = anguloInicial;
         this.vidas = ConfiguracionJuego.VIDAS_MAXIMAS;
     }
 
-    public void intentarMover(float dx, float dy, float delta, Arena arena, Tanque otro) {
-        if (dx == 0 && dy == 0) {
-            return;
-        }
+    public void avanzar(float delta, Arena arena, Tanque otro) {
+        mover(1f, delta, arena, otro);
+    }
 
-        Vector2 direccionMovimiento = new Vector2(dx, dy).nor();
-        float distancia = ConfiguracionJuego.VELOCIDAD_TANQUE * delta;
+    public void retroceder(float delta, Arena arena, Tanque otro) {
+        mover(-1f, delta, arena, otro);
+    }
 
-        float nuevoX = posicion.x + direccionMovimiento.x * distancia;
+    public void rotar(float sentido, float delta) {
+        angulo += sentido * ConfiguracionJuego.VELOCIDAD_ROTACION * delta;
+        angulo = ((angulo % 360f) + 360f) % 360f;
+    }
+
+    private void mover(float signo, float delta, Arena arena, Tanque otro) {
+        float distancia = ConfiguracionJuego.VELOCIDAD_TANQUE * delta * signo;
+        float dx = MathUtils.cosDeg(angulo) * distancia;
+        float dy = MathUtils.sinDeg(angulo) * distancia;
+
+        float nuevoX = posicion.x + dx;
         Rectangle intentoX = new Rectangle(nuevoX, posicion.y, limites.width, limites.height);
         if (estaLibre(intentoX, arena, otro)) {
             posicion.x = nuevoX;
         }
 
-        float nuevoY = posicion.y + direccionMovimiento.y * distancia;
+        float nuevoY = posicion.y + dy;
         Rectangle intentoY = new Rectangle(posicion.x, nuevoY, limites.width, limites.height);
         if (estaLibre(intentoY, arena, otro)) {
             posicion.y = nuevoY;
         }
 
         limites.setPosition(posicion.x, posicion.y);
-        direccion = direccionDesde(dx, dy, direccion);
     }
 
     private boolean estaLibre(Rectangle intento, Arena arena, Tanque otro) {
@@ -81,19 +77,14 @@ public class Tanque {
             && !intento.overlaps(otro.limites);
     }
 
-    private static Direccion direccionDesde(float dx, float dy, Direccion actual) {
-        if (dy > 0) return Direccion.ARRIBA;
-        if (dy < 0) return Direccion.ABAJO;
-        if (dx > 0) return Direccion.DERECHA;
-        if (dx < 0) return Direccion.IZQUIERDA;
-        return actual;
-    }
-
     public Vector2 obtenerPosicionCanon() {
         float centroX = posicion.x + limites.width / 2f;
         float centroY = posicion.y + limites.height / 2f;
         float desplazamiento = limites.width / 2f + 4f;
-        return new Vector2(centroX + direccion.dx * desplazamiento, centroY + direccion.dy * desplazamiento);
+        return new Vector2(
+            centroX + MathUtils.cosDeg(angulo) * desplazamiento,
+            centroY + MathUtils.sinDeg(angulo) * desplazamiento
+        );
     }
 
     public void recibirImpacto() {
@@ -128,7 +119,7 @@ public class Tanque {
 
     private void dibujarNormal(SpriteBatch lote) {
         float origen = limites.width / 2f;
-        float rotacion = direccion.angulo - anguloBaseSprite;
+        float rotacion = angulo - anguloBaseSprite;
         lote.draw(texturaNormal, posicion.x, posicion.y, origen, origen,
             limites.width, limites.height, 1f, 1f, rotacion,
             0, 0, texturaNormal.getWidth(), texturaNormal.getHeight(), false, false);
@@ -158,7 +149,7 @@ public class Tanque {
         return limites;
     }
 
-    public Direccion obtenerDireccion() {
-        return direccion;
+    public float obtenerAngulo() {
+        return angulo;
     }
 }
