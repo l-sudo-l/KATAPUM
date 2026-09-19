@@ -56,7 +56,7 @@ public class PantallaJuego extends ScreenAdapter {
         jugador1 = new Tanque("Jugador 1", recursos.obtenerTexturaTanqueVerde(), recursos.obtenerTexturaTanqueVerdeDestruido(),
             recursos.obtenerAnimacionExplosionVerde(), 0f, 60, posicionY, 0f);
         jugador2 = new Tanque("Jugador 2", recursos.obtenerTexturaTanqueAzul(), recursos.obtenerTexturaTanqueAzulDestruido(),
-            recursos.obtenerAnimacionExplosionAzul(), 180f,
+            recursos.obtenerAnimacionExplosionAzul(), 0f,
             ConfiguracionJuego.ANCHO_MUNDO - 60 - ConfiguracionJuego.TAMANO_TANQUE, posicionY, 180f);
 
         entrada1 = new ManejadorEntradaJugador(Input.Keys.W, Input.Keys.S, Input.Keys.A, Input.Keys.D, Input.Keys.SPACE);

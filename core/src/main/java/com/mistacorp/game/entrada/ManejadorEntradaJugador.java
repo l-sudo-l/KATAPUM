@@ -53,8 +53,8 @@ public class ManejadorEntradaJugador extends InputAdapter {
 
     public float obtenerGiro() {
         float giro = 0;
-        if (teclasPresionadas.contains(teclaDerecha)) giro += 1;
-        if (teclasPresionadas.contains(teclaIzquierda)) giro -= 1;
+        if (teclasPresionadas.contains(teclaIzquierda)) giro += 1;
+        if (teclasPresionadas.contains(teclaDerecha)) giro -= 1;
         return giro;
     }
 
