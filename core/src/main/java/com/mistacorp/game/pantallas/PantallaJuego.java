@@ -46,6 +46,7 @@ public class PantallaJuego extends ScreenAdapter {
 
     private boolean pausado = false;
     private String ganadorPendiente = null;
+    private float tiempoEsperaFinPartida = 0f;
 
     public PantallaJuego(KatapumPrincipal juego) {
         this.juego = juego;
@@ -127,7 +128,7 @@ public class PantallaJuego extends ScreenAdapter {
 
         actualizarProyectiles(delta);
         actualizarEfectos(delta);
-        revisarFinDePartida();
+        revisarFinDePartida(delta);
     }
 
     private void manejarJugador(float delta, ManejadorEntradaJugador entrada, Tanque tanque, Tanque otro) {
@@ -208,12 +209,16 @@ public class PantallaJuego extends ScreenAdapter {
         }
     }
 
-    private void revisarFinDePartida() {
+    private void revisarFinDePartida(float delta) {
         if (ganadorPendiente == null) {
             return;
         }
         Tanque tanqueDestruido = jugador1.estaVivo() ? jugador2 : jugador1;
-        if (tanqueDestruido.explosionTerminada()) {
+        if (!tanqueDestruido.explosionTerminada()) {
+            return;
+        }
+        tiempoEsperaFinPartida += delta;
+        if (tiempoEsperaFinPartida >= ConfiguracionJuego.RETRASO_FIN_PARTIDA) {
             juego.setScreen(new PantallaFinPartida(juego, ganadorPendiente));
         }
     }
