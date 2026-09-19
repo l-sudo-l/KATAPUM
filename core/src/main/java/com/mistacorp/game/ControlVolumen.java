@@ -28,6 +28,11 @@ public final class ControlVolumen {
         volumen = Math.max(0f, volumen - 0.1f);
     }
 
+    public static void establecerVolumen(float valor) {
+        volumen = Math.max(0f, Math.min(1f, valor));
+        silenciado = false;
+    }
+
     public static void alternarSilencio() {
         silenciado = !silenciado;
     }

@@ -1,11 +1,15 @@
 package com.mistacorp.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class RecursosGraficos {
+
+    private final Texture texturaPixel;
 
     private final Texture texturaTanqueVerde;
     private final Texture texturaTanqueAzul;
@@ -41,6 +45,8 @@ public class RecursosGraficos {
     private final Texture texturaBotonVolverMenu;
 
     public RecursosGraficos() {
+        texturaPixel = crearTexturaPixel();
+
         texturaTanqueVerde = cargar("tanque_verde.png");
         texturaTanqueAzul = cargar("tanque_azul.png");
         texturaTanqueVerdeDestruido = cargar("tanque_verde_muerto.png");
@@ -77,6 +83,19 @@ public class RecursosGraficos {
 
     private Texture cargar(String nombreArchivo) {
         return new Texture(Gdx.files.internal(nombreArchivo));
+    }
+
+    private Texture crearTexturaPixel() {
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.fill();
+        Texture textura = new Texture(pixmap);
+        pixmap.dispose();
+        return textura;
+    }
+
+    public Texture obtenerTexturaPixel() {
+        return texturaPixel;
     }
 
     private Animation<TextureRegion> crearAnimacion(Texture hoja, int anchoFrame, int altoFrame, int cantidadFrames, float duracionFrame) {
@@ -176,6 +195,7 @@ public class RecursosGraficos {
     }
 
     public void dispose() {
+        texturaPixel.dispose();
         texturaTanqueVerde.dispose();
         texturaTanqueAzul.dispose();
         texturaTanqueVerdeDestruido.dispose();
