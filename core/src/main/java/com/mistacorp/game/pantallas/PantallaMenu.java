@@ -34,7 +34,7 @@ public class PantallaMenu extends ScreenAdapter {
         float centroX = ConfiguracionJuego.ANCHO_MUNDO / 2f;
 
         botonIniciar = new BotonMouse(centroX - anchoBoton / 2f, 330, anchoBoton, altoBoton, "INICIAR PARTIDA");
-        slider = new SliderVolumen(centroX - anchoBoton / 2f, 250, anchoBoton, 26f);
+        slider = new SliderVolumen(centroX - anchoBoton / 2f, 150, anchoBoton, 26f);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class PantallaMenu extends ScreenAdapter {
 
         botonIniciar.dibujar(juego.obtenerLote(), juego.obtenerRecursos().obtenerTexturaPixel(), juego.obtenerFuente());
 
-        juego.obtenerFuente().draw(juego.obtenerLote(), "VOLUMEN", slider.obtenerLimites().x, slider.obtenerLimites().y + 34);
+        juego.obtenerFuente().draw(juego.obtenerLote(), "VOLUMEN", slider.obtenerLimites().x, slider.obtenerLimites().y + 80);
         slider.dibujar(juego.obtenerLote(), juego.obtenerRecursos().obtenerTexturaPixel());
 
         dibujarControles();
@@ -92,8 +92,8 @@ public class PantallaMenu extends ScreenAdapter {
 
     private void dibujarControles() {
         float x = ConfiguracionJuego.ANCHO_MUNDO / 2f - 220;
-        float y = 170;
-        float paso = 26;
+        float y = 95;
+        float paso = 22;
 
         juego.obtenerFuente().draw(juego.obtenerLote(), "CONTROLES", x, y);
         juego.obtenerFuente().draw(juego.obtenerLote(),
