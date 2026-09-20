@@ -7,6 +7,14 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.5.1] - 2026-09-19
+
+### Agregado
+- Botones de `PantallaFinPartida` (volver a jugar / volver al menú) ahora interactivos con mouse además de teclado: se resaltan al pasar el cursor por encima y disparan la misma acción que `ENTER`/`ESC` al hacer clic.
+
+### Corregido
+- El texto "VOLUMEN" del menú de inicio se dibujaba demasiado cerca del slider, y el rectángulo de la barra terminaba tapando la parte inferior de las letras (bug encontrado en una captura de pantalla real, jugando en Windows). Se separó el margen y se reordenó todo el bloque de volumen y controles más abajo en la pantalla.
+
 ## [0.5.0] - 2026-09-19
 
 ### Corregido
