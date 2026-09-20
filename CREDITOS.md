@@ -1,6 +1,6 @@
 # Créditos de assets de terceros
 
-Los sprites gráficos (tanques, proyectiles, paredes, decoraciones, HUD y banners) fueron generados especialmente para este proyecto.
+Los sprites gráficos (tanques, proyectiles, paredes, decoraciones, HUD y banners) fueron hechos totalmente a mano para este proyecto. Lo único que no es trabajo propio es el audio.
 
 El audio proviene de OpenGameArt.org. El detalle de cada pista, su autor y licencia:
 
