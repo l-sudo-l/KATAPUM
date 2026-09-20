@@ -6,9 +6,9 @@
 ## Descripción Corta del Videojuego
 Katapum es un videojuego de tanques en 2D con vista top-down (cenital). Dos jugadores se enfrentan controlando cada uno un tanque en un mapa de batalla, con el objetivo de eliminar al oponente disparando proyectiles y esquivando los ataques entrantes. El mapa cuenta con obstáculos fijos e indestructibles que funcionan como cobertura táctica. Cada tanque tiene 3 vidas; cuando un jugador las pierde todas, su oponente es declarado ganador.
 
-> **Nota sobre el alcance actual:** la propuesta original plantea que ambos jugadores se conecten desde computadoras distintas por red (cliente-servidor). Para este prototipo (Pre entrega N°2) se implementó primero toda la mecánica central en **modo local (hotseat, mismo teclado)**, ya que las pautas de esta entrega piden demostrar la jugabilidad del núcleo del juego, no la capa de red. El módulo `server` y la comunicación por sockets se incorporarán en una entrega posterior reemplazando el `PlayerInputHandler` del Jugador 2 por la entrada recibida desde la red, sin tener que rehacer la lógica de juego.
 
-## Estado actual del prototipo (Pre entrega N°2)
+
+## Estado actual del prototipo
 Funcionalidades implementadas hasta el momento:
 - Arquitectura basada en `Game`/`Screen` de LibGDX, con tres pantallas: **Menú**, **Juego** y **Fin de partida**.
 - Manejo de entradas mediante una clase dedicada (`ManejadorEntradaJugador`, basada en `InputAdapter`), una instancia por jugador.
@@ -45,7 +45,7 @@ Pendiente para próximas entregas: la capa de red (cliente-servidor) que reempla
 > El menú de inicio y el menú de pausa (ESC durante la partida) se manejan con **mouse**: botones clickeables y una barra de volumen donde se puede hacer clic o arrastrar para ajustar el nivel.
 
 ## Video de demostración
-🎥 [Video de demostración de la Pre entrega N°2](AGREGAR_ENLACE_AQUI) <!-- Completar con el enlace de YouTube/Drive con permisos de visualización habilitados -->
+🎥 [Video de demostración de la Pre entrega N°2]()
 
 ## Tecnologías Principales
 - **Framework:** LibGDX 1.14.2
@@ -95,6 +95,3 @@ En Linux/macOS:
 - `server/`: servidor headless que coordinará el estado de la partida en red (aún sin implementar; próximas entregas). Clase principal: `LanzadorServidor`.
 - `shared/`: clases y utilidades que compartirán cliente y servidor una vez incorporada la red.
 - `assets/`: sprites, texturas y audio del juego. Ver [`CREDITOS.md`](CREDITOS.md) para la atribución de los assets de audio de terceros (OpenGameArt.org).
-
-## Estado del proyecto
-Proyecto en desarrollo — Pre entrega N°2: prototipo jugable local con mecánica central de combate de tanques, sprites y animaciones reales, y sonido.
