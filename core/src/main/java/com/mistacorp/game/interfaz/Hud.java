@@ -37,7 +37,7 @@ public class Hud {
         ventanaGrafica.update(ancho, alto, true);
     }
 
-    public void dibujar(SpriteBatch lote, Tanque jugador1, Tanque jugador2, boolean pausado) {
+    public void dibujar(SpriteBatch lote, Tanque jugador1, Tanque jugador2) {
         ventanaGrafica.apply();
         lote.setProjectionMatrix(camara.combined);
         lote.begin();
@@ -47,10 +47,6 @@ public class Hud {
         dibujarPanelJugador(lote, jugador2, ventanaGrafica.getWorldWidth() - 16, topeSuperior, false);
 
         fuente.getData().setScale(ESCALA_NORMAL);
-        if (pausado) {
-            fuente.draw(lote, "PAUSA - ESC para continuar",
-                ventanaGrafica.getWorldWidth() / 2f - 110, ventanaGrafica.getWorldHeight() / 2f);
-        }
         fuente.draw(lote, textoVolumen(), 16, 24);
 
         lote.end();

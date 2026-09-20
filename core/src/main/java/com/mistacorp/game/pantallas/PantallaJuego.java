@@ -23,6 +23,7 @@ import com.mistacorp.game.entidades.Proyectil;
 import com.mistacorp.game.entidades.Tanque;
 import com.mistacorp.game.entrada.ManejadorEntradaJugador;
 import com.mistacorp.game.interfaz.Hud;
+import com.mistacorp.game.interfaz.MenuPausa;
 import com.mistacorp.game.mundo.Arena;
 
 public class PantallaJuego extends ScreenAdapter {
@@ -43,6 +44,7 @@ public class PantallaJuego extends ScreenAdapter {
     private final ManejadorEntradaJugador entrada1;
     private final ManejadorEntradaJugador entrada2;
     private final Hud hud;
+    private final MenuPausa menuPausa;
 
     private boolean pausado = false;
     private String ganadorPendiente = null;
@@ -65,6 +67,7 @@ public class PantallaJuego extends ScreenAdapter {
             Input.Keys.CONTROL_RIGHT);
 
         hud = new Hud(juego.obtenerFuente(), recursos);
+        menuPausa = new MenuPausa(ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO);
     }
 
     @Override
@@ -95,6 +98,8 @@ public class PantallaJuego extends ScreenAdapter {
 
         if (!pausado) {
             actualizar(delta);
+        } else {
+            manejarMousePausa();
         }
 
         ScreenUtils.clear(0, 0, 0, 1);
@@ -114,9 +119,31 @@ public class PantallaJuego extends ScreenAdapter {
             efecto.dibujar(juego.obtenerLote());
         }
 
+        if (pausado) {
+            menuPausa.dibujar(juego.obtenerLote(), recursos.obtenerTexturaPixel(), juego.obtenerFuente());
+        }
+
         juego.obtenerLote().end();
 
-        hud.dibujar(juego.obtenerLote(), jugador1, jugador2, pausado);
+        hud.dibujar(juego.obtenerLote(), jugador1, jugador2);
+    }
+
+    private void manejarMousePausa() {
+        Vector2 mouseMundo = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        ventanaGrafica.unproject(mouseMundo);
+
+        menuPausa.actualizarResaltados(mouseMundo.x, mouseMundo.y);
+
+        if (Gdx.input.justTouched()) {
+            MenuPausa.Accion accion = menuPausa.manejarClick(mouseMundo.x, mouseMundo.y);
+            if (accion == MenuPausa.Accion.CONTINUAR) {
+                pausado = false;
+            } else if (accion == MenuPausa.Accion.VOLVER_AL_MENU) {
+                juego.setScreen(new PantallaMenu(juego));
+            }
+        } else if (Gdx.input.isTouched()) {
+            menuPausa.manejarArrastre(mouseMundo.x, mouseMundo.y);
+        }
     }
 
     private void actualizar(float delta) {
