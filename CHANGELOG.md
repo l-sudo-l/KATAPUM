@@ -7,6 +7,24 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.5.0] - 2026-09-19
+
+### Corregido
+- Bug de disparo: el ángulo base del sprite del tanque azul estaba mal configurado (180° en vez de 0°), causando que el proyectil saliera del lado contrario al que apuntaba visualmente el sprite. `tanque_verde.png` y `tanque_azul.png` apuntan los dos hacia la derecha en su arte original (verificado pixel a pixel); no son espejados entre sí.
+- Sentido de giro invertido: `A`/`D` giraban al revés de lo esperado respecto a la convención de ángulos usada (0°=derecha, 90°=arriba). Se corrigió el signo en `ManejadorEntradaJugador.obtenerGiro()`.
+
+### Agregado
+- Colisión para los elementos decorativos (`arbusto`, `caja`, `barril`): antes eran puramente visuales, ahora bloquean tanto a los tanques como a los proyectiles (`Arena.colisionaConObstaculos()`, antes `colisionaConParedes()`).
+- Cooldown de 1.5s (`ConfiguracionJuego.RETRASO_FIN_PARTIDA`) entre el final de la animación de explosión y el cambio a `PantallaFinPartida`.
+- `BotonMouse` y `SliderVolumen`: controles de UI reutilizables, interactivos con mouse, con estética retro (rectángulos de color, sin necesitar imágenes extra).
+- `MenuPausa`: panel de pausa con botones **CONTINUAR** / **VOLVER AL MENÚ** y control de volumen, todo manejado con mouse (clic y arrastre), reemplazando el mensaje de texto fijo que había antes.
+- `PantallaMenu` (menú de inicio) reescrita: botón **INICIAR PARTIDA** y control de volumen interactivos con mouse, con los controles de ambos jugadores listados debajo. `ENTER` se mantiene como atajo adicional.
+- `RecursosGraficos` vuelve a generar una textura de pixel de 1×1 (`obtenerTexturaPixel()`), esta vez como utilidad para dibujar los paneles/botones de la interfaz.
+- `ControlVolumen.establecerVolumen(float)`: fija un valor absoluto de volumen (usado por el slider al hacer clic/arrastrar), a diferencia de `subirVolumen()`/`bajarVolumen()` que ajustan de a pasos.
+
+### Cambiado
+- `Hud`: los corazones de vida se dibujan junto al nombre del jugador (a la derecha para Jugador 1, a la izquierda para Jugador 2, "mirando" ambos hacia el centro de la pantalla) en vez de debajo. El nombre se agrandó y se le agregó un contorno negro (dibujado a mano, ya que `BitmapFont` por defecto no soporta stroke sin generar una fuente FreeType con archivo `.ttf`). Los corazones también se agrandaron.
+
 ## [0.4.0] - 2026-09-18
 
 ### Cambiado

@@ -16,11 +16,12 @@ Funcionalidades implementadas hasta el momento:
 - Sprites reales para tanques, proyectiles, paredes, suelo y elementos decorativos (arbustos, cajas, barriles), con el tanque rotando según hacia dónde apunta.
 - Animación por spritesheet: cada tanque tiene una secuencia de 4 cuadros (normal → cargando → estallido → carcasa quemada) que se reproduce al perder su última vida, y el proyectil vuela con una animación de 2 cuadros.
 - Sistema de disparo: cada tanque dispara proyectiles animados en la dirección hacia la que está orientado, con fogonazo al salir y destello al impactar.
-- Detección de colisiones: proyectil contra pared (se destruye), proyectil contra tanque rival (resta una vida) y tanque contra pared/tanque rival (bloquea el movimiento).
-- Mapa/arena con obstáculos fijos e indestructibles, dentro de una cámara con `Viewport` (`FitViewport`) que se adapta al tamaño de la ventana.
-- HUD fijo en pantalla (vidas de cada jugador con iconos de corazón, volumen actual), con su propio `Viewport` independiente de la cámara del mundo.
-- Música de fondo (menú y partida) y efectos de sonido (disparo, impacto, muerte, victoria), con controles de volumen y silencio.
-- Estado de pausa (tecla ESC) dentro de la pantalla de juego.
+- Detección de colisiones: proyectil contra pared/decoración (se destruye), proyectil contra tanque rival (resta una vida) y tanque contra pared, decoración (arbusto/caja/barril) o tanque rival (bloquea el movimiento).
+- Mapa/arena con obstáculos fijos e indestructibles (paredes y elementos decorativos, todos colisionables), dentro de una cámara con `Viewport` (`FitViewport`) que se adapta al tamaño de la ventana.
+- HUD fijo en pantalla: nombre de cada jugador con contorno y corazones de vida junto al nombre (a la derecha para Jugador 1, a la izquierda para Jugador 2), volumen actual, con su propio `Viewport` independiente de la cámara del mundo.
+- Música de fondo (menú y partida) y efectos de sonido (disparo, impacto, muerte, victoria), con controles de volumen y silencio (teclado y mouse).
+- Menú de inicio y menú de pausa interactivos con mouse (botones y control deslizante de volumen), con estética retro (paneles y botones dibujados en bloques de color, sin depender de imágenes extra).
+- Cooldown de 1.5s tras la animación de explosión antes de pasar a la pantalla de fin de partida, para que se alcance a ver la carcasa del tanque destruido.
 - Condición de victoria: al perder sus 3 vidas, un jugador pierde la partida (se reproduce su animación de explosión completa) y se muestra la pantalla de Fin de partida con el banner del ganador.
 
 Pendiente para próximas entregas: la capa de red (cliente-servidor) que reemplace el modo local por partidas entre dos computadoras.
@@ -34,12 +35,14 @@ Pendiente para próximas entregas: la capa de red (cliente-servidor) que reempla
 | Girar sobre el propio eje (derecha) | `D` | Flecha derecha |
 | Disparar (en la dirección hacia la que apunta) | `Espacio` | `Ctrl derecho` |
 | Confirmar / jugar de nuevo | `Enter` | `Enter` |
-| Pausar / reanudar (durante la partida) | `Esc` | `Esc` |
-| Volver al menú (en la pantalla de fin de partida) | `Esc` | `Esc` |
-| Subir / bajar volumen | `+` / `-` | `+` / `-` |
+| Pausar / reanudar (durante la partida) | `Esc` o botón **CONTINUAR** (mouse) | `Esc` o botón **CONTINUAR** (mouse) |
+| Volver al menú (en pausa o en fin de partida) | `Esc` o botón (mouse) | `Esc` o botón (mouse) |
+| Subir / bajar volumen | `+` / `-` o clic/arrastre en la barra | `+` / `-` o clic/arrastre en la barra |
 | Silenciar / activar sonido | `M` | `M` |
 
 > El tanque se mueve como un vehículo real: `A`/`D` solo rotan el tanque sobre su propio eje (no desplazan lateralmente), y `W`/`S` avanzan o retroceden según hacia dónde esté apuntando en ese momento. El cañón y la dirección de disparo siempre coinciden con la orientación actual del tanque.
+>
+> El menú de inicio y el menú de pausa (ESC durante la partida) se manejan con **mouse**: botones clickeables y una barra de volumen donde se puede hacer clic o arrastrar para ajustar el nivel.
 
 ## Video de demostración
 🎥 [Video de demostración de la Pre entrega N°2](AGREGAR_ENLACE_AQUI) <!-- Completar con el enlace de YouTube/Drive con permisos de visualización habilitados -->
