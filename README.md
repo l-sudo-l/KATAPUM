@@ -45,7 +45,7 @@ Pendiente para próximas entregas: la capa de red (cliente-servidor) que reempla
 > El menú de inicio y el menú de pausa (ESC durante la partida) se manejan con **mouse**: botones clickeables y una barra de volumen donde se puede hacer clic o arrastrar para ajustar el nivel.
 
 ## Video de demostración
-🎥 [Video de demostración de la Pre entrega N°2]()
+[Video de demostración](https://youtu.be/sVt7fCbuv1g)
 
 ## Tecnologías Principales
 - **Framework:** LibGDX 1.14.2
