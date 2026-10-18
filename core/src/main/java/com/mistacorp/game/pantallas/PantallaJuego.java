@@ -100,6 +100,8 @@ public class PantallaJuego extends ScreenAdapter {
             actualizar(delta);
         } else {
             manejarMousePausa();
+            entrada1.consumirDisparo();
+            entrada2.consumirDisparo();
         }
 
         ScreenUtils.clear(0, 0, 0, 1);
