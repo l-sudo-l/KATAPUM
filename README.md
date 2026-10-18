@@ -52,7 +52,7 @@ Pendiente para próximas entregas: la capa de red (cliente-servidor) que reempla
 - **Plataforma de escritorio:** LWJGL3
 - **Lenguaje:** Java 8
 - **Networking:** Sockets Java (UDP para posiciones/inputs en tiempo real, TCP para conexión inicial, lobby e inicio/fin de partida)
-- **Mapas:** Tiled Map Editor (archivos TMX)
+- **Mapas:** generados por código (clase `Arena`). Se planea migrar a Tiled Map Editor (archivos TMX) en una etapa posterior; hoy el proyecto no contiene archivos `.tmx`.
 - **Plataformas de desarrollo objetivo:** Escritorio (target principal). Web y Móvil no forman parte del alcance de este proyecto.
 
 ## Enlace a la Wiki del Proyecto
