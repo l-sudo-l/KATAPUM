@@ -8,10 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MenuPausa {
 
-    public enum Accion {
-        NINGUNA, CONTINUAR, VOLVER_AL_MENU
-    }
-
     private final BotonMouse botonContinuar;
     private final BotonMouse botonVolverMenu;
     private final SliderVolumen slider;

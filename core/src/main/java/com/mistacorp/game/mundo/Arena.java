@@ -9,10 +9,6 @@ import com.mistacorp.game.RecursosGraficos;
 
 public class Arena {
 
-    private enum TipoDecoracion {
-        ARBUSTO, CAJA, BARRIL
-    }
-
     private static class Decoracion {
         final Rectangle limites;
         final TipoDecoracion tipo;

@@ -22,6 +22,7 @@ import com.mistacorp.game.entidades.Efecto;
 import com.mistacorp.game.entidades.Proyectil;
 import com.mistacorp.game.entidades.Tanque;
 import com.mistacorp.game.entrada.ManejadorEntradaJugador;
+import com.mistacorp.game.interfaz.Accion;
 import com.mistacorp.game.interfaz.Hud;
 import com.mistacorp.game.interfaz.MenuPausa;
 import com.mistacorp.game.mundo.Arena;
@@ -137,10 +138,10 @@ public class PantallaJuego extends ScreenAdapter {
         menuPausa.actualizarResaltados(mouseMundo.x, mouseMundo.y);
 
         if (Gdx.input.justTouched()) {
-            MenuPausa.Accion accion = menuPausa.manejarClick(mouseMundo.x, mouseMundo.y);
-            if (accion == MenuPausa.Accion.CONTINUAR) {
+            Accion accion = menuPausa.manejarClick(mouseMundo.x, mouseMundo.y);
+            if (accion == Accion.CONTINUAR) {
                 pausado = false;
-            } else if (accion == MenuPausa.Accion.VOLVER_AL_MENU) {
+            } else if (accion == Accion.VOLVER_AL_MENU) {
                 juego.setScreen(new PantallaMenu(juego));
             }
         } else if (Gdx.input.isTouched()) {
