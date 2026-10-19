@@ -7,6 +7,16 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.5.2] - 2026-09-27
+
+### Corregido
+- Disparo pendiente durante la pausa: `ManejadorEntradaJugador` seguía registrando la tecla de disparo mientras el juego estaba pausado y el tanque disparaba al reanudar. Ahora `PantallaJuego` descarta ese disparo en cada frame de pausa.
+- README: se aclara que Tiled es una tecnología planificada (hoy la arena se construye por código en `Arena`, sin archivos `.tmx`).
+
+### Cambiado
+- Los atributos `final` de instancia pasan a `MAYUSCULAS_CON_GUIONES_BAJOS`, según la convención de la materia.
+- Los enumeradores `TipoDecoracion` (antes anidado en `Arena`) y `Accion` (antes anidado en `MenuPausa`) pasan a archivos propios.
+
 ## [0.5.1] - 2026-09-19
 
 ### Agregado
