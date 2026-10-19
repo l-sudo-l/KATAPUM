@@ -9,76 +9,76 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class RecursosGraficos {
 
-    private final Texture texturaPixel;
+    private final Texture TEXTURA_PIXEL;
 
-    private final Texture texturaTanqueVerde;
-    private final Texture texturaTanqueAzul;
-    private final Texture texturaTanqueVerdeDestruido;
-    private final Texture texturaTanqueAzulDestruido;
+    private final Texture TEXTURA_TANQUE_VERDE;
+    private final Texture TEXTURA_TANQUE_AZUL;
+    private final Texture TEXTURA_TANQUE_VERDE_DESTRUIDO;
+    private final Texture TEXTURA_TANQUE_AZUL_DESTRUIDO;
 
-    private final Texture hojaExplosionVerde;
-    private final Texture hojaExplosionAzul;
-    private final Animation<TextureRegion> animacionExplosionVerde;
-    private final Animation<TextureRegion> animacionExplosionAzul;
+    private final Texture HOJA_EXPLOSION_VERDE;
+    private final Texture HOJA_EXPLOSION_AZUL;
+    private final Animation<TextureRegion> ANIMACION_EXPLOSION_VERDE;
+    private final Animation<TextureRegion> ANIMACION_EXPLOSION_AZUL;
 
-    private final Texture texturaFlashRojo;
-    private final Texture texturaFlashAzul;
+    private final Texture TEXTURA_FLASH_ROJO;
+    private final Texture TEXTURA_FLASH_AZUL;
 
-    private final Texture hojaProyectilRojo;
-    private final Texture hojaProyectilAzul;
-    private final Animation<TextureRegion> animacionProyectilRojo;
-    private final Animation<TextureRegion> animacionProyectilAzul;
+    private final Texture HOJA_PROYECTIL_ROJO;
+    private final Texture HOJA_PROYECTIL_AZUL;
+    private final Animation<TextureRegion> ANIMACION_PROYECTIL_ROJO;
+    private final Animation<TextureRegion> ANIMACION_PROYECTIL_AZUL;
 
-    private final Texture texturaImpactoRojo;
-    private final Texture texturaImpactoAzul;
+    private final Texture TEXTURA_IMPACTO_ROJO;
+    private final Texture TEXTURA_IMPACTO_AZUL;
 
-    private final Texture texturaPared;
-    private final Texture texturaSuelo;
-    private final Texture texturaArbusto;
-    private final Texture texturaCaja;
-    private final Texture texturaBarril;
-    private final Texture texturaCorazon;
+    private final Texture TEXTURA_PARED;
+    private final Texture TEXTURA_SUELO;
+    private final Texture TEXTURA_ARBUSTO;
+    private final Texture TEXTURA_CAJA;
+    private final Texture TEXTURA_BARRIL;
+    private final Texture TEXTURA_CORAZON;
 
-    private final Texture texturaGanadorJugador1;
-    private final Texture texturaGanadorJugador2;
-    private final Texture texturaBotonVolverJugar;
-    private final Texture texturaBotonVolverMenu;
+    private final Texture TEXTURA_GANADOR_JUGADOR1;
+    private final Texture TEXTURA_GANADOR_JUGADOR2;
+    private final Texture TEXTURA_BOTON_VOLVER_JUGAR;
+    private final Texture TEXTURA_BOTON_VOLVER_MENU;
 
     public RecursosGraficos() {
-        texturaPixel = crearTexturaPixel();
+        TEXTURA_PIXEL = crearTexturaPixel();
 
-        texturaTanqueVerde = cargar("tanque_verde.png");
-        texturaTanqueAzul = cargar("tanque_azul.png");
-        texturaTanqueVerdeDestruido = cargar("tanque_verde_muerto.png");
-        texturaTanqueAzulDestruido = cargar("tanque_azul_muerto.png");
+        TEXTURA_TANQUE_VERDE = cargar("tanque_verde.png");
+        TEXTURA_TANQUE_AZUL = cargar("tanque_azul.png");
+        TEXTURA_TANQUE_VERDE_DESTRUIDO = cargar("tanque_verde_muerto.png");
+        TEXTURA_TANQUE_AZUL_DESTRUIDO = cargar("tanque_azul_muerto.png");
 
-        hojaExplosionVerde = cargar("explocion_tanque_verde.png");
-        hojaExplosionAzul = cargar("explocion_tanque_azul.png");
-        animacionExplosionVerde = crearAnimacion(hojaExplosionVerde, 48, 40, 4, 0.15f);
-        animacionExplosionAzul = crearAnimacion(hojaExplosionAzul, 48, 40, 4, 0.15f);
+        HOJA_EXPLOSION_VERDE = cargar("explocion_tanque_verde.png");
+        HOJA_EXPLOSION_AZUL = cargar("explocion_tanque_azul.png");
+        ANIMACION_EXPLOSION_VERDE = crearAnimacion(HOJA_EXPLOSION_VERDE, 48, 40, 4, 0.15f);
+        ANIMACION_EXPLOSION_AZUL = crearAnimacion(HOJA_EXPLOSION_AZUL, 48, 40, 4, 0.15f);
 
-        texturaFlashRojo = cargar("bola_fuego_roja_1.png");
-        texturaFlashAzul = cargar("bola_fuego_azul_1.png");
+        TEXTURA_FLASH_ROJO = cargar("bola_fuego_roja_1.png");
+        TEXTURA_FLASH_AZUL = cargar("bola_fuego_azul_1.png");
 
-        hojaProyectilRojo = cargar("bola_fuego_roja_2.png");
-        hojaProyectilAzul = cargar("bola_fuego_azul_2.png");
-        animacionProyectilRojo = crearAnimacion(hojaProyectilRojo, 16, 16, 2, 0.08f);
-        animacionProyectilAzul = crearAnimacion(hojaProyectilAzul, 16, 16, 2, 0.08f);
+        HOJA_PROYECTIL_ROJO = cargar("bola_fuego_roja_2.png");
+        HOJA_PROYECTIL_AZUL = cargar("bola_fuego_azul_2.png");
+        ANIMACION_PROYECTIL_ROJO = crearAnimacion(HOJA_PROYECTIL_ROJO, 16, 16, 2, 0.08f);
+        ANIMACION_PROYECTIL_AZUL = crearAnimacion(HOJA_PROYECTIL_AZUL, 16, 16, 2, 0.08f);
 
-        texturaImpactoRojo = cargar("bola_fuego_roja_impacto.png");
-        texturaImpactoAzul = cargar("bola_fuego_azul_impacto.png");
+        TEXTURA_IMPACTO_ROJO = cargar("bola_fuego_roja_impacto.png");
+        TEXTURA_IMPACTO_AZUL = cargar("bola_fuego_azul_impacto.png");
 
-        texturaPared = cargar("pared.png");
-        texturaSuelo = cargar("suelo.png");
-        texturaArbusto = cargar("arbusto.png");
-        texturaCaja = cargar("caja.png");
-        texturaBarril = cargar("barril.png");
-        texturaCorazon = cargar("corazon.png");
+        TEXTURA_PARED = cargar("pared.png");
+        TEXTURA_SUELO = cargar("suelo.png");
+        TEXTURA_ARBUSTO = cargar("arbusto.png");
+        TEXTURA_CAJA = cargar("caja.png");
+        TEXTURA_BARRIL = cargar("barril.png");
+        TEXTURA_CORAZON = cargar("corazon.png");
 
-        texturaGanadorJugador1 = cargar("ganador_jugador1.png");
-        texturaGanadorJugador2 = cargar("ganador_jugador2.png");
-        texturaBotonVolverJugar = cargar("volver_jugar.png");
-        texturaBotonVolverMenu = cargar("volver_menu.png");
+        TEXTURA_GANADOR_JUGADOR1 = cargar("ganador_jugador1.png");
+        TEXTURA_GANADOR_JUGADOR2 = cargar("ganador_jugador2.png");
+        TEXTURA_BOTON_VOLVER_JUGAR = cargar("volver_jugar.png");
+        TEXTURA_BOTON_VOLVER_MENU = cargar("volver_menu.png");
     }
 
     private Texture cargar(String nombreArchivo) {
@@ -95,7 +95,7 @@ public class RecursosGraficos {
     }
 
     public Texture obtenerTexturaPixel() {
-        return texturaPixel;
+        return TEXTURA_PIXEL;
     }
 
     private Animation<TextureRegion> crearAnimacion(Texture hoja, int anchoFrame, int altoFrame, int cantidadFrames, float duracionFrame) {
@@ -107,116 +107,116 @@ public class RecursosGraficos {
     }
 
     public Texture obtenerTexturaTanqueVerde() {
-        return texturaTanqueVerde;
+        return TEXTURA_TANQUE_VERDE;
     }
 
     public Texture obtenerTexturaTanqueAzul() {
-        return texturaTanqueAzul;
+        return TEXTURA_TANQUE_AZUL;
     }
 
     public Texture obtenerTexturaTanqueVerdeDestruido() {
-        return texturaTanqueVerdeDestruido;
+        return TEXTURA_TANQUE_VERDE_DESTRUIDO;
     }
 
     public Texture obtenerTexturaTanqueAzulDestruido() {
-        return texturaTanqueAzulDestruido;
+        return TEXTURA_TANQUE_AZUL_DESTRUIDO;
     }
 
     public Animation<TextureRegion> obtenerAnimacionExplosionVerde() {
-        return animacionExplosionVerde;
+        return ANIMACION_EXPLOSION_VERDE;
     }
 
     public Animation<TextureRegion> obtenerAnimacionExplosionAzul() {
-        return animacionExplosionAzul;
+        return ANIMACION_EXPLOSION_AZUL;
     }
 
     public Texture obtenerTexturaFlashRojo() {
-        return texturaFlashRojo;
+        return TEXTURA_FLASH_ROJO;
     }
 
     public Texture obtenerTexturaFlashAzul() {
-        return texturaFlashAzul;
+        return TEXTURA_FLASH_AZUL;
     }
 
     public Animation<TextureRegion> obtenerAnimacionProyectilRojo() {
-        return animacionProyectilRojo;
+        return ANIMACION_PROYECTIL_ROJO;
     }
 
     public Animation<TextureRegion> obtenerAnimacionProyectilAzul() {
-        return animacionProyectilAzul;
+        return ANIMACION_PROYECTIL_AZUL;
     }
 
     public Texture obtenerTexturaImpactoRojo() {
-        return texturaImpactoRojo;
+        return TEXTURA_IMPACTO_ROJO;
     }
 
     public Texture obtenerTexturaImpactoAzul() {
-        return texturaImpactoAzul;
+        return TEXTURA_IMPACTO_AZUL;
     }
 
     public Texture obtenerTexturaPared() {
-        return texturaPared;
+        return TEXTURA_PARED;
     }
 
     public Texture obtenerTexturaSuelo() {
-        return texturaSuelo;
+        return TEXTURA_SUELO;
     }
 
     public Texture obtenerTexturaArbusto() {
-        return texturaArbusto;
+        return TEXTURA_ARBUSTO;
     }
 
     public Texture obtenerTexturaCaja() {
-        return texturaCaja;
+        return TEXTURA_CAJA;
     }
 
     public Texture obtenerTexturaBarril() {
-        return texturaBarril;
+        return TEXTURA_BARRIL;
     }
 
     public Texture obtenerTexturaCorazon() {
-        return texturaCorazon;
+        return TEXTURA_CORAZON;
     }
 
     public Texture obtenerTexturaGanadorJugador1() {
-        return texturaGanadorJugador1;
+        return TEXTURA_GANADOR_JUGADOR1;
     }
 
     public Texture obtenerTexturaGanadorJugador2() {
-        return texturaGanadorJugador2;
+        return TEXTURA_GANADOR_JUGADOR2;
     }
 
     public Texture obtenerTexturaBotonVolverJugar() {
-        return texturaBotonVolverJugar;
+        return TEXTURA_BOTON_VOLVER_JUGAR;
     }
 
     public Texture obtenerTexturaBotonVolverMenu() {
-        return texturaBotonVolverMenu;
+        return TEXTURA_BOTON_VOLVER_MENU;
     }
 
     public void dispose() {
-        texturaPixel.dispose();
-        texturaTanqueVerde.dispose();
-        texturaTanqueAzul.dispose();
-        texturaTanqueVerdeDestruido.dispose();
-        texturaTanqueAzulDestruido.dispose();
-        hojaExplosionVerde.dispose();
-        hojaExplosionAzul.dispose();
-        texturaFlashRojo.dispose();
-        texturaFlashAzul.dispose();
-        hojaProyectilRojo.dispose();
-        hojaProyectilAzul.dispose();
-        texturaImpactoRojo.dispose();
-        texturaImpactoAzul.dispose();
-        texturaPared.dispose();
-        texturaSuelo.dispose();
-        texturaArbusto.dispose();
-        texturaCaja.dispose();
-        texturaBarril.dispose();
-        texturaCorazon.dispose();
-        texturaGanadorJugador1.dispose();
-        texturaGanadorJugador2.dispose();
-        texturaBotonVolverJugar.dispose();
-        texturaBotonVolverMenu.dispose();
+        TEXTURA_PIXEL.dispose();
+        TEXTURA_TANQUE_VERDE.dispose();
+        TEXTURA_TANQUE_AZUL.dispose();
+        TEXTURA_TANQUE_VERDE_DESTRUIDO.dispose();
+        TEXTURA_TANQUE_AZUL_DESTRUIDO.dispose();
+        HOJA_EXPLOSION_VERDE.dispose();
+        HOJA_EXPLOSION_AZUL.dispose();
+        TEXTURA_FLASH_ROJO.dispose();
+        TEXTURA_FLASH_AZUL.dispose();
+        HOJA_PROYECTIL_ROJO.dispose();
+        HOJA_PROYECTIL_AZUL.dispose();
+        TEXTURA_IMPACTO_ROJO.dispose();
+        TEXTURA_IMPACTO_AZUL.dispose();
+        TEXTURA_PARED.dispose();
+        TEXTURA_SUELO.dispose();
+        TEXTURA_ARBUSTO.dispose();
+        TEXTURA_CAJA.dispose();
+        TEXTURA_BARRIL.dispose();
+        TEXTURA_CORAZON.dispose();
+        TEXTURA_GANADOR_JUGADOR1.dispose();
+        TEXTURA_GANADOR_JUGADOR2.dispose();
+        TEXTURA_BOTON_VOLVER_JUGAR.dispose();
+        TEXTURA_BOTON_VOLVER_MENU.dispose();
     }
 }

@@ -29,64 +29,64 @@ import com.mistacorp.game.mundo.Arena;
 
 public class PantallaJuego extends ScreenAdapter {
 
-    private final KatapumPrincipal juego;
-    private final RecursosGraficos recursos;
-    private final RecursosSonido sonidos;
+    private final KatapumPrincipal JUEGO;
+    private final RecursosGraficos RECURSOS;
+    private final RecursosSonido SONIDOS;
 
-    private final OrthographicCamera camara = new OrthographicCamera();
-    private final Viewport ventanaGrafica = new FitViewport(ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO, camara);
+    private final OrthographicCamera CAMARA = new OrthographicCamera();
+    private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO, CAMARA);
 
-    private final Arena arena = new Arena();
-    private final Tanque jugador1;
-    private final Tanque jugador2;
-    private final Array<Proyectil> proyectiles = new Array<>();
-    private final Array<Efecto> efectos = new Array<>();
+    private final Arena ARENA = new Arena();
+    private final Tanque JUGADOR1;
+    private final Tanque JUGADOR2;
+    private final Array<Proyectil> PROYECTILES = new Array<>();
+    private final Array<Efecto> EFECTOS = new Array<>();
 
-    private final ManejadorEntradaJugador entrada1;
-    private final ManejadorEntradaJugador entrada2;
-    private final Hud hud;
-    private final MenuPausa menuPausa;
+    private final ManejadorEntradaJugador ENTRADA1;
+    private final ManejadorEntradaJugador ENTRADA2;
+    private final Hud HUD;
+    private final MenuPausa MENU_PAUSA;
 
     private boolean pausado = false;
     private String ganadorPendiente = null;
     private float tiempoEsperaFinPartida = 0f;
 
     public PantallaJuego(KatapumPrincipal juego) {
-        this.juego = juego;
-        this.recursos = juego.obtenerRecursos();
-        this.sonidos = juego.obtenerSonidos();
+        this.JUEGO = juego;
+        this.RECURSOS = juego.obtenerRecursos();
+        this.SONIDOS = juego.obtenerSonidos();
 
         float posicionY = ConfiguracionJuego.ALTO_MUNDO / 2f - ConfiguracionJuego.TAMANO_TANQUE / 2f;
-        jugador1 = new Tanque("Jugador 1", recursos.obtenerTexturaTanqueVerde(), recursos.obtenerTexturaTanqueVerdeDestruido(),
-            recursos.obtenerAnimacionExplosionVerde(), 0f, 60, posicionY, 0f);
-        jugador2 = new Tanque("Jugador 2", recursos.obtenerTexturaTanqueAzul(), recursos.obtenerTexturaTanqueAzulDestruido(),
-            recursos.obtenerAnimacionExplosionAzul(), 0f,
+        JUGADOR1 = new Tanque("Jugador 1", RECURSOS.obtenerTexturaTanqueVerde(), RECURSOS.obtenerTexturaTanqueVerdeDestruido(),
+            RECURSOS.obtenerAnimacionExplosionVerde(), 0f, 60, posicionY, 0f);
+        JUGADOR2 = new Tanque("Jugador 2", RECURSOS.obtenerTexturaTanqueAzul(), RECURSOS.obtenerTexturaTanqueAzulDestruido(),
+            RECURSOS.obtenerAnimacionExplosionAzul(), 0f,
             ConfiguracionJuego.ANCHO_MUNDO - 60 - ConfiguracionJuego.TAMANO_TANQUE, posicionY, 180f);
 
-        entrada1 = new ManejadorEntradaJugador(Input.Keys.W, Input.Keys.S, Input.Keys.A, Input.Keys.D, Input.Keys.SPACE);
-        entrada2 = new ManejadorEntradaJugador(Input.Keys.UP, Input.Keys.DOWN, Input.Keys.LEFT, Input.Keys.RIGHT,
+        ENTRADA1 = new ManejadorEntradaJugador(Input.Keys.W, Input.Keys.S, Input.Keys.A, Input.Keys.D, Input.Keys.SPACE);
+        ENTRADA2 = new ManejadorEntradaJugador(Input.Keys.UP, Input.Keys.DOWN, Input.Keys.LEFT, Input.Keys.RIGHT,
             Input.Keys.CONTROL_RIGHT);
 
-        hud = new Hud(juego.obtenerFuente(), recursos);
-        menuPausa = new MenuPausa(ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO);
+        HUD = new Hud(juego.obtenerFuente(), RECURSOS);
+        MENU_PAUSA = new MenuPausa(ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO);
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(new InputMultiplexer(entrada1, entrada2));
-        sonidos.obtenerMusicaJuego().setVolume(ControlVolumen.obtenerVolumenEfectivo());
-        sonidos.obtenerMusicaJuego().play();
+        Gdx.input.setInputProcessor(new InputMultiplexer(ENTRADA1, ENTRADA2));
+        SONIDOS.obtenerMusicaJuego().setVolume(ControlVolumen.obtenerVolumenEfectivo());
+        SONIDOS.obtenerMusicaJuego().play();
     }
 
     @Override
     public void hide() {
-        sonidos.obtenerMusicaJuego().stop();
+        SONIDOS.obtenerMusicaJuego().stop();
     }
 
     @Override
     public void resize(int ancho, int alto) {
-        ventanaGrafica.update(ancho, alto, true);
-        hud.redimensionar(ancho, alto);
+        VENTANA_GRAFICA.update(ancho, alto, true);
+        HUD.redimensionar(ancho, alto);
     }
 
     @Override
@@ -95,66 +95,66 @@ public class PantallaJuego extends ScreenAdapter {
             pausado = !pausado;
         }
         manejarControlesDeVolumen();
-        sonidos.obtenerMusicaJuego().setVolume(ControlVolumen.obtenerVolumenEfectivo());
+        SONIDOS.obtenerMusicaJuego().setVolume(ControlVolumen.obtenerVolumenEfectivo());
 
         if (!pausado) {
             actualizar(delta);
         } else {
             manejarMousePausa();
-            entrada1.consumirDisparo();
-            entrada2.consumirDisparo();
+            ENTRADA1.consumirDisparo();
+            ENTRADA2.consumirDisparo();
         }
 
         ScreenUtils.clear(0, 0, 0, 1);
 
-        ventanaGrafica.apply();
-        camara.update();
-        juego.obtenerLote().setProjectionMatrix(camara.combined);
-        juego.obtenerLote().begin();
+        VENTANA_GRAFICA.apply();
+        CAMARA.update();
+        JUEGO.obtenerLote().setProjectionMatrix(CAMARA.combined);
+        JUEGO.obtenerLote().begin();
 
-        arena.dibujar(juego.obtenerLote(), recursos);
-        jugador1.dibujar(juego.obtenerLote());
-        jugador2.dibujar(juego.obtenerLote());
-        for (Proyectil proyectil : proyectiles) {
-            proyectil.dibujar(juego.obtenerLote());
+        ARENA.dibujar(JUEGO.obtenerLote(), RECURSOS);
+        JUGADOR1.dibujar(JUEGO.obtenerLote());
+        JUGADOR2.dibujar(JUEGO.obtenerLote());
+        for (Proyectil proyectil : PROYECTILES) {
+            proyectil.dibujar(JUEGO.obtenerLote());
         }
-        for (Efecto efecto : efectos) {
-            efecto.dibujar(juego.obtenerLote());
+        for (Efecto efecto : EFECTOS) {
+            efecto.dibujar(JUEGO.obtenerLote());
         }
 
         if (pausado) {
-            menuPausa.dibujar(juego.obtenerLote(), recursos.obtenerTexturaPixel(), juego.obtenerFuente());
+            MENU_PAUSA.dibujar(JUEGO.obtenerLote(), RECURSOS.obtenerTexturaPixel(), JUEGO.obtenerFuente());
         }
 
-        juego.obtenerLote().end();
+        JUEGO.obtenerLote().end();
 
-        hud.dibujar(juego.obtenerLote(), jugador1, jugador2);
+        HUD.dibujar(JUEGO.obtenerLote(), JUGADOR1, JUGADOR2);
     }
 
     private void manejarMousePausa() {
         Vector2 mouseMundo = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-        ventanaGrafica.unproject(mouseMundo);
+        VENTANA_GRAFICA.unproject(mouseMundo);
 
-        menuPausa.actualizarResaltados(mouseMundo.x, mouseMundo.y);
+        MENU_PAUSA.actualizarResaltados(mouseMundo.x, mouseMundo.y);
 
         if (Gdx.input.justTouched()) {
-            Accion accion = menuPausa.manejarClick(mouseMundo.x, mouseMundo.y);
+            Accion accion = MENU_PAUSA.manejarClick(mouseMundo.x, mouseMundo.y);
             if (accion == Accion.CONTINUAR) {
                 pausado = false;
             } else if (accion == Accion.VOLVER_AL_MENU) {
-                juego.setScreen(new PantallaMenu(juego));
+                JUEGO.setScreen(new PantallaMenu(JUEGO));
             }
         } else if (Gdx.input.isTouched()) {
-            menuPausa.manejarArrastre(mouseMundo.x, mouseMundo.y);
+            MENU_PAUSA.manejarArrastre(mouseMundo.x, mouseMundo.y);
         }
     }
 
     private void actualizar(float delta) {
-        manejarJugador(delta, entrada1, jugador1, jugador2);
-        manejarJugador(delta, entrada2, jugador2, jugador1);
+        manejarJugador(delta, ENTRADA1, JUGADOR1, JUGADOR2);
+        manejarJugador(delta, ENTRADA2, JUGADOR2, JUGADOR1);
 
-        jugador1.actualizar(delta);
-        jugador2.actualizar(delta);
+        JUGADOR1.actualizar(delta);
+        JUGADOR2.actualizar(delta);
 
         actualizarProyectiles(delta);
         actualizarEfectos(delta);
@@ -173,36 +173,36 @@ public class PantallaJuego extends ScreenAdapter {
 
         float avance = entrada.obtenerAvance();
         if (avance > 0) {
-            tanque.avanzar(delta, arena, otro);
+            tanque.avanzar(delta, ARENA, otro);
         } else if (avance < 0) {
-            tanque.retroceder(delta, arena, otro);
+            tanque.retroceder(delta, ARENA, otro);
         }
 
         if (entrada.consumirDisparo()) {
-            boolean esJugador1 = tanque == jugador1;
+            boolean esJugador1 = tanque == JUGADOR1;
             Animation<TextureRegion> animacionVuelo = esJugador1
-                ? recursos.obtenerAnimacionProyectilRojo() : recursos.obtenerAnimacionProyectilAzul();
-            Texture flash = esJugador1 ? recursos.obtenerTexturaFlashRojo() : recursos.obtenerTexturaFlashAzul();
+                ? RECURSOS.obtenerAnimacionProyectilRojo() : RECURSOS.obtenerAnimacionProyectilAzul();
+            Texture flash = esJugador1 ? RECURSOS.obtenerTexturaFlashRojo() : RECURSOS.obtenerTexturaFlashAzul();
 
             Vector2 posicionCanon = tanque.obtenerPosicionCanon();
-            proyectiles.add(new Proyectil(posicionCanon, tanque.obtenerAngulo(), tanque, animacionVuelo));
-            efectos.add(new Efecto(flash, posicionCanon, 16, 16));
-            sonidos.obtenerSonidoDisparo().play(ControlVolumen.obtenerVolumenEfectivo());
+            PROYECTILES.add(new Proyectil(posicionCanon, tanque.obtenerAngulo(), tanque, animacionVuelo));
+            EFECTOS.add(new Efecto(flash, posicionCanon, 16, 16));
+            SONIDOS.obtenerSonidoDisparo().play(ControlVolumen.obtenerVolumenEfectivo());
         }
     }
 
     private void actualizarProyectiles(float delta) {
-        for (int i = proyectiles.size - 1; i >= 0; i--) {
-            Proyectil proyectil = proyectiles.get(i);
+        for (int i = PROYECTILES.size - 1; i >= 0; i--) {
+            Proyectil proyectil = PROYECTILES.get(i);
             proyectil.actualizar(delta);
 
             boolean debeEliminarse = false;
 
-            if (!arena.estaDentroDeLimites(proyectil.obtenerLimites()) || arena.colisionaConObstaculos(proyectil.obtenerLimites())) {
+            if (!ARENA.estaDentroDeLimites(proyectil.obtenerLimites()) || ARENA.colisionaConObstaculos(proyectil.obtenerLimites())) {
                 debeEliminarse = true;
                 agregarEfectoImpacto(proyectil);
             } else {
-                Tanque objetivo = proyectil.obtenerPropietario() == jugador1 ? jugador2 : jugador1;
+                Tanque objetivo = proyectil.obtenerPropietario() == JUGADOR1 ? JUGADOR2 : JUGADOR1;
                 if (objetivo.estaVivo() && proyectil.obtenerLimites().overlaps(objetivo.obtenerLimites())) {
                     objetivo.recibirImpacto();
                     debeEliminarse = true;
@@ -211,30 +211,30 @@ public class PantallaJuego extends ScreenAdapter {
                     if (!objetivo.estaVivo()) {
                         objetivo.iniciarExplosion();
                         ganadorPendiente = proyectil.obtenerPropietario().obtenerNombre();
-                        sonidos.obtenerSonidoMuerte().play(ControlVolumen.obtenerVolumenEfectivo());
+                        SONIDOS.obtenerSonidoMuerte().play(ControlVolumen.obtenerVolumenEfectivo());
                     }
                 }
             }
 
             if (debeEliminarse) {
-                proyectiles.removeIndex(i);
+                PROYECTILES.removeIndex(i);
             }
         }
     }
 
     private void agregarEfectoImpacto(Proyectil proyectil) {
-        boolean esJugador1 = proyectil.obtenerPropietario() == jugador1;
-        Texture impacto = esJugador1 ? recursos.obtenerTexturaImpactoRojo() : recursos.obtenerTexturaImpactoAzul();
-        efectos.add(new Efecto(impacto, proyectil.obtenerCentro(), 16, 16));
-        sonidos.obtenerSonidoImpacto().play(ControlVolumen.obtenerVolumenEfectivo());
+        boolean esJugador1 = proyectil.obtenerPropietario() == JUGADOR1;
+        Texture impacto = esJugador1 ? RECURSOS.obtenerTexturaImpactoRojo() : RECURSOS.obtenerTexturaImpactoAzul();
+        EFECTOS.add(new Efecto(impacto, proyectil.obtenerCentro(), 16, 16));
+        SONIDOS.obtenerSonidoImpacto().play(ControlVolumen.obtenerVolumenEfectivo());
     }
 
     private void actualizarEfectos(float delta) {
-        for (int i = efectos.size - 1; i >= 0; i--) {
-            Efecto efecto = efectos.get(i);
+        for (int i = EFECTOS.size - 1; i >= 0; i--) {
+            Efecto efecto = EFECTOS.get(i);
             efecto.actualizar(delta);
             if (efecto.estaFinalizado()) {
-                efectos.removeIndex(i);
+                EFECTOS.removeIndex(i);
             }
         }
     }
@@ -243,13 +243,13 @@ public class PantallaJuego extends ScreenAdapter {
         if (ganadorPendiente == null) {
             return;
         }
-        Tanque tanqueDestruido = jugador1.estaVivo() ? jugador2 : jugador1;
+        Tanque tanqueDestruido = JUGADOR1.estaVivo() ? JUGADOR2 : JUGADOR1;
         if (!tanqueDestruido.explosionTerminada()) {
             return;
         }
         tiempoEsperaFinPartida += delta;
         if (tiempoEsperaFinPartida >= ConfiguracionJuego.RETRASO_FIN_PARTIDA) {
-            juego.setScreen(new PantallaFinPartida(juego, ganadorPendiente));
+            JUEGO.setScreen(new PantallaFinPartida(JUEGO, ganadorPendiente));
         }
     }
 

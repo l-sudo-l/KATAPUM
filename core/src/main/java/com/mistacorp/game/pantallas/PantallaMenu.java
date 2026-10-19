@@ -18,35 +18,35 @@ import com.mistacorp.game.interfaz.SliderVolumen;
 
 public class PantallaMenu extends ScreenAdapter {
 
-    private final KatapumPrincipal juego;
+    private final KatapumPrincipal JUEGO;
 
-    private final OrthographicCamera camara = new OrthographicCamera();
-    private final Viewport ventanaGrafica = new FitViewport(ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO, camara);
+    private final OrthographicCamera CAMARA = new OrthographicCamera();
+    private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO, CAMARA);
 
-    private final BotonMouse botonIniciar;
-    private final SliderVolumen slider;
+    private final BotonMouse BOTON_INICIAR;
+    private final SliderVolumen SLIDER;
 
     public PantallaMenu(KatapumPrincipal juego) {
-        this.juego = juego;
+        this.JUEGO = juego;
 
         float anchoBoton = 300f;
         float altoBoton = 64f;
         float centroX = ConfiguracionJuego.ANCHO_MUNDO / 2f;
 
-        botonIniciar = new BotonMouse(centroX - anchoBoton / 2f, 330, anchoBoton, altoBoton, "INICIAR PARTIDA");
-        slider = new SliderVolumen(centroX - anchoBoton / 2f, 150, anchoBoton, 26f);
+        BOTON_INICIAR = new BotonMouse(centroX - anchoBoton / 2f, 330, anchoBoton, altoBoton, "INICIAR PARTIDA");
+        SLIDER = new SliderVolumen(centroX - anchoBoton / 2f, 150, anchoBoton, 26f);
     }
 
     @Override
     public void show() {
-        juego.obtenerSonidos().obtenerMusicaMenu().setVolume(ControlVolumen.obtenerVolumenEfectivo());
-        juego.obtenerSonidos().obtenerMusicaMenu().play();
+        JUEGO.obtenerSonidos().obtenerMusicaMenu().setVolume(ControlVolumen.obtenerVolumenEfectivo());
+        JUEGO.obtenerSonidos().obtenerMusicaMenu().play();
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.ENTER) {
-                    juego.setScreen(new PantallaJuego(juego));
+                    JUEGO.setScreen(new PantallaJuego(JUEGO));
                     return true;
                 }
                 return false;
@@ -56,38 +56,38 @@ public class PantallaMenu extends ScreenAdapter {
 
     @Override
     public void hide() {
-        juego.obtenerSonidos().obtenerMusicaMenu().stop();
+        JUEGO.obtenerSonidos().obtenerMusicaMenu().stop();
     }
 
     @Override
     public void resize(int ancho, int alto) {
-        ventanaGrafica.update(ancho, alto, true);
+        VENTANA_GRAFICA.update(ancho, alto, true);
     }
 
     @Override
     public void render(float delta) {
-        juego.obtenerSonidos().obtenerMusicaMenu().setVolume(ControlVolumen.obtenerVolumenEfectivo());
+        JUEGO.obtenerSonidos().obtenerMusicaMenu().setVolume(ControlVolumen.obtenerVolumenEfectivo());
         manejarMouse();
 
         ScreenUtils.clear(0.08f, 0.08f, 0.1f, 1f);
 
-        ventanaGrafica.apply();
-        camara.update();
-        juego.obtenerLote().setProjectionMatrix(camara.combined);
-        juego.obtenerLote().begin();
+        VENTANA_GRAFICA.apply();
+        CAMARA.update();
+        JUEGO.obtenerLote().setProjectionMatrix(CAMARA.combined);
+        JUEGO.obtenerLote().begin();
 
-        GlyphLayout titulo = new GlyphLayout(juego.obtenerFuente(), "KATAPUM");
-        juego.obtenerFuente().draw(juego.obtenerLote(), "KATAPUM",
+        GlyphLayout titulo = new GlyphLayout(JUEGO.obtenerFuente(), "KATAPUM");
+        JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(), "KATAPUM",
             ConfiguracionJuego.ANCHO_MUNDO / 2f - titulo.width / 2f, ConfiguracionJuego.ALTO_MUNDO - 70);
 
-        botonIniciar.dibujar(juego.obtenerLote(), juego.obtenerRecursos().obtenerTexturaPixel(), juego.obtenerFuente());
+        BOTON_INICIAR.dibujar(JUEGO.obtenerLote(), JUEGO.obtenerRecursos().obtenerTexturaPixel(), JUEGO.obtenerFuente());
 
-        juego.obtenerFuente().draw(juego.obtenerLote(), "VOLUMEN", slider.obtenerLimites().x, slider.obtenerLimites().y + 80);
-        slider.dibujar(juego.obtenerLote(), juego.obtenerRecursos().obtenerTexturaPixel());
+        JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(), "VOLUMEN", SLIDER.obtenerLimites().x, SLIDER.obtenerLimites().y + 80);
+        SLIDER.dibujar(JUEGO.obtenerLote(), JUEGO.obtenerRecursos().obtenerTexturaPixel());
 
         dibujarControles();
 
-        juego.obtenerLote().end();
+        JUEGO.obtenerLote().end();
     }
 
     private void dibujarControles() {
@@ -95,29 +95,29 @@ public class PantallaMenu extends ScreenAdapter {
         float y = 95;
         float paso = 22;
 
-        juego.obtenerFuente().draw(juego.obtenerLote(), "CONTROLES", x, y);
-        juego.obtenerFuente().draw(juego.obtenerLote(),
+        JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(), "CONTROLES", x, y);
+        JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(),
             "Jugador 1:  W avanza · S retrocede · A/D gira · ESPACIO dispara", x, y - paso);
-        juego.obtenerFuente().draw(juego.obtenerLote(),
+        JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(),
             "Jugador 2:  Flechas mover/girar · CTRL derecho dispara", x, y - paso * 2);
-        juego.obtenerFuente().draw(juego.obtenerLote(),
+        JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(),
             "ESC: pausa   |   M: silenciar   |   +/-: volumen", x, y - paso * 3);
     }
 
     private void manejarMouse() {
         Vector2 mouseMundo = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-        ventanaGrafica.unproject(mouseMundo);
+        VENTANA_GRAFICA.unproject(mouseMundo);
 
-        botonIniciar.actualizarResaltado(mouseMundo.x, mouseMundo.y);
+        BOTON_INICIAR.actualizarResaltado(mouseMundo.x, mouseMundo.y);
 
         if (Gdx.input.justTouched()) {
-            if (botonIniciar.contienePunto(mouseMundo.x, mouseMundo.y)) {
-                juego.setScreen(new PantallaJuego(juego));
-            } else if (slider.contienePunto(mouseMundo.x, mouseMundo.y)) {
-                slider.establecerVolumenSegunClick(mouseMundo.x);
+            if (BOTON_INICIAR.contienePunto(mouseMundo.x, mouseMundo.y)) {
+                JUEGO.setScreen(new PantallaJuego(JUEGO));
+            } else if (SLIDER.contienePunto(mouseMundo.x, mouseMundo.y)) {
+                SLIDER.establecerVolumenSegunClick(mouseMundo.x);
             }
-        } else if (Gdx.input.isTouched() && slider.contienePunto(mouseMundo.x, mouseMundo.y)) {
-            slider.establecerVolumenSegunClick(mouseMundo.x);
+        } else if (Gdx.input.isTouched() && SLIDER.contienePunto(mouseMundo.x, mouseMundo.y)) {
+            SLIDER.establecerVolumenSegunClick(mouseMundo.x);
         }
     }
 }

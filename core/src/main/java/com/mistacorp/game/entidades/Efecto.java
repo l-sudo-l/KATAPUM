@@ -8,19 +8,19 @@ public class Efecto {
 
     private static final float DURACION = 0.12f;
 
-    private final Texture textura;
-    private final float x;
-    private final float y;
-    private final float ancho;
-    private final float alto;
+    private final Texture TEXTURA;
+    private final float X;
+    private final float Y;
+    private final float ANCHO;
+    private final float ALTO;
     private float tiempoTranscurrido = 0f;
 
     public Efecto(Texture textura, Vector2 centro, float ancho, float alto) {
-        this.textura = textura;
-        this.x = centro.x - ancho / 2f;
-        this.y = centro.y - alto / 2f;
-        this.ancho = ancho;
-        this.alto = alto;
+        this.TEXTURA = textura;
+        this.X = centro.x - ancho / 2f;
+        this.Y = centro.y - alto / 2f;
+        this.ANCHO = ancho;
+        this.ALTO = alto;
     }
 
     public void actualizar(float delta) {
@@ -32,6 +32,6 @@ public class Efecto {
     }
 
     public void dibujar(SpriteBatch lote) {
-        lote.draw(textura, x, y, ancho, alto);
+        lote.draw(TEXTURA, X, Y, ANCHO, ALTO);
     }
 }

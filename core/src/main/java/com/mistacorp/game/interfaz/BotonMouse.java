@@ -14,17 +14,17 @@ public class BotonMouse {
     private static final Color COLOR_RELLENO_RESALTADO = new Color(0.85f, 0.62f, 0.12f, 1f);
     private static final float GROSOR_BORDE = 3f;
 
-    private final Rectangle limites;
-    private final String texto;
+    private final Rectangle LIMITES;
+    private final String TEXTO;
     private boolean resaltado = false;
 
     public BotonMouse(float x, float y, float ancho, float alto, String texto) {
-        this.limites = new Rectangle(x, y, ancho, alto);
-        this.texto = texto;
+        this.LIMITES = new Rectangle(x, y, ancho, alto);
+        this.TEXTO = texto;
     }
 
     public boolean contienePunto(float x, float y) {
-        return limites.contains(x, y);
+        return LIMITES.contains(x, y);
     }
 
     public void actualizarResaltado(float mouseX, float mouseY) {
@@ -32,21 +32,21 @@ public class BotonMouse {
     }
 
     public Rectangle obtenerLimites() {
-        return limites;
+        return LIMITES;
     }
 
     public void dibujar(SpriteBatch lote, Texture pixel, BitmapFont fuente) {
         lote.setColor(COLOR_BORDE);
-        lote.draw(pixel, limites.x, limites.y, limites.width, limites.height);
+        lote.draw(pixel, LIMITES.x, LIMITES.y, LIMITES.width, LIMITES.height);
 
         lote.setColor(resaltado ? COLOR_RELLENO_RESALTADO : COLOR_RELLENO);
-        lote.draw(pixel, limites.x + GROSOR_BORDE, limites.y + GROSOR_BORDE,
-            limites.width - GROSOR_BORDE * 2, limites.height - GROSOR_BORDE * 2);
+        lote.draw(pixel, LIMITES.x + GROSOR_BORDE, LIMITES.y + GROSOR_BORDE,
+            LIMITES.width - GROSOR_BORDE * 2, LIMITES.height - GROSOR_BORDE * 2);
         lote.setColor(Color.WHITE);
 
-        GlyphLayout layout = new GlyphLayout(fuente, texto);
-        float tx = limites.x + limites.width / 2f - layout.width / 2f;
-        float ty = limites.y + limites.height / 2f + layout.height / 2f;
-        fuente.draw(lote, texto, tx, ty);
+        GlyphLayout layout = new GlyphLayout(fuente, TEXTO);
+        float tx = LIMITES.x + LIMITES.width / 2f - layout.width / 2f;
+        float ty = LIMITES.y + LIMITES.height / 2f + layout.height / 2f;
+        fuente.draw(lote, TEXTO, tx, ty);
     }
 }

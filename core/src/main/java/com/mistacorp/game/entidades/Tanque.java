@@ -12,28 +12,28 @@ import com.mistacorp.game.mundo.Arena;
 
 public class Tanque {
 
-    private final String nombre;
-    private final Vector2 posicion;
-    private final Rectangle limites;
+    private final String NOMBRE;
+    private final Vector2 POSICION;
+    private final Rectangle LIMITES;
     private float angulo;
     private int vidas;
 
-    private final Texture texturaNormal;
-    private final Texture texturaDestruido;
-    private final Animation<TextureRegion> animacionExplosion;
-    private final float anguloBaseSprite;
+    private final Texture TEXTURA_NORMAL;
+    private final Texture TEXTURA_DESTRUIDO;
+    private final Animation<TextureRegion> ANIMACION_EXPLOSION;
+    private final float ANGULO_BASE_SPRITE;
     private float tiempoExplosion = -1f;
 
     public Tanque(String nombre, Texture texturaNormal, Texture texturaDestruido,
                   Animation<TextureRegion> animacionExplosion, float anguloBaseSprite,
                   float x, float y, float anguloInicial) {
-        this.nombre = nombre;
-        this.texturaNormal = texturaNormal;
-        this.texturaDestruido = texturaDestruido;
-        this.animacionExplosion = animacionExplosion;
-        this.anguloBaseSprite = anguloBaseSprite;
-        this.posicion = new Vector2(x, y);
-        this.limites = new Rectangle(x, y, ConfiguracionJuego.TAMANO_TANQUE, ConfiguracionJuego.TAMANO_TANQUE);
+        this.NOMBRE = nombre;
+        this.TEXTURA_NORMAL = texturaNormal;
+        this.TEXTURA_DESTRUIDO = texturaDestruido;
+        this.ANIMACION_EXPLOSION = animacionExplosion;
+        this.ANGULO_BASE_SPRITE = anguloBaseSprite;
+        this.POSICION = new Vector2(x, y);
+        this.LIMITES = new Rectangle(x, y, ConfiguracionJuego.TAMANO_TANQUE, ConfiguracionJuego.TAMANO_TANQUE);
         this.angulo = anguloInicial;
         this.vidas = ConfiguracionJuego.VIDAS_MAXIMAS;
     }
@@ -56,31 +56,31 @@ public class Tanque {
         float dx = MathUtils.cosDeg(angulo) * distancia;
         float dy = MathUtils.sinDeg(angulo) * distancia;
 
-        float nuevoX = posicion.x + dx;
-        Rectangle intentoX = new Rectangle(nuevoX, posicion.y, limites.width, limites.height);
+        float nuevoX = POSICION.x + dx;
+        Rectangle intentoX = new Rectangle(nuevoX, POSICION.y, LIMITES.width, LIMITES.height);
         if (estaLibre(intentoX, arena, otro)) {
-            posicion.x = nuevoX;
+            POSICION.x = nuevoX;
         }
 
-        float nuevoY = posicion.y + dy;
-        Rectangle intentoY = new Rectangle(posicion.x, nuevoY, limites.width, limites.height);
+        float nuevoY = POSICION.y + dy;
+        Rectangle intentoY = new Rectangle(POSICION.x, nuevoY, LIMITES.width, LIMITES.height);
         if (estaLibre(intentoY, arena, otro)) {
-            posicion.y = nuevoY;
+            POSICION.y = nuevoY;
         }
 
-        limites.setPosition(posicion.x, posicion.y);
+        LIMITES.setPosition(POSICION.x, POSICION.y);
     }
 
     private boolean estaLibre(Rectangle intento, Arena arena, Tanque otro) {
         return arena.estaDentroDeLimites(intento)
             && !arena.colisionaConObstaculos(intento)
-            && !intento.overlaps(otro.limites);
+            && !intento.overlaps(otro.LIMITES);
     }
 
     public Vector2 obtenerPosicionCanon() {
-        float centroX = posicion.x + limites.width / 2f;
-        float centroY = posicion.y + limites.height / 2f;
-        float desplazamiento = limites.width / 2f + 4f;
+        float centroX = POSICION.x + LIMITES.width / 2f;
+        float centroY = POSICION.y + LIMITES.height / 2f;
+        float desplazamiento = LIMITES.width / 2f + 4f;
         return new Vector2(
             centroX + MathUtils.cosDeg(angulo) * desplazamiento,
             centroY + MathUtils.sinDeg(angulo) * desplazamiento
@@ -100,7 +100,7 @@ public class Tanque {
     }
 
     public boolean explosionTerminada() {
-        return tiempoExplosion >= 0 && animacionExplosion.isAnimationFinished(tiempoExplosion);
+        return tiempoExplosion >= 0 && ANIMACION_EXPLOSION.isAnimationFinished(tiempoExplosion);
     }
 
     public void actualizar(float delta) {
@@ -118,27 +118,27 @@ public class Tanque {
     }
 
     private void dibujarNormal(SpriteBatch lote) {
-        float origen = limites.width / 2f;
-        float rotacion = angulo - anguloBaseSprite;
-        lote.draw(texturaNormal, posicion.x, posicion.y, origen, origen,
-            limites.width, limites.height, 1f, 1f, rotacion,
-            0, 0, texturaNormal.getWidth(), texturaNormal.getHeight(), false, false);
+        float origen = LIMITES.width / 2f;
+        float rotacion = angulo - ANGULO_BASE_SPRITE;
+        lote.draw(TEXTURA_NORMAL, POSICION.x, POSICION.y, origen, origen,
+            LIMITES.width, LIMITES.height, 1f, 1f, rotacion,
+            0, 0, TEXTURA_NORMAL.getWidth(), TEXTURA_NORMAL.getHeight(), false, false);
     }
 
     private void dibujarExplosionOCarcasa(SpriteBatch lote) {
-        if (!animacionExplosion.isAnimationFinished(tiempoExplosion)) {
-            TextureRegion frame = animacionExplosion.getKeyFrame(tiempoExplosion, false);
-            float offsetX = (frame.getRegionWidth() - limites.width) / 2f;
-            float offsetY = (frame.getRegionHeight() - limites.height) / 2f;
-            lote.draw(frame, posicion.x - offsetX, posicion.y - offsetY,
+        if (!ANIMACION_EXPLOSION.isAnimationFinished(tiempoExplosion)) {
+            TextureRegion frame = ANIMACION_EXPLOSION.getKeyFrame(tiempoExplosion, false);
+            float offsetX = (frame.getRegionWidth() - LIMITES.width) / 2f;
+            float offsetY = (frame.getRegionHeight() - LIMITES.height) / 2f;
+            lote.draw(frame, POSICION.x - offsetX, POSICION.y - offsetY,
                 frame.getRegionWidth(), frame.getRegionHeight());
         } else {
-            lote.draw(texturaDestruido, posicion.x, posicion.y, limites.width, limites.height);
+            lote.draw(TEXTURA_DESTRUIDO, POSICION.x, POSICION.y, LIMITES.width, LIMITES.height);
         }
     }
 
     public String obtenerNombre() {
-        return nombre;
+        return NOMBRE;
     }
 
     public int obtenerVidas() {
@@ -146,7 +146,7 @@ public class Tanque {
     }
 
     public Rectangle obtenerLimites() {
-        return limites;
+        return LIMITES;
     }
 
     public float obtenerAngulo() {

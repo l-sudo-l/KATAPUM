@@ -21,22 +21,22 @@ public class PantallaFinPartida extends ScreenAdapter {
 
     private static final Color COLOR_RESALTADO = new Color(1f, 1f, 1f, 0.25f);
 
-    private final KatapumPrincipal juego;
-    private final Texture texturaBanner;
+    private final KatapumPrincipal JUEGO;
+    private final Texture TEXTURA_BANNER;
 
-    private final OrthographicCamera camara = new OrthographicCamera();
-    private final Viewport ventanaGrafica = new FitViewport(ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO, camara);
+    private final OrthographicCamera CAMARA = new OrthographicCamera();
+    private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO, CAMARA);
 
-    private final Rectangle limitesBotonJugar;
-    private final Rectangle limitesBotonMenu;
+    private final Rectangle LIMITES_BOTON_JUGAR;
+    private final Rectangle LIMITES_BOTON_MENU;
     private boolean botonJugarResaltado = false;
     private boolean botonMenuResaltado = false;
 
     public PantallaFinPartida(KatapumPrincipal juego, String nombreGanador) {
-        this.juego = juego;
+        this.JUEGO = juego;
 
         RecursosGraficos recursos = juego.obtenerRecursos();
-        this.texturaBanner = "Jugador 1".equals(nombreGanador)
+        this.TEXTURA_BANNER = "Jugador 1".equals(nombreGanador)
             ? recursos.obtenerTexturaGanadorJugador1()
             : recursos.obtenerTexturaGanadorJugador2();
 
@@ -46,23 +46,23 @@ public class PantallaFinPartida extends ScreenAdapter {
         float xBotones = ConfiguracionJuego.ANCHO_MUNDO / 2f - (anchoBoton * 2 + separacion) / 2f;
         float yBotones = 180f;
 
-        limitesBotonJugar = new Rectangle(xBotones, yBotones, anchoBoton, altoBoton);
-        limitesBotonMenu = new Rectangle(xBotones + anchoBoton + separacion, yBotones, anchoBoton, altoBoton);
+        LIMITES_BOTON_JUGAR = new Rectangle(xBotones, yBotones, anchoBoton, altoBoton);
+        LIMITES_BOTON_MENU = new Rectangle(xBotones + anchoBoton + separacion, yBotones, anchoBoton, altoBoton);
     }
 
     @Override
     public void show() {
-        juego.obtenerSonidos().obtenerSonidoGanar().play(ControlVolumen.obtenerVolumenEfectivo());
+        JUEGO.obtenerSonidos().obtenerSonidoGanar().play(ControlVolumen.obtenerVolumenEfectivo());
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.ENTER) {
-                    juego.setScreen(new PantallaJuego(juego));
+                    JUEGO.setScreen(new PantallaJuego(JUEGO));
                     return true;
                 }
                 if (keycode == Input.Keys.ESCAPE) {
-                    juego.setScreen(new PantallaMenu(juego));
+                    JUEGO.setScreen(new PantallaMenu(JUEGO));
                     return true;
                 }
                 return false;
@@ -72,7 +72,7 @@ public class PantallaFinPartida extends ScreenAdapter {
 
     @Override
     public void resize(int ancho, int alto) {
-        ventanaGrafica.update(ancho, alto, true);
+        VENTANA_GRAFICA.update(ancho, alto, true);
     }
 
     @Override
@@ -81,54 +81,54 @@ public class PantallaFinPartida extends ScreenAdapter {
 
         ScreenUtils.clear(0.05f, 0.05f, 0.08f, 1f);
 
-        ventanaGrafica.apply();
-        camara.update();
-        juego.obtenerLote().setProjectionMatrix(camara.combined);
-        juego.obtenerLote().begin();
+        VENTANA_GRAFICA.apply();
+        CAMARA.update();
+        JUEGO.obtenerLote().setProjectionMatrix(CAMARA.combined);
+        JUEGO.obtenerLote().begin();
 
         float anchoBanner = 420f;
         float altoBanner = 110f;
         float xBanner = ConfiguracionJuego.ANCHO_MUNDO / 2f - anchoBanner / 2f;
         float yBanner = 300f;
-        juego.obtenerLote().draw(texturaBanner, xBanner, yBanner, anchoBanner, altoBanner);
+        JUEGO.obtenerLote().draw(TEXTURA_BANNER, xBanner, yBanner, anchoBanner, altoBanner);
 
-        RecursosGraficos recursos = juego.obtenerRecursos();
+        RecursosGraficos recursos = JUEGO.obtenerRecursos();
         Texture pixel = recursos.obtenerTexturaPixel();
 
-        juego.obtenerLote().draw(recursos.obtenerTexturaBotonVolverJugar(),
-            limitesBotonJugar.x, limitesBotonJugar.y, limitesBotonJugar.width, limitesBotonJugar.height);
-        juego.obtenerLote().draw(recursos.obtenerTexturaBotonVolverMenu(),
-            limitesBotonMenu.x, limitesBotonMenu.y, limitesBotonMenu.width, limitesBotonMenu.height);
+        JUEGO.obtenerLote().draw(recursos.obtenerTexturaBotonVolverJugar(),
+            LIMITES_BOTON_JUGAR.x, LIMITES_BOTON_JUGAR.y, LIMITES_BOTON_JUGAR.width, LIMITES_BOTON_JUGAR.height);
+        JUEGO.obtenerLote().draw(recursos.obtenerTexturaBotonVolverMenu(),
+            LIMITES_BOTON_MENU.x, LIMITES_BOTON_MENU.y, LIMITES_BOTON_MENU.width, LIMITES_BOTON_MENU.height);
 
         if (botonJugarResaltado) {
-            juego.obtenerLote().setColor(COLOR_RESALTADO);
-            juego.obtenerLote().draw(pixel, limitesBotonJugar.x, limitesBotonJugar.y, limitesBotonJugar.width, limitesBotonJugar.height);
-            juego.obtenerLote().setColor(Color.WHITE);
+            JUEGO.obtenerLote().setColor(COLOR_RESALTADO);
+            JUEGO.obtenerLote().draw(pixel, LIMITES_BOTON_JUGAR.x, LIMITES_BOTON_JUGAR.y, LIMITES_BOTON_JUGAR.width, LIMITES_BOTON_JUGAR.height);
+            JUEGO.obtenerLote().setColor(Color.WHITE);
         }
         if (botonMenuResaltado) {
-            juego.obtenerLote().setColor(COLOR_RESALTADO);
-            juego.obtenerLote().draw(pixel, limitesBotonMenu.x, limitesBotonMenu.y, limitesBotonMenu.width, limitesBotonMenu.height);
-            juego.obtenerLote().setColor(Color.WHITE);
+            JUEGO.obtenerLote().setColor(COLOR_RESALTADO);
+            JUEGO.obtenerLote().draw(pixel, LIMITES_BOTON_MENU.x, LIMITES_BOTON_MENU.y, LIMITES_BOTON_MENU.width, LIMITES_BOTON_MENU.height);
+            JUEGO.obtenerLote().setColor(Color.WHITE);
         }
 
-        juego.obtenerFuente().draw(juego.obtenerLote(), "ENTER", limitesBotonJugar.x + 80, limitesBotonJugar.y - 12);
-        juego.obtenerFuente().draw(juego.obtenerLote(), "ESC", limitesBotonMenu.x + 90, limitesBotonMenu.y - 12);
+        JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(), "ENTER", LIMITES_BOTON_JUGAR.x + 80, LIMITES_BOTON_JUGAR.y - 12);
+        JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(), "ESC", LIMITES_BOTON_MENU.x + 90, LIMITES_BOTON_MENU.y - 12);
 
-        juego.obtenerLote().end();
+        JUEGO.obtenerLote().end();
     }
 
     private void manejarMouse() {
         Vector2 mouseMundo = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-        ventanaGrafica.unproject(mouseMundo);
+        VENTANA_GRAFICA.unproject(mouseMundo);
 
-        botonJugarResaltado = limitesBotonJugar.contains(mouseMundo.x, mouseMundo.y);
-        botonMenuResaltado = limitesBotonMenu.contains(mouseMundo.x, mouseMundo.y);
+        botonJugarResaltado = LIMITES_BOTON_JUGAR.contains(mouseMundo.x, mouseMundo.y);
+        botonMenuResaltado = LIMITES_BOTON_MENU.contains(mouseMundo.x, mouseMundo.y);
 
         if (Gdx.input.justTouched()) {
             if (botonJugarResaltado) {
-                juego.setScreen(new PantallaJuego(juego));
+                JUEGO.setScreen(new PantallaJuego(JUEGO));
             } else if (botonMenuResaltado) {
-                juego.setScreen(new PantallaMenu(juego));
+                JUEGO.setScreen(new PantallaMenu(JUEGO));
             }
         }
     }
