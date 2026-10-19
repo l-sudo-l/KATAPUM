@@ -7,21 +7,21 @@ import java.util.Set;
 
 public class ManejadorEntradaJugador extends InputAdapter {
 
-    private final int teclaArriba;
-    private final int teclaAbajo;
-    private final int teclaIzquierda;
-    private final int teclaDerecha;
-    private final int teclaDisparo;
+    private final int TECLA_ARRIBA;
+    private final int TECLA_ABAJO;
+    private final int TECLA_IZQUIERDA;
+    private final int TECLA_DERECHA;
+    private final int TECLA_DISPARO;
 
-    private final Set<Integer> teclasPresionadas = new HashSet<>();
+    private final Set<Integer> TECLAS_PRESIONADAS = new HashSet<>();
     private boolean disparoSolicitado = false;
 
     public ManejadorEntradaJugador(int teclaArriba, int teclaAbajo, int teclaIzquierda, int teclaDerecha, int teclaDisparo) {
-        this.teclaArriba = teclaArriba;
-        this.teclaAbajo = teclaAbajo;
-        this.teclaIzquierda = teclaIzquierda;
-        this.teclaDerecha = teclaDerecha;
-        this.teclaDisparo = teclaDisparo;
+        this.TECLA_ARRIBA = teclaArriba;
+        this.TECLA_ABAJO = teclaAbajo;
+        this.TECLA_IZQUIERDA = teclaIzquierda;
+        this.TECLA_DERECHA = teclaDerecha;
+        this.TECLA_DISPARO = teclaDisparo;
     }
 
     @Override
@@ -29,8 +29,8 @@ public class ManejadorEntradaJugador extends InputAdapter {
         if (!esRelevante(keycode)) {
             return false;
         }
-        teclasPresionadas.add(keycode);
-        if (keycode == teclaDisparo) {
+        TECLAS_PRESIONADAS.add(keycode);
+        if (keycode == TECLA_DISPARO) {
             disparoSolicitado = true;
         }
         return true;
@@ -41,27 +41,27 @@ public class ManejadorEntradaJugador extends InputAdapter {
         if (!esRelevante(keycode)) {
             return false;
         }
-        teclasPresionadas.remove(keycode);
+        TECLAS_PRESIONADAS.remove(keycode);
         return true;
     }
 
     private boolean esRelevante(int keycode) {
-        return keycode == teclaArriba || keycode == teclaAbajo
-            || keycode == teclaIzquierda || keycode == teclaDerecha
-            || keycode == teclaDisparo;
+        return keycode == TECLA_ARRIBA || keycode == TECLA_ABAJO
+            || keycode == TECLA_IZQUIERDA || keycode == TECLA_DERECHA
+            || keycode == TECLA_DISPARO;
     }
 
     public float obtenerGiro() {
         float giro = 0;
-        if (teclasPresionadas.contains(teclaIzquierda)) giro += 1;
-        if (teclasPresionadas.contains(teclaDerecha)) giro -= 1;
+        if (TECLAS_PRESIONADAS.contains(TECLA_IZQUIERDA)) giro += 1;
+        if (TECLAS_PRESIONADAS.contains(TECLA_DERECHA)) giro -= 1;
         return giro;
     }
 
     public float obtenerAvance() {
         float avance = 0;
-        if (teclasPresionadas.contains(teclaArriba)) avance += 1;
-        if (teclasPresionadas.contains(teclaAbajo)) avance -= 1;
+        if (TECLAS_PRESIONADAS.contains(TECLA_ARRIBA)) avance += 1;
+        if (TECLAS_PRESIONADAS.contains(TECLA_ABAJO)) avance -= 1;
         return avance;
     }
 

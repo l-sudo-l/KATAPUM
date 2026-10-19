@@ -10,60 +10,60 @@ import com.mistacorp.game.RecursosGraficos;
 public class Arena {
 
     private static class Decoracion {
-        final Rectangle limites;
-        final TipoDecoracion tipo;
+        final Rectangle LIMITES;
+        final TipoDecoracion TIPO;
 
         Decoracion(float x, float y, TipoDecoracion tipo) {
-            this.limites = new Rectangle(x, y, TAMANO_TILE, TAMANO_TILE);
-            this.tipo = tipo;
+            this.LIMITES = new Rectangle(x, y, TAMANO_TILE, TAMANO_TILE);
+            this.TIPO = tipo;
         }
     }
 
     private static final int TAMANO_TILE = 32;
 
-    private final Array<Pared> paredes = new Array<>();
-    private final Array<Decoracion> decoraciones = new Array<>();
-    private final Rectangle limitesMundo;
+    private final Array<Pared> PAREDES = new Array<>();
+    private final Array<Decoracion> DECORACIONES = new Array<>();
+    private final Rectangle LIMITES_MUNDO;
 
     public Arena() {
-        this.limitesMundo = new Rectangle(0, 0, ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO);
+        this.LIMITES_MUNDO = new Rectangle(0, 0, ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO);
         construirDisposicion();
         construirDecoraciones();
     }
 
     private void construirDisposicion() {
-        paredes.add(new Pared(220, 380, 96, 32));
-        paredes.add(new Pared(640, 380, 96, 32));
-        paredes.add(new Pared(150, 250, 32, 96));
-        paredes.add(new Pared(778, 250, 32, 96));
-        paredes.add(new Pared(432, 290, 96, 32));
-        paredes.add(new Pared(150, 120, 96, 32));
-        paredes.add(new Pared(714, 120, 96, 32));
-        paredes.add(new Pared(432, 70, 32, 96));
+        PAREDES.add(new Pared(220, 380, 96, 32));
+        PAREDES.add(new Pared(640, 380, 96, 32));
+        PAREDES.add(new Pared(150, 250, 32, 96));
+        PAREDES.add(new Pared(778, 250, 32, 96));
+        PAREDES.add(new Pared(432, 290, 96, 32));
+        PAREDES.add(new Pared(150, 120, 96, 32));
+        PAREDES.add(new Pared(714, 120, 96, 32));
+        PAREDES.add(new Pared(432, 70, 32, 96));
     }
 
     private void construirDecoraciones() {
-        decoraciones.add(new Decoracion(60, 420, TipoDecoracion.ARBUSTO));
-        decoraciones.add(new Decoracion(860, 420, TipoDecoracion.ARBUSTO));
-        decoraciones.add(new Decoracion(60, 90, TipoDecoracion.ARBUSTO));
-        decoraciones.add(new Decoracion(480, 460, TipoDecoracion.CAJA));
-        decoraciones.add(new Decoracion(480, 200, TipoDecoracion.CAJA));
-        decoraciones.add(new Decoracion(300, 460, TipoDecoracion.BARRIL));
-        decoraciones.add(new Decoracion(660, 90, TipoDecoracion.BARRIL));
+        DECORACIONES.add(new Decoracion(60, 420, TipoDecoracion.ARBUSTO));
+        DECORACIONES.add(new Decoracion(860, 420, TipoDecoracion.ARBUSTO));
+        DECORACIONES.add(new Decoracion(60, 90, TipoDecoracion.ARBUSTO));
+        DECORACIONES.add(new Decoracion(480, 460, TipoDecoracion.CAJA));
+        DECORACIONES.add(new Decoracion(480, 200, TipoDecoracion.CAJA));
+        DECORACIONES.add(new Decoracion(300, 460, TipoDecoracion.BARRIL));
+        DECORACIONES.add(new Decoracion(660, 90, TipoDecoracion.BARRIL));
     }
 
     public boolean estaDentroDeLimites(Rectangle limites) {
-        return limitesMundo.contains(limites);
+        return LIMITES_MUNDO.contains(limites);
     }
 
     public boolean colisionaConObstaculos(Rectangle limites) {
-        for (Pared pared : paredes) {
+        for (Pared pared : PAREDES) {
             if (pared.obtenerLimites().overlaps(limites)) {
                 return true;
             }
         }
-        for (Decoracion decoracion : decoraciones) {
-            if (decoracion.limites.overlaps(limites)) {
+        for (Decoracion decoracion : DECORACIONES) {
+            if (decoracion.LIMITES.overlaps(limites)) {
                 return true;
             }
         }
@@ -71,16 +71,16 @@ public class Arena {
     }
 
     public void dibujar(SpriteBatch lote, RecursosGraficos recursos) {
-        dibujarTileado(lote, recursos.obtenerTexturaSuelo(), 0, 0, limitesMundo.width, limitesMundo.height);
+        dibujarTileado(lote, recursos.obtenerTexturaSuelo(), 0, 0, LIMITES_MUNDO.width, LIMITES_MUNDO.height);
 
-        for (Pared pared : paredes) {
+        for (Pared pared : PAREDES) {
             Rectangle b = pared.obtenerLimites();
             dibujarTileado(lote, recursos.obtenerTexturaPared(), b.x, b.y, b.width, b.height);
         }
 
-        for (Decoracion decoracion : decoraciones) {
-            Texture textura = texturaDeDecoracion(recursos, decoracion.tipo);
-            lote.draw(textura, decoracion.limites.x, decoracion.limites.y, TAMANO_TILE, TAMANO_TILE);
+        for (Decoracion decoracion : DECORACIONES) {
+            Texture textura = texturaDeDecoracion(recursos, decoracion.TIPO);
+            lote.draw(textura, decoracion.LIMITES.x, decoracion.LIMITES.y, TAMANO_TILE, TAMANO_TILE);
         }
     }
 

@@ -22,32 +22,32 @@ public class Hud {
     private static final float ESCALA_NORMAL = 1.2f;
     private static final float GROSOR_CONTORNO = 2f;
 
-    private final OrthographicCamera camara = new OrthographicCamera();
-    private final Viewport ventanaGrafica = new ScreenViewport(camara);
-    private final BitmapFont fuente;
-    private final Texture texturaCorazon;
-    private final GlyphLayout layout = new GlyphLayout();
+    private final OrthographicCamera CAMARA = new OrthographicCamera();
+    private final Viewport VENTANA_GRAFICA = new ScreenViewport(CAMARA);
+    private final BitmapFont FUENTE;
+    private final Texture TEXTURA_CORAZON;
+    private final GlyphLayout LAYOUT = new GlyphLayout();
 
     public Hud(BitmapFont fuente, RecursosGraficos recursos) {
-        this.fuente = fuente;
-        this.texturaCorazon = recursos.obtenerTexturaCorazon();
+        this.FUENTE = fuente;
+        this.TEXTURA_CORAZON = recursos.obtenerTexturaCorazon();
     }
 
     public void redimensionar(int ancho, int alto) {
-        ventanaGrafica.update(ancho, alto, true);
+        VENTANA_GRAFICA.update(ancho, alto, true);
     }
 
     public void dibujar(SpriteBatch lote, Tanque jugador1, Tanque jugador2) {
-        ventanaGrafica.apply();
-        lote.setProjectionMatrix(camara.combined);
+        VENTANA_GRAFICA.apply();
+        lote.setProjectionMatrix(CAMARA.combined);
         lote.begin();
 
-        float topeSuperior = ventanaGrafica.getWorldHeight() - 30;
+        float topeSuperior = VENTANA_GRAFICA.getWorldHeight() - 30;
         dibujarPanelJugador(lote, jugador1, 16, topeSuperior, true);
-        dibujarPanelJugador(lote, jugador2, ventanaGrafica.getWorldWidth() - 16, topeSuperior, false);
+        dibujarPanelJugador(lote, jugador2, VENTANA_GRAFICA.getWorldWidth() - 16, topeSuperior, false);
 
-        fuente.getData().setScale(ESCALA_NORMAL);
-        fuente.draw(lote, textoVolumen(), 16, 24);
+        FUENTE.getData().setScale(ESCALA_NORMAL);
+        FUENTE.draw(lote, textoVolumen(), 16, 24);
 
         lote.end();
     }
@@ -61,10 +61,10 @@ public class Hud {
     }
 
     private void dibujarPanelJugador(SpriteBatch lote, Tanque tanque, float xBorde, float y, boolean nombreALaIzquierda) {
-        fuente.getData().setScale(ESCALA_NOMBRE);
-        layout.setText(fuente, tanque.obtenerNombre());
-        float anchoNombre = layout.width;
-        float altoNombre = layout.height;
+        FUENTE.getData().setScale(ESCALA_NOMBRE);
+        LAYOUT.setText(FUENTE, tanque.obtenerNombre());
+        float anchoNombre = LAYOUT.width;
+        float altoNombre = LAYOUT.height;
 
         float anchoBloqueCorazones = ConfiguracionJuego.VIDAS_MAXIMAS * SEPARACION_CORAZON;
         float xNombre;
@@ -85,22 +85,22 @@ public class Hud {
             float xCorazon = nombreALaIzquierda
                 ? xInicioCorazones + i * SEPARACION_CORAZON
                 : xInicioCorazones + anchoBloqueCorazones - (i + 1) * SEPARACION_CORAZON;
-            lote.draw(texturaCorazon, xCorazon, yCorazon, TAMANO_CORAZON, TAMANO_CORAZON);
+            lote.draw(TEXTURA_CORAZON, xCorazon, yCorazon, TAMANO_CORAZON, TAMANO_CORAZON);
         }
     }
 
     private void dibujarTextoConContorno(SpriteBatch lote, String texto, float x, float y) {
-        fuente.setColor(Color.BLACK);
-        fuente.draw(lote, texto, x - GROSOR_CONTORNO, y);
-        fuente.draw(lote, texto, x + GROSOR_CONTORNO, y);
-        fuente.draw(lote, texto, x, y - GROSOR_CONTORNO);
-        fuente.draw(lote, texto, x, y + GROSOR_CONTORNO);
-        fuente.draw(lote, texto, x - GROSOR_CONTORNO, y - GROSOR_CONTORNO);
-        fuente.draw(lote, texto, x + GROSOR_CONTORNO, y - GROSOR_CONTORNO);
-        fuente.draw(lote, texto, x - GROSOR_CONTORNO, y + GROSOR_CONTORNO);
-        fuente.draw(lote, texto, x + GROSOR_CONTORNO, y + GROSOR_CONTORNO);
+        FUENTE.setColor(Color.BLACK);
+        FUENTE.draw(lote, texto, x - GROSOR_CONTORNO, y);
+        FUENTE.draw(lote, texto, x + GROSOR_CONTORNO, y);
+        FUENTE.draw(lote, texto, x, y - GROSOR_CONTORNO);
+        FUENTE.draw(lote, texto, x, y + GROSOR_CONTORNO);
+        FUENTE.draw(lote, texto, x - GROSOR_CONTORNO, y - GROSOR_CONTORNO);
+        FUENTE.draw(lote, texto, x + GROSOR_CONTORNO, y - GROSOR_CONTORNO);
+        FUENTE.draw(lote, texto, x - GROSOR_CONTORNO, y + GROSOR_CONTORNO);
+        FUENTE.draw(lote, texto, x + GROSOR_CONTORNO, y + GROSOR_CONTORNO);
 
-        fuente.setColor(Color.WHITE);
-        fuente.draw(lote, texto, x, y);
+        FUENTE.setColor(Color.WHITE);
+        FUENTE.draw(lote, texto, x, y);
     }
 }
