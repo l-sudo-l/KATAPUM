@@ -3,40 +3,28 @@ package com.mistacorp.game.pantallas;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mistacorp.game.ControlVolumen;
 import com.mistacorp.game.KatapumPrincipal;
-import com.mistacorp.game.interfaz.BotonMouse;
-import com.mistacorp.game.interfaz.SliderVolumen;
 import com.mistacorp.game.compartido.ConfiguracionPartida;
+import com.mistacorp.game.interfaz.BotonMouse;
 
-public class PantallaMenu extends ScreenAdapter {
+public class PantallaMenu extends PantallaBase {
 
-    private final KatapumPrincipal JUEGO;
+    private static final float ANCHO_BOTON = 300f;
+    private static final float ALTO_BOTON = 64f;
 
-    private final OrthographicCamera CAMARA = new OrthographicCamera();
-    private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionPartida.ANCHO_MUNDO, ConfiguracionPartida.ALTO_MUNDO, CAMARA);
-
-    private final BotonMouse BOTON_INICIAR;
+    private final BotonMouse BOTON_LOCAL;
     private final BotonMouse BOTON_LAN;
-    private final SliderVolumen SLIDER;
+    private final BotonMouse BOTON_CONFIGURACION;
 
     public PantallaMenu(KatapumPrincipal juego) {
-        this.JUEGO = juego;
-
-        float anchoBoton = 300f;
-        float altoBoton = 64f;
-        float centroX = ConfiguracionPartida.ANCHO_MUNDO / 2f;
-
-        BOTON_INICIAR = new BotonMouse(centroX - anchoBoton / 2f, 360, anchoBoton, altoBoton, "PARTIDA LOCAL");
-        BOTON_LAN = new BotonMouse(centroX - anchoBoton / 2f, 280, anchoBoton, altoBoton, "PARTIDA LAN");
-        SLIDER = new SliderVolumen(centroX - anchoBoton / 2f, 150, anchoBoton, 26f);
+        super(juego);
+        float x = CENTRO_X - ANCHO_BOTON / 2f;
+        BOTON_LOCAL = new BotonMouse(x, 330, ANCHO_BOTON, ALTO_BOTON, "PARTIDA LOCAL");
+        BOTON_LAN = new BotonMouse(x, 240, ANCHO_BOTON, ALTO_BOTON, "PARTIDA LAN");
+        BOTON_CONFIGURACION = new BotonMouse(x, 150, ANCHO_BOTON, ALTO_BOTON, "CONFIGURACION");
     }
 
     @Override
@@ -62,68 +50,34 @@ public class PantallaMenu extends ScreenAdapter {
     }
 
     @Override
-    public void resize(int ancho, int alto) {
-        VENTANA_GRAFICA.update(ancho, alto, true);
-    }
-
-    @Override
     public void render(float delta) {
         JUEGO.obtenerSonidos().obtenerMusicaMenu().setVolume(ControlVolumen.obtenerVolumenEfectivo());
         manejarMouse();
 
-        ScreenUtils.clear(0.08f, 0.08f, 0.1f, 1f);
-
-        VENTANA_GRAFICA.apply();
-        CAMARA.update();
-        JUEGO.obtenerLote().setProjectionMatrix(CAMARA.combined);
-        JUEGO.obtenerLote().begin();
-
-        GlyphLayout titulo = new GlyphLayout(JUEGO.obtenerFuente(), "KATAPUM");
-        JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(), "KATAPUM",
-            ConfiguracionPartida.ANCHO_MUNDO / 2f - titulo.width / 2f, ConfiguracionPartida.ALTO_MUNDO - 70);
-
-        BOTON_INICIAR.dibujar(JUEGO.obtenerLote(), JUEGO.obtenerRecursos().obtenerTexturaPixel(), JUEGO.obtenerFuente());
-        BOTON_LAN.dibujar(JUEGO.obtenerLote(), JUEGO.obtenerRecursos().obtenerTexturaPixel(), JUEGO.obtenerFuente());
-
-        JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(), "VOLUMEN", SLIDER.obtenerLimites().x, SLIDER.obtenerLimites().y + 80);
-        SLIDER.dibujar(JUEGO.obtenerLote(), JUEGO.obtenerRecursos().obtenerTexturaPixel());
-
-        dibujarControles();
-
-        JUEGO.obtenerLote().end();
-    }
-
-    private void dibujarControles() {
-        float x = ConfiguracionPartida.ANCHO_MUNDO / 2f - 220;
-        float y = 95;
-        float paso = 22;
-
-        JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(), "CONTROLES", x, y);
-        JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(),
-            "Jugador 1:  W avanza · S retrocede · A/D gira · ESPACIO dispara", x, y - paso);
-        JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(),
-            "Jugador 2:  Flechas mover/girar · CTRL derecho dispara", x, y - paso * 2);
-        JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(),
-            "ESC: pausa   |   M: silenciar   |   +/-: volumen", x, y - paso * 3);
+        SpriteBatch lote = iniciarDibujo();
+        dibujarCentrado("KATAPUM", CENTRO_X, ConfiguracionPartida.ALTO_MUNDO - 70);
+        BOTON_LOCAL.dibujar(lote, JUEGO.obtenerRecursos().obtenerTexturaPixel(), JUEGO.obtenerFuente());
+        BOTON_LAN.dibujar(lote, JUEGO.obtenerRecursos().obtenerTexturaPixel(), JUEGO.obtenerFuente());
+        BOTON_CONFIGURACION.dibujar(lote, JUEGO.obtenerRecursos().obtenerTexturaPixel(), JUEGO.obtenerFuente());
+        dibujarCentrado("ENTER: partida local", CENTRO_X, 90);
+        lote.end();
     }
 
     private void manejarMouse() {
-        Vector2 mouseMundo = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-        VENTANA_GRAFICA.unproject(mouseMundo);
+        Vector2 mouse = obtenerMouseMundo();
+        BOTON_LOCAL.actualizarResaltado(mouse.x, mouse.y);
+        BOTON_LAN.actualizarResaltado(mouse.x, mouse.y);
+        BOTON_CONFIGURACION.actualizarResaltado(mouse.x, mouse.y);
 
-        BOTON_INICIAR.actualizarResaltado(mouseMundo.x, mouseMundo.y);
-        BOTON_LAN.actualizarResaltado(mouseMundo.x, mouseMundo.y);
-
-        if (Gdx.input.justTouched()) {
-            if (BOTON_INICIAR.contienePunto(mouseMundo.x, mouseMundo.y)) {
-                JUEGO.setScreen(new PantallaJuego(JUEGO));
-            } else if (BOTON_LAN.contienePunto(mouseMundo.x, mouseMundo.y)) {
-                JUEGO.setScreen(new PantallaConectar(JUEGO));
-            } else if (SLIDER.contienePunto(mouseMundo.x, mouseMundo.y)) {
-                SLIDER.establecerVolumenSegunClick(mouseMundo.x);
-            }
-        } else if (Gdx.input.isTouched() && SLIDER.contienePunto(mouseMundo.x, mouseMundo.y)) {
-            SLIDER.establecerVolumenSegunClick(mouseMundo.x);
+        if (!Gdx.input.justTouched()) {
+            return;
+        }
+        if (BOTON_LOCAL.contienePunto(mouse.x, mouse.y)) {
+            JUEGO.setScreen(new PantallaJuego(JUEGO));
+        } else if (BOTON_LAN.contienePunto(mouse.x, mouse.y)) {
+            JUEGO.setScreen(new PantallaConectar(JUEGO));
+        } else if (BOTON_CONFIGURACION.contienePunto(mouse.x, mouse.y)) {
+            JUEGO.setScreen(new PantallaConfiguracion(JUEGO));
         }
     }
 }
