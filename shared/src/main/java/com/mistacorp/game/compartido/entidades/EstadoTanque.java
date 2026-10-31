@@ -73,6 +73,13 @@ public class EstadoTanque {
         );
     }
 
+    public void establecerEstado(float x, float y, float angulo, int vidas) {
+        POSICION.set(x, y);
+        LIMITES.setPosition(x, y);
+        this.angulo = angulo;
+        this.vidas = vidas;
+    }
+
     public void recibirImpacto() {
         vidas = Math.max(0, vidas - 1);
     }

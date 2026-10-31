@@ -1,5 +1,6 @@
 package com.mistacorp.game.servidor;
 
+import com.mistacorp.game.compartido.entrada.EntradaJugador;
 import com.mistacorp.game.compartido.red.ConfiguracionRed;
 import com.mistacorp.game.compartido.red.Protocolo;
 import com.mistacorp.game.compartido.red.TipoMensaje;
@@ -19,6 +20,7 @@ public class HiloServidor extends Thread {
     private final DatagramSocket SOCKET;
     private final ClienteConectado[] CLIENTES = new ClienteConectado[MAXIMO_JUGADORES];
     private volatile boolean activo = true;
+    private volatile HiloPartida partida = null;
 
     public HiloServidor(int puerto) throws SocketException {
         this.SOCKET = new DatagramSocket(puerto);
@@ -32,6 +34,7 @@ public class HiloServidor extends Thread {
             revisarDesconexiones();
             esperar();
         }
+        terminarPartida();
         SOCKET.close();
     }
 
@@ -66,6 +69,11 @@ public class HiloServidor extends Thread {
                 case CONECTAR:
                     registrarCliente(cliente, direccion, puerto);
                     break;
+                case INPUT:
+                    if (cliente != null) {
+                        aplicarEntrada(cliente, partes);
+                    }
+                    break;
                 case DESCONECTAR:
                     if (cliente != null) {
                         liberarLugar(cliente, "se desconecto");
@@ -79,7 +87,22 @@ public class HiloServidor extends Thread {
         }
     }
 
-    private void registrarCliente(ClienteConectado existente, InetAddress direccion, int puerto) {
+    private void aplicarEntrada(ClienteConectado cliente, String[] partes) {
+        HiloPartida actual = partida;
+        if (actual == null) {
+            return;
+        }
+        float giro = Integer.parseInt(partes[1]) - 1;
+        float avance = Integer.parseInt(partes[2]) - 1;
+        int contadorDisparos = Integer.parseInt(partes[3]);
+        EntradaJugador entrada = actual.obtenerEntrada(cliente.obtenerNumeroJugador());
+        entrada.establecerMovimiento(giro, avance);
+        if (cliente.hayDisparoNuevo(contadorDisparos)) {
+            entrada.solicitarDisparo();
+        }
+    }
+
+    private synchronized void registrarCliente(ClienteConectado existente, InetAddress direccion, int puerto) {
         if (existente != null) {
             enviarAsignacion(existente);
             if (estaCompleto()) {
@@ -98,11 +121,24 @@ public class HiloServidor extends Thread {
         enviarAsignacion(nuevo);
         if (estaCompleto()) {
             enviarATodos(Protocolo.armar(TipoMensaje.EMPEZAR));
+            iniciarPartida();
             System.out.println("Sala completa, empieza la partida");
         }
     }
 
-    private void revisarDesconexiones() {
+    private void iniciarPartida() {
+        partida = new HiloPartida(this);
+        partida.start();
+    }
+
+    private void terminarPartida() {
+        if (partida != null) {
+            partida.detener();
+            partida = null;
+        }
+    }
+
+    private synchronized void revisarDesconexiones() {
         long ahora = System.currentTimeMillis();
         for (ClienteConectado cliente : CLIENTES) {
             if (cliente != null && ahora - cliente.obtenerUltimoMensaje() > ConfiguracionRed.MILISEGUNDOS_DESCONEXION) {
@@ -111,8 +147,9 @@ public class HiloServidor extends Thread {
         }
     }
 
-    private void liberarLugar(ClienteConectado cliente, String motivo) {
+    private synchronized void liberarLugar(ClienteConectado cliente, String motivo) {
         CLIENTES[cliente.obtenerNumeroJugador() - 1] = null;
+        terminarPartida();
         System.out.println("Jugador " + cliente.obtenerNumeroJugador() + " " + motivo + ", se libera su lugar");
     }
 
@@ -121,7 +158,7 @@ public class HiloServidor extends Thread {
         enviar(mensaje, cliente.obtenerDireccion(), cliente.obtenerPuerto());
     }
 
-    private ClienteConectado buscarCliente(InetAddress direccion, int puerto) {
+    private synchronized ClienteConectado buscarCliente(InetAddress direccion, int puerto) {
         for (ClienteConectado cliente : CLIENTES) {
             if (cliente != null && cliente.esMismo(direccion, puerto)) {
                 return cliente;
@@ -143,7 +180,7 @@ public class HiloServidor extends Thread {
         return buscarLugarLibre() < 0;
     }
 
-    public void enviarATodos(String mensaje) {
+    public synchronized void enviarATodos(String mensaje) {
         for (ClienteConectado cliente : CLIENTES) {
             if (cliente != null) {
                 enviar(mensaje, cliente.obtenerDireccion(), cliente.obtenerPuerto());
