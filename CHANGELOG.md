@@ -7,6 +7,11 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.17.1] - 2026-10-31
+
+### Agregado
+- Música propia para la Ciudad abandonada (`musica_ciudad_abandonada.wav`).
+
 ## [0.17.0] - 2026-10-31
 
 ### Agregado
