@@ -94,9 +94,13 @@ public class HiloServidor extends Thread {
         if (actual == null) {
             return;
         }
-        float giro = Integer.parseInt(partes[1]) - 1;
-        float avance = Integer.parseInt(partes[2]) - 1;
-        int contadorDisparos = Integer.parseInt(partes[3]);
+        int secuencia = Integer.parseInt(partes[1]);
+        if (!cliente.esEntradaNueva(secuencia)) {
+            return;
+        }
+        float giro = Integer.parseInt(partes[2]) - 1;
+        float avance = Integer.parseInt(partes[3]) - 1;
+        int contadorDisparos = Integer.parseInt(partes[4]);
         EntradaJugador entrada = actual.obtenerEntrada(cliente.obtenerNumeroJugador());
         entrada.establecerMovimiento(giro, avance);
         if (cliente.hayDisparoNuevo(contadorDisparos)) {

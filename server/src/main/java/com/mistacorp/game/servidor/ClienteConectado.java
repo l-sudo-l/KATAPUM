@@ -9,6 +9,7 @@ public class ClienteConectado {
     private final int NUMERO_JUGADOR;
     private long ultimoMensaje;
     private int disparosProcesados = 0;
+    private int ultimaSecuenciaEntrada = 0;
 
     public ClienteConectado(InetAddress direccion, int puerto, int numeroJugador) {
         this.DIRECCION = direccion;
@@ -23,6 +24,14 @@ public class ClienteConectado {
 
     public void registrarActividad() {
         ultimoMensaje = System.currentTimeMillis();
+    }
+
+    public boolean esEntradaNueva(int secuencia) {
+        if (secuencia > ultimaSecuenciaEntrada) {
+            ultimaSecuenciaEntrada = secuencia;
+            return true;
+        }
+        return false;
     }
 
     public boolean hayDisparoNuevo(int contadorDisparos) {

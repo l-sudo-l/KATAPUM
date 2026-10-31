@@ -13,8 +13,9 @@ public final class CodificadorEstado {
     private CodificadorEstado() {
     }
 
-    public static String codificar(Partida partida) {
+    public static String codificar(Partida partida, int secuencia) {
         StringBuilder datos = new StringBuilder(TipoMensaje.ESTADO.name());
+        agregar(datos, String.valueOf(secuencia));
         agregarTanque(datos, partida.obtenerJugador1());
         agregarTanque(datos, partida.obtenerJugador2());
         for (Pared pared : partida.obtenerArena().obtenerParedes()) {
@@ -47,8 +48,12 @@ public final class CodificadorEstado {
         datos.append(ConfiguracionRed.SEPARADOR).append(valor);
     }
 
+    public static int leerSecuencia(String[] partes) {
+        return Integer.parseInt(partes[1]);
+    }
+
     public static void aplicar(String[] partes, Partida partida) {
-        int indice = 1;
+        int indice = 2;
         indice = leerTanque(partes, indice, partida.obtenerJugador1());
         indice = leerTanque(partes, indice, partida.obtenerJugador2());
         for (Pared pared : partida.obtenerArena().obtenerParedes()) {
