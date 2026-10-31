@@ -2,6 +2,7 @@ package com.mistacorp.game.servidor;
 
 import com.mistacorp.game.compartido.entrada.EntradaJugador;
 import com.mistacorp.game.compartido.red.ConfiguracionRed;
+import com.mistacorp.game.compartido.red.MotivoFin;
 import com.mistacorp.game.compartido.red.Protocolo;
 import com.mistacorp.game.compartido.red.TipoMensaje;
 
@@ -16,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 public class HiloServidor extends Thread {
 
     private static final int MAXIMO_JUGADORES = 2;
+    private static final int REPETICIONES_AVISO_FIN = 3;
 
     private final DatagramSocket SOCKET;
     private final ClienteConectado[] CLIENTES = new ClienteConectado[MAXIMO_JUGADORES];
@@ -131,6 +133,22 @@ public class HiloServidor extends Thread {
         partida.start();
     }
 
+    private void avisarVictoriaPorDesconexion() {
+        if (partida == null || partida.estaTerminada()) {
+            return;
+        }
+        for (ClienteConectado restante : CLIENTES) {
+            if (restante != null) {
+                String mensaje = Protocolo.armar(TipoMensaje.FIN, String.valueOf(restante.obtenerNumeroJugador()),
+                    String.valueOf(MotivoFin.RIVAL_DESCONECTADO.ordinal()));
+                for (int i = 0; i < REPETICIONES_AVISO_FIN; i++) {
+                    enviar(mensaje, restante.obtenerDireccion(), restante.obtenerPuerto());
+                }
+                System.out.println("Gana el jugador " + restante.obtenerNumeroJugador() + " por desconexion del rival");
+            }
+        }
+    }
+
     private void terminarPartida() {
         if (partida != null) {
             partida.detener();
@@ -149,6 +167,7 @@ public class HiloServidor extends Thread {
 
     private synchronized void liberarLugar(ClienteConectado cliente, String motivo) {
         CLIENTES[cliente.obtenerNumeroJugador() - 1] = null;
+        avisarVictoriaPorDesconexion();
         terminarPartida();
         System.out.println("Jugador " + cliente.obtenerNumeroJugador() + " " + motivo + ", se libera su lugar");
     }
