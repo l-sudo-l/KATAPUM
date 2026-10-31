@@ -10,6 +10,7 @@ public class ClienteConectado {
     private long ultimoMensaje;
     private int disparosProcesados = 0;
     private int ultimaSecuenciaEntrada = 0;
+    private boolean pideRevancha = false;
 
     public ClienteConectado(InetAddress direccion, int puerto, int numeroJugador) {
         this.DIRECCION = direccion;
@@ -40,6 +41,14 @@ public class ClienteConectado {
             return true;
         }
         return false;
+    }
+
+    public void establecerPideRevancha(boolean pide) {
+        pideRevancha = pide;
+    }
+
+    public boolean pideRevancha() {
+        return pideRevancha;
     }
 
     public long obtenerUltimoMensaje() {

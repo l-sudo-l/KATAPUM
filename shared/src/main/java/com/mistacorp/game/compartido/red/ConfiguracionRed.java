@@ -17,6 +17,7 @@ public final class ConfiguracionRed {
     public static final long MILISEGUNDOS_DESCONEXION = 5000;
     public static final long MILISEGUNDOS_REINTENTO_CONEXION = 1000;
     public static final long MILISEGUNDOS_ENTRE_BUSQUEDAS = 2000;
+    public static final float SEGUNDOS_ENTRE_AVISOS_REVANCHA = 0.5f;
     public static final String DIRECCION_BROADCAST = "255.255.255.255";
     public static final int MILISEGUNDOS_ESPERA_RECEPCION = 200;
     public static final int MILISEGUNDOS_PASO_SIMULACION = 16;

@@ -83,6 +83,11 @@ public class HiloServidor extends Thread {
                         aplicarEntrada(cliente, partes);
                     }
                     break;
+                case REVANCHA:
+                    if (cliente != null) {
+                        actualizarRevancha(cliente, "1".equals(partes[1]));
+                    }
+                    break;
                 case DESCONECTAR:
                     if (cliente != null) {
                         liberarLugar(cliente, "se desconecto");
@@ -139,7 +144,44 @@ public class HiloServidor extends Thread {
         }
     }
 
+    private synchronized void actualizarRevancha(ClienteConectado cliente, boolean pide) {
+        if (partida != null && !partida.estaTerminada()) {
+            if (pide) {
+                enviar(Protocolo.armar(TipoMensaje.EMPEZAR), cliente.obtenerDireccion(), cliente.obtenerPuerto());
+            }
+            return;
+        }
+        cliente.establecerPideRevancha(pide);
+        if (estaCompleto() && todosPidenRevancha()) {
+            enviarATodos(Protocolo.armar(TipoMensaje.EMPEZAR));
+            iniciarPartida();
+            System.out.println("Los dos aceptaron la revancha, empieza otra partida");
+            return;
+        }
+        enviarATodos(Protocolo.armar(TipoMensaje.ESTADO_REVANCHA, banderaRevancha(0), banderaRevancha(1)));
+    }
+
+    private boolean todosPidenRevancha() {
+        for (ClienteConectado cliente : CLIENTES) {
+            if (cliente == null || !cliente.pideRevancha()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private String banderaRevancha(int lugar) {
+        ClienteConectado cliente = CLIENTES[lugar];
+        return cliente != null && cliente.pideRevancha() ? "1" : "0";
+    }
+
     private void iniciarPartida() {
+        terminarPartida();
+        for (ClienteConectado cliente : CLIENTES) {
+            if (cliente != null) {
+                cliente.establecerPideRevancha(false);
+            }
+        }
         partida = new HiloPartida(this);
         partida.start();
     }
@@ -156,6 +198,20 @@ public class HiloServidor extends Thread {
                     enviar(mensaje, restante.obtenerDireccion(), restante.obtenerPuerto());
                 }
                 System.out.println("Gana el jugador " + restante.obtenerNumeroJugador() + " por desconexion del rival");
+            }
+        }
+    }
+
+    private void avisarQueElRivalSalio() {
+        if (partida == null || !partida.estaTerminada()) {
+            return;
+        }
+        for (ClienteConectado restante : CLIENTES) {
+            if (restante != null) {
+                restante.establecerPideRevancha(false);
+                for (int i = 0; i < REPETICIONES_AVISO_FIN; i++) {
+                    enviar(Protocolo.armar(TipoMensaje.RIVAL_SALIO), restante.obtenerDireccion(), restante.obtenerPuerto());
+                }
             }
         }
     }
@@ -191,6 +247,7 @@ public class HiloServidor extends Thread {
     private synchronized void liberarLugar(ClienteConectado cliente, String motivo) {
         CLIENTES[cliente.obtenerNumeroJugador() - 1] = null;
         avisarVictoriaPorDesconexion();
+        avisarQueElRivalSalio();
         terminarPartida();
         System.out.println("Jugador " + cliente.obtenerNumeroJugador() + " " + motivo + ", se libera su lugar");
     }
