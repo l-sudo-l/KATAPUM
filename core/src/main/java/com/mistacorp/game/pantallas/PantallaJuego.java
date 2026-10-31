@@ -198,7 +198,7 @@ public class PantallaJuego extends ScreenAdapter {
 
             boolean debeEliminarse = false;
 
-            if (!ARENA.estaDentroDeLimites(proyectil.obtenerLimites()) || ARENA.colisionaConObstaculos(proyectil.obtenerLimites())) {
+            if (!ARENA.estaDentroDeLimites(proyectil.obtenerLimites()) || ARENA.impactarObstaculo(proyectil.obtenerLimites())) {
                 debeEliminarse = true;
                 agregarEfectoImpacto(proyectil);
             } else {

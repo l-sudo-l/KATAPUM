@@ -1,23 +1,13 @@
 package com.mistacorp.game.mundo;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.mistacorp.game.ConfiguracionJuego;
 import com.mistacorp.game.RecursosGraficos;
 
 public class Arena {
-
-    private static class Decoracion {
-        final Rectangle LIMITES;
-        final TipoDecoracion TIPO;
-
-        Decoracion(float x, float y, TipoDecoracion tipo) {
-            this.LIMITES = new Rectangle(x, y, TAMANO_TILE, TAMANO_TILE);
-            this.TIPO = tipo;
-        }
-    }
 
     private static final int TAMANO_TILE = 32;
 
@@ -57,45 +47,71 @@ public class Arena {
     }
 
     public boolean colisionaConObstaculos(Rectangle limites) {
+        return buscarObstaculoEn(limites) != null;
+    }
+
+    public boolean impactarObstaculo(Rectangle limites) {
+        Obstaculo obstaculo = buscarObstaculoEn(limites);
+        if (obstaculo == null) {
+            return false;
+        }
+        obstaculo.recibirImpacto();
+        return true;
+    }
+
+    private Obstaculo buscarObstaculoEn(Rectangle limites) {
         for (Pared pared : PAREDES) {
-            if (pared.obtenerLimites().overlaps(limites)) {
-                return true;
+            if (!pared.estaDestruido() && pared.obtenerLimites().overlaps(limites)) {
+                return pared;
             }
         }
         for (Decoracion decoracion : DECORACIONES) {
-            if (decoracion.LIMITES.overlaps(limites)) {
-                return true;
+            if (!decoracion.estaDestruido() && decoracion.obtenerLimites().overlaps(limites)) {
+                return decoracion;
             }
         }
-        return false;
+        return null;
     }
 
     public void dibujar(SpriteBatch lote, RecursosGraficos recursos) {
-        dibujarTileado(lote, recursos.obtenerTexturaSuelo(), 0, 0, LIMITES_MUNDO.width, LIMITES_MUNDO.height);
+        dibujarTileado(lote, recursos.obtenerRegionSuelo(), 0, 0, LIMITES_MUNDO.width, LIMITES_MUNDO.height);
 
         for (Pared pared : PAREDES) {
             Rectangle b = pared.obtenerLimites();
-            dibujarTileado(lote, recursos.obtenerTexturaPared(), b.x, b.y, b.width, b.height);
+            dibujarTileado(lote, regionDePared(recursos, pared), b.x, b.y, b.width, b.height);
         }
 
         for (Decoracion decoracion : DECORACIONES) {
-            Texture textura = texturaDeDecoracion(recursos, decoracion.TIPO);
-            lote.draw(textura, decoracion.LIMITES.x, decoracion.LIMITES.y, TAMANO_TILE, TAMANO_TILE);
+            Rectangle b = decoracion.obtenerLimites();
+            lote.draw(regionDeDecoracion(recursos, decoracion), b.x, b.y, b.width, b.height);
         }
     }
 
-    private Texture texturaDeDecoracion(RecursosGraficos recursos, TipoDecoracion tipo) {
-        switch (tipo) {
+    private TextureRegion regionDePared(RecursosGraficos recursos, Pared pared) {
+        if (pared.estaDestruido()) {
+            return recursos.obtenerRegionParedDestruida();
+        }
+        return recursos.obtenerFramesDestruccionPared()[pared.obtenerImpactosRecibidos()];
+    }
+
+    private TextureRegion regionDeDecoracion(RecursosGraficos recursos, Decoracion decoracion) {
+        switch (decoracion.obtenerTipo()) {
             case CAJA:
-                return recursos.obtenerTexturaCaja();
+                if (decoracion.estaDestruido()) {
+                    return recursos.obtenerRegionCajaDestruida();
+                }
+                return recursos.obtenerFramesDestruccionCaja()[decoracion.obtenerImpactosRecibidos()];
             case BARRIL:
-                return recursos.obtenerTexturaBarril();
+                if (decoracion.estaDestruido()) {
+                    return recursos.obtenerRegionBarrilDestruido();
+                }
+                return recursos.obtenerFramesDestruccionBarril()[decoracion.obtenerImpactosRecibidos()];
             default:
-                return recursos.obtenerTexturaArbusto();
+                return recursos.obtenerRegionArbusto();
         }
     }
 
-    private void dibujarTileado(SpriteBatch lote, Texture textura, float x, float y, float ancho, float alto) {
+    private void dibujarTileado(SpriteBatch lote, TextureRegion region, float x, float y, float ancho, float alto) {
         int columnas = (int) Math.ceil(ancho / TAMANO_TILE);
         int filas = (int) Math.ceil(alto / TAMANO_TILE);
 
@@ -105,7 +121,7 @@ public class Arena {
                 float tileY = y + fila * TAMANO_TILE;
                 float anchoTile = Math.min(TAMANO_TILE, x + ancho - tileX);
                 float altoTile = Math.min(TAMANO_TILE, y + alto - tileY);
-                lote.draw(textura, tileX, tileY, anchoTile, altoTile);
+                lote.draw(region, tileX, tileY, anchoTile, altoTile);
             }
         }
     }

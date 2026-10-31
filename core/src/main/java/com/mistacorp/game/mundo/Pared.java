@@ -1,16 +1,10 @@
 package com.mistacorp.game.mundo;
 
-import com.badlogic.gdx.math.Rectangle;
+public class Pared extends Obstaculo {
 
-public class Pared {
-
-    private final Rectangle LIMITES;
+    private static final int IMPACTOS_PARA_DESTRUIR = 5;
 
     public Pared(float x, float y, float ancho, float alto) {
-        this.LIMITES = new Rectangle(x, y, ancho, alto);
-    }
-
-    public Rectangle obtenerLimites() {
-        return LIMITES;
+        super(x, y, ancho, alto, IMPACTOS_PARA_DESTRUIR);
     }
 }
