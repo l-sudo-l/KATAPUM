@@ -29,6 +29,7 @@ public class HiloServidor extends Thread {
     public void run() {
         while (activo) {
             recibir();
+            revisarDesconexiones();
             esperar();
         }
         SOCKET.close();
@@ -65,6 +66,11 @@ public class HiloServidor extends Thread {
                 case CONECTAR:
                     registrarCliente(cliente, direccion, puerto);
                     break;
+                case DESCONECTAR:
+                    if (cliente != null) {
+                        liberarLugar(cliente, "se desconecto");
+                    }
+                    break;
                 default:
                     break;
             }
@@ -94,6 +100,20 @@ public class HiloServidor extends Thread {
             enviarATodos(Protocolo.armar(TipoMensaje.EMPEZAR));
             System.out.println("Sala completa, empieza la partida");
         }
+    }
+
+    private void revisarDesconexiones() {
+        long ahora = System.currentTimeMillis();
+        for (ClienteConectado cliente : CLIENTES) {
+            if (cliente != null && ahora - cliente.obtenerUltimoMensaje() > ConfiguracionRed.MILISEGUNDOS_DESCONEXION) {
+                liberarLugar(cliente, "dejo de responder");
+            }
+        }
+    }
+
+    private void liberarLugar(ClienteConectado cliente, String motivo) {
+        CLIENTES[cliente.obtenerNumeroJugador() - 1] = null;
+        System.out.println("Jugador " + cliente.obtenerNumeroJugador() + " " + motivo + ", se libera su lugar");
     }
 
     private void enviarAsignacion(ClienteConectado cliente) {
