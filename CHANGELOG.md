@@ -7,6 +7,11 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.17.0] - 2026-10-31
+
+### Agregado
+- Mapa Ciudad abandonada: asfalto, paredes de ladrillo, cajas viejas, barriles oxidados y arbustos secos, con edificios en L en las esquinas y bloques en C junto al centro. Se elige en la partida local y en CREAR PARTIDA. Por ahora usa la música del Bosque.
+
 ## [0.16.1] - 2026-10-31
 
 ### Corregido

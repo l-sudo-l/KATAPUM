@@ -4,7 +4,7 @@
 - Rodriguez Marquez Luis Manuel 
 
 ## Descripción Corta del Videojuego
-Katapum es un videojuego de tanques en 2D con vista top-down (cenital). Dos jugadores se enfrentan controlando cada uno un tanque en un mapa de batalla, con el objetivo de eliminar al oponente disparando proyectiles y esquivando los ataques entrantes. Hay dos mapas, Bosque y Desierto, con obstáculos que sirven de cobertura y se destruyen a disparos. Cada tanque tiene 3 vidas; cuando un jugador las pierde todas, su oponente es declarado ganador.
+Katapum es un videojuego de tanques en 2D con vista top-down (cenital). Dos jugadores se enfrentan controlando cada uno un tanque en un mapa de batalla, con el objetivo de eliminar al oponente disparando proyectiles y esquivando los ataques entrantes. Hay tres mapas, Bosque, Desierto y Ciudad abandonada, con obstáculos que sirven de cobertura y se destruyen a disparos. Cada tanque tiene 3 vidas; cuando un jugador las pierde todas, su oponente es declarado ganador.
 
 
 
@@ -17,7 +17,7 @@ Funcionalidades implementadas hasta el momento:
 - Animación por spritesheet: cada tanque tiene una secuencia de 4 cuadros (normal → cargando → estallido → carcasa quemada) que se reproduce al perder su última vida, y el proyectil vuela con una animación de 2 cuadros.
 - Sistema de disparo: cada tanque dispara proyectiles animados en la dirección hacia la que está orientado, con fogonazo al salir y destello al impactar.
 - Detección de colisiones: proyectil contra pared/decoración (el proyectil desaparece y daña al obstáculo si es destructible), proyectil contra tanque rival (resta una vida) y tanque contra pared, decoración (arbusto/caja/barril) o tanque rival (bloquea el movimiento).
-- Dos mapas (Bosque y Desierto) con obstáculos colisionables: paredes, cajas, barriles y vegetación se destruyen por disparos. Ver "Mapas" y "Obstáculos destructibles" más abajo. Todo dentro de una cámara con `Viewport` (`FitViewport`) que se adapta al tamaño de la ventana.
+- Tres mapas (Bosque, Desierto y Ciudad abandonada) con obstáculos colisionables: paredes, cajas, barriles y vegetación se destruyen por disparos. Ver "Mapas" y "Obstáculos destructibles" más abajo. Todo dentro de una cámara con `Viewport` (`FitViewport`) que se adapta al tamaño de la ventana.
 - HUD fijo en pantalla: nombre de cada jugador con contorno y corazones de vida junto al nombre (a la derecha para Jugador 1, a la izquierda para Jugador 2), volumen actual, con su propio `Viewport` independiente de la cámara del mundo.
 - Música de fondo (menú y partida) y efectos de sonido (disparo, impacto, muerte, victoria), con controles de volumen y silencio (teclado y mouse).
 - Menú de inicio y menú de pausa interactivos con mouse (botones y control deslizante de volumen), con estética retro (paneles y botones dibujados en bloques de color, sin depender de imágenes extra).
@@ -31,6 +31,7 @@ Cada mapa es una grilla de texto en `DisenoMapa` (30 columnas por 17 filas de ti
 |---|---|---|---|
 | Bosque | arbusto | piedra, con borde alrededor del mapa | `musica_bosque.wav` |
 | Desierto | palmera | arena, sin borde | `musica_desierto.wav` |
+| Ciudad abandonada | arbusto seco | ladrillo, edificios en L y bloques en C | `musica_bosque.wav` (sin música propia todavía) |
 
 En la partida local el mapa se elige antes de empezar; en red lo elige el anfitrión en CREAR PARTIDA.
 
@@ -153,4 +154,4 @@ El servidor decide todo con la misma `Partida` del modo local (`HiloPartida`, un
 
 ### Cómo se separa la lógica del dibujo
 `Partida` decide todo: mueve los tanques según su `EntradaJugador`, mueve los proyectiles, aplica los impactos y define el ganador. Lo que antes reproducía sonidos lo anota como `EventoPartida`. `PantallaJuego` solo le pasa las entradas del teclado, lee los eventos para mostrar efectos y sonidos, y dibuja el estado con `DibujoArena`, `DibujoTanque` y `DibujoProyectil`. Así el modo local y el modo en red usan la misma simulación: el servidor decide, el cliente muestra.
-- `assets/`: sprites y audio del juego, en carpetas: `imagenes/tanques`, `imagenes/proyectiles`, `imagenes/mapas/bosque`, `imagenes/mapas/desierto`, `imagenes/interfaz`, `sonidos` y `musica`. Ver [`CREDITOS.md`](CREDITOS.md) para la atribución de los assets de audio de terceros (OpenGameArt.org).
+- `assets/`: sprites y audio del juego, en carpetas: `imagenes/tanques`, `imagenes/proyectiles`, `imagenes/mapas/bosque`, `imagenes/mapas/desierto`, `imagenes/mapas/ciudad`, `imagenes/interfaz`, `sonidos` y `musica`. Ver [`CREDITOS.md`](CREDITOS.md) para la atribución de los assets de audio de terceros (OpenGameArt.org).
