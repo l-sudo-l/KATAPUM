@@ -1,4 +1,4 @@
-package com.mistacorp.game.mundo;
+package com.mistacorp.game.compartido.mundo;
 
 public class Decoracion extends Obstaculo {
 
