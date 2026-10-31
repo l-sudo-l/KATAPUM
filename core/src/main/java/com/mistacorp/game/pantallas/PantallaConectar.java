@@ -47,6 +47,11 @@ public class PantallaConectar extends ScreenAdapter implements OyenteRed {
     private String mensajeError = "";
     private float tiempoCursor = 0f;
 
+    public PantallaConectar(KatapumPrincipal juego, String aviso) {
+        this(juego);
+        mostrarError(aviso);
+    }
+
     public PantallaConectar(KatapumPrincipal juego) {
         this.JUEGO = juego;
         float centroX = ConfiguracionPartida.ANCHO_MUNDO / 2f;
