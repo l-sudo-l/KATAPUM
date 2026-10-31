@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mistacorp.game.ConfiguracionJuego;
 import com.mistacorp.game.ControlVolumen;
 import com.mistacorp.game.KatapumPrincipal;
 import com.mistacorp.game.RecursosGraficos;
@@ -21,6 +22,7 @@ import com.mistacorp.game.compartido.entidades.EstadoProyectil;
 import com.mistacorp.game.compartido.entidades.EstadoTanque;
 import com.mistacorp.game.compartido.entrada.EntradaJugador;
 import com.mistacorp.game.compartido.red.CodificadorEstado;
+import com.mistacorp.game.compartido.red.MotivoFin;
 import com.mistacorp.game.compartido.red.ConfiguracionRed;
 import com.mistacorp.game.compartido.red.Protocolo;
 import com.mistacorp.game.compartido.red.TipoMensaje;
@@ -58,6 +60,9 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
 
     private int contadorDisparos = 0;
     private float tiempoDesdeEnvio = 0f;
+    private int numeroGanador = 0;
+    private String avisoFin = "";
+    private float tiempoEsperaFin = 0f;
 
     public PantallaJuegoRed(KatapumPrincipal juego, HiloCliente cliente, int numeroJugador) {
         this.JUEGO = juego;
@@ -113,12 +118,41 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
                 revisarTanqueSinVidas(PARTIDA.obtenerJugador1(), DIBUJO_JUGADOR1);
                 revisarTanqueSinVidas(PARTIDA.obtenerJugador2(), DIBUJO_JUGADOR2);
                 break;
+            case FIN:
+                registrarFin(Integer.parseInt(partes[1]), MotivoFin.values()[Integer.parseInt(partes[2])]);
+                break;
             case EVENTO:
                 REPRODUCTOR.reproducir(TipoEvento.valueOf(partes[1]), Float.parseFloat(partes[2]),
                     Float.parseFloat(partes[3]), Integer.parseInt(partes[4]));
                 break;
             default:
                 break;
+        }
+    }
+
+    private void registrarFin(int ganador, MotivoFin motivo) {
+        if (numeroGanador != 0) {
+            return;
+        }
+        numeroGanador = ganador;
+        if (motivo == MotivoFin.RIVAL_DESCONECTADO) {
+            avisoFin = "El rival se desconecto";
+        }
+    }
+
+    private void revisarFinDePartida(float delta) {
+        if (numeroGanador == 0) {
+            return;
+        }
+        DibujoTanque perdedor = numeroGanador == 1 ? DIBUJO_JUGADOR2 : DIBUJO_JUGADOR1;
+        if (avisoFin.isEmpty() && !perdedor.explosionTerminada()) {
+            return;
+        }
+        tiempoEsperaFin += delta;
+        if (tiempoEsperaFin >= ConfiguracionJuego.RETRASO_FIN_PARTIDA) {
+            CLIENTE.detener();
+            EstadoTanque ganador = numeroGanador == 1 ? PARTIDA.obtenerJugador1() : PARTIDA.obtenerJugador2();
+            JUEGO.setScreen(new PantallaFinPartida(JUEGO, ganador.obtenerNombre(), true, avisoFin));
         }
     }
 
@@ -141,6 +175,7 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
         DIBUJO_JUGADOR2.actualizar(delta);
         DIBUJO_PROYECTIL.actualizar(delta);
         actualizarEfectos(delta);
+        revisarFinDePartida(delta);
 
         ScreenUtils.clear(0, 0, 0, 1);
         VENTANA_GRAFICA.apply();
