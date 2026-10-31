@@ -12,10 +12,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mistacorp.game.ConfiguracionJuego;
 import com.mistacorp.game.ControlVolumen;
 import com.mistacorp.game.KatapumPrincipal;
 import com.mistacorp.game.RecursosGraficos;
+import com.mistacorp.game.compartido.ConfiguracionPartida;
 
 public class PantallaFinPartida extends ScreenAdapter {
 
@@ -25,7 +25,7 @@ public class PantallaFinPartida extends ScreenAdapter {
     private final Texture TEXTURA_BANNER;
 
     private final OrthographicCamera CAMARA = new OrthographicCamera();
-    private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO, CAMARA);
+    private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionPartida.ANCHO_MUNDO, ConfiguracionPartida.ALTO_MUNDO, CAMARA);
 
     private final Rectangle LIMITES_BOTON_JUGAR;
     private final Rectangle LIMITES_BOTON_MENU;
@@ -43,7 +43,7 @@ public class PantallaFinPartida extends ScreenAdapter {
         float anchoBoton = 220f;
         float altoBoton = 60f;
         float separacion = 40f;
-        float xBotones = ConfiguracionJuego.ANCHO_MUNDO / 2f - (anchoBoton * 2 + separacion) / 2f;
+        float xBotones = ConfiguracionPartida.ANCHO_MUNDO / 2f - (anchoBoton * 2 + separacion) / 2f;
         float yBotones = 180f;
 
         LIMITES_BOTON_JUGAR = new Rectangle(xBotones, yBotones, anchoBoton, altoBoton);
@@ -88,7 +88,7 @@ public class PantallaFinPartida extends ScreenAdapter {
 
         float anchoBanner = 420f;
         float altoBanner = 110f;
-        float xBanner = ConfiguracionJuego.ANCHO_MUNDO / 2f - anchoBanner / 2f;
+        float xBanner = ConfiguracionPartida.ANCHO_MUNDO / 2f - anchoBanner / 2f;
         float yBanner = 300f;
         JUEGO.obtenerLote().draw(TEXTURA_BANNER, xBanner, yBanner, anchoBanner, altoBanner);
 

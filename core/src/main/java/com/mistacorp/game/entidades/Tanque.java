@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mistacorp.game.ConfiguracionJuego;
 import com.mistacorp.game.mundo.Arena;
+import com.mistacorp.game.compartido.ConfiguracionPartida;
 
 public class Tanque {
 
@@ -33,9 +33,9 @@ public class Tanque {
         this.ANIMACION_EXPLOSION = animacionExplosion;
         this.ANGULO_BASE_SPRITE = anguloBaseSprite;
         this.POSICION = new Vector2(x, y);
-        this.LIMITES = new Rectangle(x, y, ConfiguracionJuego.TAMANO_TANQUE, ConfiguracionJuego.TAMANO_TANQUE);
+        this.LIMITES = new Rectangle(x, y, ConfiguracionPartida.TAMANO_TANQUE, ConfiguracionPartida.TAMANO_TANQUE);
         this.angulo = anguloInicial;
-        this.vidas = ConfiguracionJuego.VIDAS_MAXIMAS;
+        this.vidas = ConfiguracionPartida.VIDAS_MAXIMAS;
     }
 
     public void avanzar(float delta, Arena arena, Tanque otro) {
@@ -47,12 +47,12 @@ public class Tanque {
     }
 
     public void rotar(float sentido, float delta) {
-        angulo += sentido * ConfiguracionJuego.VELOCIDAD_ROTACION * delta;
+        angulo += sentido * ConfiguracionPartida.VELOCIDAD_ROTACION * delta;
         angulo = ((angulo % 360f) + 360f) % 360f;
     }
 
     private void mover(float signo, float delta, Arena arena, Tanque otro) {
-        float distancia = ConfiguracionJuego.VELOCIDAD_TANQUE * delta * signo;
+        float distancia = ConfiguracionPartida.VELOCIDAD_TANQUE * delta * signo;
         float dx = MathUtils.cosDeg(angulo) * distancia;
         float dy = MathUtils.sinDeg(angulo) * distancia;
 
