@@ -7,6 +7,20 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.12.0] - 2026-10-30
+
+### Agregado
+- Menú principal con PARTIDA LOCAL, PARTIDA LAN y CONFIGURACION. El volumen y la lista de controles pasan a `PantallaConfiguracion`.
+- `PantallaPartidasLan`: punto de entrada a la red, con CREAR PARTIDA, CONECTAR POR IP y VOLVER.
+- `PantallaCrearPartida`: nombre de la sala, cantidad de jugadores (máximo 2) y selector de mapa con miniatura (Bosque). Al crear, el juego levanta el servidor en un hilo propio y el anfitrión entra como Jugador 1.
+- `PantallaSala`: sala de espera con un lugar por jugador (tanque, ícono de listo o no listo, host), animación de esperando, nombre de la sala y miniatura del mapa. Con la sala completa arranca la partida.
+- `TipoMapa` (shared): mapas disponibles; por ahora `BOSQUE`. El servidor tiene nombre de sala y mapa, y los envía en `ASIGNAR-n-nombre-mapa`.
+- Sprites propios de las pantallas de red (miniatura y marcos del mapa, lugar vacío, íconos, flechas, animaciones de esperando y conectando).
+- `PantallaBase` y `CampoTexto`: código común de las pantallas de menú y campo de texto reutilizable.
+
+### Cambiado
+- `HiloServidor`, `HiloPartida` y `ClienteConectado` pasan de `server` a `shared` para poder hostear desde el juego. `server:run` sigue funcionando y acepta el nombre de la sala (`server:run --args="Mi sala"`).
+
 ## [0.11.0] - 2026-10-30
 
 ### Agregado
