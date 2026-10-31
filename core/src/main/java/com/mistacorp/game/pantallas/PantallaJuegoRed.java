@@ -17,6 +17,7 @@ import com.mistacorp.game.RecursosGraficos;
 import com.mistacorp.game.RecursosSonido;
 import com.mistacorp.game.compartido.ConfiguracionPartida;
 import com.mistacorp.game.compartido.Partida;
+import com.mistacorp.game.compartido.TipoMapa;
 import com.mistacorp.game.compartido.TipoEvento;
 import com.mistacorp.game.compartido.entidades.EstadoProyectil;
 import com.mistacorp.game.compartido.entidades.EstadoTanque;
@@ -47,7 +48,8 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
     private final OrthographicCamera CAMARA = new OrthographicCamera();
     private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionPartida.ANCHO_MUNDO, ConfiguracionPartida.ALTO_MUNDO, CAMARA);
 
-    private final Partida PARTIDA = new Partida();
+    private final TipoMapa MAPA;
+    private final Partida PARTIDA;
     private final DibujoArena DIBUJO_ARENA;
     private final DibujoTanque DIBUJO_JUGADOR1;
     private final DibujoTanque DIBUJO_JUGADOR2;
@@ -67,7 +69,9 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
     private float tiempoEsperaFin = 0f;
     private float tiempoSinEstado = 0f;
 
-    public PantallaJuegoRed(KatapumPrincipal juego, HiloCliente cliente, int numeroJugador) {
+    public PantallaJuegoRed(KatapumPrincipal juego, HiloCliente cliente, int numeroJugador, TipoMapa mapa) {
+        this.MAPA = mapa;
+        this.PARTIDA = new Partida(mapa);
         this.JUEGO = juego;
         this.RECURSOS = juego.obtenerRecursos();
         this.SONIDOS = juego.obtenerSonidos();
@@ -93,13 +97,13 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(ENTRADA);
-        SONIDOS.obtenerMusicaJuego().setVolume(ControlVolumen.obtenerVolumenEfectivo());
-        SONIDOS.obtenerMusicaJuego().play();
+        SONIDOS.obtenerMusicaPartida(MAPA).setVolume(ControlVolumen.obtenerVolumenEfectivo());
+        SONIDOS.obtenerMusicaPartida(MAPA).play();
     }
 
     @Override
     public void hide() {
-        SONIDOS.obtenerMusicaJuego().stop();
+        SONIDOS.obtenerMusicaPartida(MAPA).stop();
     }
 
     @Override
@@ -162,7 +166,7 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
         }
         tiempoEsperaFin += delta;
         if (tiempoEsperaFin >= ConfiguracionJuego.RETRASO_FIN_PARTIDA) {
-            JUEGO.setScreen(new PantallaFinPartidaRed(JUEGO, CLIENTE, NUMERO_JUGADOR, numeroGanador, rivalSeFue));
+            JUEGO.setScreen(new PantallaFinPartidaRed(JUEGO, CLIENTE, NUMERO_JUGADOR, MAPA, numeroGanador, rivalSeFue));
         }
     }
 
@@ -189,7 +193,7 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
             volverAlMenu();
             return;
         }
-        SONIDOS.obtenerMusicaJuego().setVolume(ControlVolumen.obtenerVolumenEfectivo());
+        SONIDOS.obtenerMusicaPartida(MAPA).setVolume(ControlVolumen.obtenerVolumenEfectivo());
 
         enviarEntrada(delta);
         DIBUJO_JUGADOR1.actualizar(delta);

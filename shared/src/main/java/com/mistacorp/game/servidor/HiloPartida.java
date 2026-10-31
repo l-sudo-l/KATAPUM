@@ -14,7 +14,7 @@ public class HiloPartida extends Thread {
     private static final float DELTA_MAXIMO = 0.1f;
 
     private final HiloServidor SERVIDOR;
-    private final Partida PARTIDA = new Partida();
+    private final Partida PARTIDA;
     private final EntradaJugador ENTRADA1 = new EntradaJugador();
     private final EntradaJugador ENTRADA2 = new EntradaJugador();
     private volatile boolean activo = true;
@@ -23,6 +23,7 @@ public class HiloPartida extends Thread {
 
     public HiloPartida(HiloServidor servidor) {
         this.SERVIDOR = servidor;
+        this.PARTIDA = new Partida(servidor.obtenerMapa());
     }
 
     @Override

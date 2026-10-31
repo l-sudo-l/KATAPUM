@@ -15,6 +15,7 @@ import com.mistacorp.game.compartido.ConfiguracionPartida;
 import com.mistacorp.game.compartido.TipoMapa;
 import com.mistacorp.game.compartido.red.TipoMensaje;
 import com.mistacorp.game.interfaz.BotonMouse;
+import com.mistacorp.game.mundo.SpritesMapa;
 import com.mistacorp.game.red.HiloCliente;
 import com.mistacorp.game.red.OyenteRed;
 
@@ -77,7 +78,7 @@ public class PantallaSala extends PantallaBase implements OyenteRed {
             tiempoDesdeCompleta += delta;
             if (tiempoDesdeCompleta >= ConfiguracionJuego.RETRASO_FIN_PARTIDA) {
                 clienteEntregado = true;
-                JUEGO.setScreen(new PantallaJuegoRed(JUEGO, CLIENTE, NUMERO_JUGADOR));
+                JUEGO.setScreen(new PantallaJuegoRed(JUEGO, CLIENTE, NUMERO_JUGADOR, MAPA));
                 return;
             }
         }
@@ -130,9 +131,10 @@ public class PantallaSala extends PantallaBase implements OyenteRed {
     private void dibujarMapa(SpriteBatch lote, RecursosGraficos recursos) {
         float xMarco = 520f;
         float yMarco = 220f;
-        Texture marco = recursos.obtenerTexturaMarcoMapa();
+        SpritesMapa sprites = recursos.obtenerSpritesMapa(MAPA);
+        Texture marco = sprites.obtenerTexturaMarco();
         lote.draw(marco, xMarco, yMarco, marco.getWidth(), marco.getHeight());
-        lote.draw(recursos.obtenerTexturaMiniaturaBosque(), xMarco + 4f, yMarco + 4f);
+        lote.draw(sprites.obtenerTexturaMiniatura(), xMarco + 4f, yMarco + 4f);
         dibujarCentrado("Mapa: " + MAPA.obtenerNombreVisible(), xMarco + marco.getWidth() / 2f, yMarco - 15f);
     }
 

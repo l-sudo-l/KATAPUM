@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mistacorp.game.ControlVolumen;
 import com.mistacorp.game.KatapumPrincipal;
 import com.mistacorp.game.RecursosGraficos;
+import com.mistacorp.game.compartido.TipoMapa;
 import com.mistacorp.game.compartido.red.ConfiguracionRed;
 import com.mistacorp.game.compartido.red.Protocolo;
 import com.mistacorp.game.compartido.red.TipoMensaje;
@@ -27,6 +28,7 @@ public class PantallaFinPartidaRed extends PantallaBase implements OyenteRed {
 
     private final HiloCliente CLIENTE;
     private final int NUMERO_JUGADOR;
+    private final TipoMapa MAPA;
     private final Texture TEXTURA_BANNER;
     private final Rectangle LIMITES_BOTON_REVANCHA;
     private final Rectangle LIMITES_BOTON_SALIR;
@@ -39,8 +41,10 @@ public class PantallaFinPartidaRed extends PantallaBase implements OyenteRed {
     private float tiempoSinRespuesta = 0f;
     private float tiempo = 0f;
 
-    public PantallaFinPartidaRed(KatapumPrincipal juego, HiloCliente cliente, int numeroJugador, int numeroGanador, boolean rivalSeFue) {
+    public PantallaFinPartidaRed(KatapumPrincipal juego, HiloCliente cliente, int numeroJugador, TipoMapa mapa,
+                                 int numeroGanador, boolean rivalSeFue) {
         super(juego);
+        this.MAPA = mapa;
         this.CLIENTE = cliente;
         this.NUMERO_JUGADOR = numeroJugador;
         this.rivalSeFue = rivalSeFue;
@@ -88,7 +92,7 @@ public class PantallaFinPartidaRed extends PantallaBase implements OyenteRed {
                 break;
             case EMPEZAR:
                 clienteEntregado = true;
-                JUEGO.setScreen(new PantallaJuegoRed(JUEGO, CLIENTE, NUMERO_JUGADOR));
+                JUEGO.setScreen(new PantallaJuegoRed(JUEGO, CLIENTE, NUMERO_JUGADOR, MAPA));
                 break;
             default:
                 break;
