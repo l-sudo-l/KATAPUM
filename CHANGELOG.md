@@ -7,6 +7,14 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.16.0] - 2026-10-31
+
+### Agregado
+- Selección de mapa en la partida local: PARTIDA LOCAL abre `PantallaElegirMapa` con miniatura y flechas para elegir Bosque o Desierto. VOLVER A JUGAR repite el mismo mapa.
+
+### Cambiado
+- El selector de mapa se separa en `SelectorMapa` (interfaz) y lo usan la partida local y CREAR PARTIDA.
+
 ## [0.15.0] - 2026-10-31
 
 ### Agregado
