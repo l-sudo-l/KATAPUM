@@ -3,6 +3,7 @@ package com.mistacorp.game.servidor;
 import com.mistacorp.game.compartido.EventoPartida;
 import com.mistacorp.game.compartido.Partida;
 import com.mistacorp.game.compartido.entrada.EntradaJugador;
+import com.mistacorp.game.compartido.red.MotivoFin;
 import com.mistacorp.game.compartido.red.CodificadorEstado;
 import com.mistacorp.game.compartido.red.ConfiguracionRed;
 import com.mistacorp.game.compartido.red.Protocolo;
@@ -17,6 +18,7 @@ public class HiloPartida extends Thread {
     private final EntradaJugador ENTRADA1 = new EntradaJugador();
     private final EntradaJugador ENTRADA2 = new EntradaJugador();
     private volatile boolean activo = true;
+    private volatile boolean terminada = false;
 
     public HiloPartida(HiloServidor servidor) {
         this.SERVIDOR = servidor;
@@ -39,9 +41,23 @@ public class HiloPartida extends Thread {
             if (tiempoDesdeEnvio >= intervaloEnvio) {
                 tiempoDesdeEnvio -= intervaloEnvio;
                 SERVIDOR.enviarATodos(CodificadorEstado.codificar(PARTIDA));
+                avisarFinSiHayGanador();
             }
             esperar();
         }
+    }
+
+    private void avisarFinSiHayGanador() {
+        if (PARTIDA.obtenerGanador() == null) {
+            return;
+        }
+        terminada = true;
+        String ganador = String.valueOf(PARTIDA.obtenerGanador().obtenerNumeroJugador());
+        SERVIDOR.enviarATodos(Protocolo.armar(TipoMensaje.FIN, ganador, String.valueOf(MotivoFin.SIN_VIDAS.ordinal())));
+    }
+
+    public boolean estaTerminada() {
+        return terminada;
     }
 
     private void enviarEventos() {
