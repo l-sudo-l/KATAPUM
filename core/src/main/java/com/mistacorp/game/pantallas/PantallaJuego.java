@@ -203,11 +203,5 @@ public class PantallaJuego extends ScreenAdapter {
         if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
             ControlVolumen.alternarSilencio();
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS)) {
-            ControlVolumen.subirVolumen();
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS)) {
-            ControlVolumen.bajarVolumen();
-        }
     }
 }
