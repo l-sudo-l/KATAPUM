@@ -119,7 +119,7 @@ Abre el puerto UDP 5555 sin ventana. Mensajes de texto separados por `-`:
 | Mensaje | Quién lo manda | Significado |
 |---|---|---|
 | `CONECTAR` | cliente | Pide un lugar en la sala (UDP no tiene conexión, así que el servidor anota IP y puerto). |
-| `ASIGNAR-n` | servidor | Le dice al cliente que es el jugador `n` (1 o 2). |
+| `ASIGNAR-n-sala-mapa` | servidor | Le dice al cliente que es el jugador `n` (1 o 2), el nombre de la sala y el mapa. |
 | `SALA_LLENA` | servidor | Ya hay 2 jugadores. |
 | `EMPEZAR` | servidor | La sala está completa. |
 | `INPUT-s-g-a-d` | cliente | Secuencia, giro y avance sumados 1 (0, 1 o 2) y contador de disparos. |
@@ -130,7 +130,9 @@ Abre el puerto UDP 5555 sin ventana. Mensajes de texto separados por `-`:
 
 Si un jugador pasa 5 segundos sin mandar nada, el servidor libera su lugar y, si había una partida en curso, le da la victoria al otro. Al terminar la partida los dos clientes se desconectan y la sala queda libre para otra, sin reiniciar el servidor.
 
-Para probar la conexión en una sola PC: abrir una terminal con `gradlew.bat server:run`, otras dos con `gradlew.bat lwjgl3:run`, y en ambos juegos elegir PARTIDA LAN y conectar a `127.0.0.1`. El primero queda como Jugador 1 esperando y, al entrar el segundo, empieza la partida en las dos ventanas. En red cada jugador maneja su tanque con W/S/A/D y ESPACIO; ESC sale al menú.
+Cómo jugar en red: un jugador va a PARTIDA LAN, CREAR PARTIDA, elige nombre y mapa y toca CREAR Y ESPERAR. Su juego levanta el servidor y lo deja en la sala. El otro va a PARTIDA LAN, CONECTAR POR IP y escribe la IP de la PC del anfitrión (se ve con `ipconfig`). También se puede usar un servidor aparte con `gradlew.bat server:run` y conectar los dos juegos por IP.
+
+Para probar en una sola PC: compilar una vez con `gradlew.bat lwjgl3:jar` y abrir dos juegos con `java -jar lwjgl3/build/libs/KATAPUM-<versión>.jar` (correr dos `lwjgl3:run` a la vez hace que Gradle compile dos veces sobre la misma carpeta). En uno crear la partida y en el otro conectar a `127.0.0.1`. El primero queda como Jugador 1 esperando y, al entrar el segundo, empieza la partida en las dos ventanas. En red cada jugador maneja su tanque con W/S/A/D y ESPACIO; ESC sale al menú.
 
 El servidor decide todo con la misma `Partida` del modo local (`HiloPartida`, un hilo aparte del que recibe paquetes). Los clientes solo mandan lo que tocan y dibujan lo que reciben. Entre el hilo que recibe y el que simula, la entrada de cada jugador se comparte con `EntradaJugador`, cuyos métodos son `synchronized`. En el cliente, lo recibido pasa al hilo de LibGDX con `Gdx.app.postRunnable`. Entre dos PCs se escribe la IP local de la PC que corre el servidor (se ve con `ipconfig`).
 
