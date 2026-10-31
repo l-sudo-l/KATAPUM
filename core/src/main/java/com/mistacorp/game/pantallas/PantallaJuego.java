@@ -26,6 +26,7 @@ import com.mistacorp.game.interfaz.Accion;
 import com.mistacorp.game.interfaz.Hud;
 import com.mistacorp.game.interfaz.MenuPausa;
 import com.mistacorp.game.mundo.Arena;
+import com.mistacorp.game.compartido.ConfiguracionPartida;
 
 public class PantallaJuego extends ScreenAdapter {
 
@@ -34,7 +35,7 @@ public class PantallaJuego extends ScreenAdapter {
     private final RecursosSonido SONIDOS;
 
     private final OrthographicCamera CAMARA = new OrthographicCamera();
-    private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO, CAMARA);
+    private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionPartida.ANCHO_MUNDO, ConfiguracionPartida.ALTO_MUNDO, CAMARA);
 
     private final Arena ARENA = new Arena();
     private final Tanque JUGADOR1;
@@ -56,19 +57,19 @@ public class PantallaJuego extends ScreenAdapter {
         this.RECURSOS = juego.obtenerRecursos();
         this.SONIDOS = juego.obtenerSonidos();
 
-        float posicionY = ConfiguracionJuego.ALTO_MUNDO / 2f - ConfiguracionJuego.TAMANO_TANQUE / 2f;
+        float posicionY = ConfiguracionPartida.ALTO_MUNDO / 2f - ConfiguracionPartida.TAMANO_TANQUE / 2f;
         JUGADOR1 = new Tanque("Jugador 1", RECURSOS.obtenerTexturaTanqueVerde(), RECURSOS.obtenerTexturaTanqueVerdeDestruido(),
             RECURSOS.obtenerAnimacionExplosionVerde(), 0f, 60, posicionY, 0f);
         JUGADOR2 = new Tanque("Jugador 2", RECURSOS.obtenerTexturaTanqueAzul(), RECURSOS.obtenerTexturaTanqueAzulDestruido(),
             RECURSOS.obtenerAnimacionExplosionAzul(), 0f,
-            ConfiguracionJuego.ANCHO_MUNDO - 60 - ConfiguracionJuego.TAMANO_TANQUE, posicionY, 180f);
+            ConfiguracionPartida.ANCHO_MUNDO - 60 - ConfiguracionPartida.TAMANO_TANQUE, posicionY, 180f);
 
         ENTRADA1 = new ManejadorEntradaJugador(Input.Keys.W, Input.Keys.S, Input.Keys.A, Input.Keys.D, Input.Keys.SPACE);
         ENTRADA2 = new ManejadorEntradaJugador(Input.Keys.UP, Input.Keys.DOWN, Input.Keys.LEFT, Input.Keys.RIGHT,
             Input.Keys.CONTROL_RIGHT);
 
         HUD = new Hud(juego.obtenerFuente(), RECURSOS);
-        MENU_PAUSA = new MenuPausa(ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO);
+        MENU_PAUSA = new MenuPausa(ConfiguracionPartida.ANCHO_MUNDO, ConfiguracionPartida.ALTO_MUNDO);
     }
 
     @Override
