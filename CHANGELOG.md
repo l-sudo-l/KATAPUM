@@ -7,6 +7,11 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.11.0] - 2026-10-30
+
+### Agregado
+- Número de secuencia en `INPUT` y `ESTADO`: el servidor y el cliente descartan los paquetes que llegan atrasados o repetidos.
+
 ## [0.10.0] - 2026-10-30
 
 ### Agregado

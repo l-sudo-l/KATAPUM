@@ -122,8 +122,8 @@ Abre el puerto UDP 5555 sin ventana. Mensajes de texto separados por `-`:
 | `ASIGNAR-n` | servidor | Le dice al cliente que es el jugador `n` (1 o 2). |
 | `SALA_LLENA` | servidor | Ya hay 2 jugadores. |
 | `EMPEZAR` | servidor | La sala está completa. |
-| `INPUT-g-a-d` | cliente | Giro y avance sumados 1 (0, 1 o 2) y contador de disparos. |
-| `ESTADO-...` | servidor | Tanques (x, y, ángulo, vidas), impactos de cada obstáculo y proyectiles (x, y, ángulo, jugador). |
+| `INPUT-s-g-a-d` | cliente | Secuencia, giro y avance sumados 1 (0, 1 o 2) y contador de disparos. |
+| `ESTADO-s-...` | servidor | Secuencia, tanques (x, y, ángulo, vidas), impactos de cada obstáculo y proyectiles (x, y, ángulo, jugador). |
 | `EVENTO-tipo-x-y-n` | servidor | `DISPARO`, `IMPACTO` o `MUERTE`, para efectos y sonidos. |
 | `FIN-n-m` | servidor | Ganó el jugador `n`. Motivo `m`: 0 sin vidas, 1 el rival se desconectó. |
 | `DESCONECTAR` | cliente | Libera su lugar. |
