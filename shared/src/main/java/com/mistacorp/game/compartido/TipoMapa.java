@@ -1,7 +1,8 @@
 package com.mistacorp.game.compartido;
 
 public enum TipoMapa {
-    BOSQUE("Bosque");
+    BOSQUE("Bosque"),
+    DESIERTO("Desierto");
 
     private final String NOMBRE_VISIBLE;
 
