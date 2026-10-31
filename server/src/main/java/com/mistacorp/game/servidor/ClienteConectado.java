@@ -8,6 +8,7 @@ public class ClienteConectado {
     private final int PUERTO;
     private final int NUMERO_JUGADOR;
     private long ultimoMensaje;
+    private int disparosProcesados = 0;
 
     public ClienteConectado(InetAddress direccion, int puerto, int numeroJugador) {
         this.DIRECCION = direccion;
@@ -22,6 +23,14 @@ public class ClienteConectado {
 
     public void registrarActividad() {
         ultimoMensaje = System.currentTimeMillis();
+    }
+
+    public boolean hayDisparoNuevo(int contadorDisparos) {
+        if (contadorDisparos > disparosProcesados) {
+            disparosProcesados = contadorDisparos;
+            return true;
+        }
+        return false;
     }
 
     public long obtenerUltimoMensaje() {

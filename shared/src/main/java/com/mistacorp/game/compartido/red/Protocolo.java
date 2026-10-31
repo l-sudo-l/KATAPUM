@@ -27,6 +27,10 @@ public final class Protocolo {
         }
     }
 
+    public static String entero(float valor) {
+        return String.valueOf(Math.max(0, Math.round(valor)));
+    }
+
     public static String numero(float valor) {
         return String.valueOf(Math.round(Math.max(0f, valor) * 100f) / 100f);
     }
