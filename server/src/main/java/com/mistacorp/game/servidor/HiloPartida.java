@@ -19,6 +19,7 @@ public class HiloPartida extends Thread {
     private final EntradaJugador ENTRADA2 = new EntradaJugador();
     private volatile boolean activo = true;
     private volatile boolean terminada = false;
+    private int secuenciaEstado = 0;
 
     public HiloPartida(HiloServidor servidor) {
         this.SERVIDOR = servidor;
@@ -40,7 +41,8 @@ public class HiloPartida extends Thread {
             tiempoDesdeEnvio += delta;
             if (tiempoDesdeEnvio >= intervaloEnvio) {
                 tiempoDesdeEnvio -= intervaloEnvio;
-                SERVIDOR.enviarATodos(CodificadorEstado.codificar(PARTIDA));
+                secuenciaEstado++;
+                SERVIDOR.enviarATodos(CodificadorEstado.codificar(PARTIDA, secuenciaEstado));
                 avisarFinSiHayGanador();
             }
             esperar();
