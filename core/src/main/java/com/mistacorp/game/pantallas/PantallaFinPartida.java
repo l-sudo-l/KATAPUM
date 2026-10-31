@@ -16,6 +16,7 @@ import com.mistacorp.game.ControlVolumen;
 import com.mistacorp.game.KatapumPrincipal;
 import com.mistacorp.game.RecursosGraficos;
 import com.mistacorp.game.compartido.ConfiguracionPartida;
+import com.mistacorp.game.compartido.TipoMapa;
 
 public class PantallaFinPartida extends ScreenAdapter {
 
@@ -23,6 +24,7 @@ public class PantallaFinPartida extends ScreenAdapter {
 
     private final KatapumPrincipal JUEGO;
     private final Texture TEXTURA_BANNER;
+    private final TipoMapa MAPA;
 
     private final OrthographicCamera CAMARA = new OrthographicCamera();
     private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionPartida.ANCHO_MUNDO, ConfiguracionPartida.ALTO_MUNDO, CAMARA);
@@ -32,8 +34,9 @@ public class PantallaFinPartida extends ScreenAdapter {
     private boolean botonJugarResaltado = false;
     private boolean botonMenuResaltado = false;
 
-    public PantallaFinPartida(KatapumPrincipal juego, String nombreGanador) {
+    public PantallaFinPartida(KatapumPrincipal juego, String nombreGanador, TipoMapa mapa) {
         this.JUEGO = juego;
+        this.MAPA = mapa;
 
         RecursosGraficos recursos = juego.obtenerRecursos();
         this.TEXTURA_BANNER = "Jugador 1".equals(nombreGanador)
@@ -58,7 +61,7 @@ public class PantallaFinPartida extends ScreenAdapter {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.ENTER) {
-                    JUEGO.setScreen(new PantallaJuego(JUEGO));
+                    JUEGO.setScreen(new PantallaJuego(JUEGO, MAPA));
                     return true;
                 }
                 if (keycode == Input.Keys.ESCAPE) {
@@ -126,7 +129,7 @@ public class PantallaFinPartida extends ScreenAdapter {
 
         if (Gdx.input.justTouched()) {
             if (botonJugarResaltado) {
-                JUEGO.setScreen(new PantallaJuego(JUEGO));
+                JUEGO.setScreen(new PantallaJuego(JUEGO, MAPA));
             } else if (botonMenuResaltado) {
                 JUEGO.setScreen(new PantallaMenu(JUEGO));
             }

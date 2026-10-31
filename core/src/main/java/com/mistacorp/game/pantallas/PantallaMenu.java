@@ -37,7 +37,7 @@ public class PantallaMenu extends PantallaBase {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.ENTER) {
-                    JUEGO.setScreen(new PantallaJuego(JUEGO));
+                    JUEGO.setScreen(new PantallaElegirMapa(JUEGO));
                     return true;
                 }
                 return false;
@@ -74,7 +74,7 @@ public class PantallaMenu extends PantallaBase {
             return;
         }
         if (BOTON_LOCAL.contienePunto(mouse.x, mouse.y)) {
-            JUEGO.setScreen(new PantallaJuego(JUEGO));
+            JUEGO.setScreen(new PantallaElegirMapa(JUEGO));
         } else if (BOTON_LAN.contienePunto(mouse.x, mouse.y)) {
             JUEGO.setScreen(new PantallaPartidasLan(JUEGO));
         } else if (BOTON_CONFIGURACION.contienePunto(mouse.x, mouse.y)) {
