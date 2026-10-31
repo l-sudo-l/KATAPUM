@@ -94,14 +94,21 @@ En Linux/macOS:
 ```
 
 ### Estructura del proyecto
-- `core/`: lógica del juego (independiente de la plataforma), organizada en paquetes:
-  - `com.mistacorp.game`: clase principal (`KatapumPrincipal`) y configuración (`ConfiguracionJuego`).
+- `shared/`: simulación de la partida, sin texturas, sonidos ni ventana. La usan el modo local y, más adelante, el servidor. Depende solo de `gdx` para `Rectangle`, `Vector2`, `MathUtils` y `Array`.
+  - `com.mistacorp.game.compartido`: `Partida` (la única lógica del juego), `ConfiguracionPartida` (tamaños, velocidades y vidas), `EventoPartida` y `TipoEvento` (disparo, impacto, muerte).
+  - `com.mistacorp.game.compartido.entidades`: estado de los objetos (`EstadoTanque`, `EstadoProyectil`).
+  - `com.mistacorp.game.compartido.mundo`: mapa y colisiones (`Arena`, `Obstaculo`, `Pared`, `Decoracion`, `TipoDecoracion`).
+  - `com.mistacorp.game.compartido.entrada`: lo que pide cada jugador (`EntradaJugador`: giro, avance y disparo).
+- `core/`: lo que se ve y se escucha (cliente), organizado en paquetes:
+  - `com.mistacorp.game`: clase principal (`KatapumPrincipal`), configuración visual (`ConfiguracionJuego`) y recursos (`RecursosGraficos`, `RecursosSonido`).
   - `com.mistacorp.game.pantallas`: pantallas del juego (`PantallaMenu`, `PantallaJuego`, `PantallaFinPartida`).
-  - `com.mistacorp.game.entidades`: objetos del mundo de juego (`Tanque`, `Proyectil`).
-  - `com.mistacorp.game.mundo`: entorno y mapa (`Arena`, `Obstaculo`, `Pared`, `Decoracion`, `TipoDecoracion`).
-  - `com.mistacorp.game.entrada`: manejo de entradas (`ManejadorEntradaJugador`).
-  - `com.mistacorp.game.interfaz`: interfaz de usuario en pantalla (`Hud`).
+  - `com.mistacorp.game.entidades`: dibujo de los objetos (`DibujoTanque`, `DibujoProyectil`, `Efecto`).
+  - `com.mistacorp.game.mundo`: dibujo del mapa (`DibujoArena`).
+  - `com.mistacorp.game.entrada`: teclado (`ManejadorEntradaJugador`, que llena una `EntradaJugador`).
+  - `com.mistacorp.game.interfaz`: interfaz de usuario en pantalla (`Hud`, `MenuPausa`, `BotonMouse`, `SliderVolumen`).
 - `lwjgl3/`: cliente de escritorio (LibGDX + LWJGL3). Clase principal: `LanzadorLwjgl3`.
-- `server/`: servidor headless que coordinará el estado de la partida en red (aún sin implementar; próximas entregas). Clase principal: `LanzadorServidor`.
-- `shared/`: clases y utilidades que compartirán cliente y servidor una vez incorporada la red.
+- `server/`: servidor headless que coordinará el estado de la partida en red (en desarrollo en la rama `red`). Clase principal: `LanzadorServidor`.
+
+### Cómo se separa la lógica del dibujo
+`Partida` decide todo: mueve los tanques según su `EntradaJugador`, mueve los proyectiles, aplica los impactos y define el ganador. Lo que antes reproducía sonidos lo anota como `EventoPartida`. `PantallaJuego` solo le pasa las entradas del teclado, lee los eventos para mostrar efectos y sonidos, y dibuja el estado con `DibujoArena`, `DibujoTanque` y `DibujoProyectil`. Así el modo local y el modo en red usan la misma simulación: el servidor decide, el cliente muestra.
 - `assets/`: sprites, texturas y audio del juego. Ver [`CREDITOS.md`](CREDITOS.md) para la atribución de los assets de audio de terceros (OpenGameArt.org).

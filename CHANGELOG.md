@@ -7,6 +7,18 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.6.1] - 2026-10-30
+
+### Cambiado
+- Se separa la simulación de la partida del dibujo, como preparación para el modo en red. El modo local se juega igual que antes.
+- El módulo `shared` suma la dependencia `gdx` (solo matemática: `Rectangle`, `Vector2`, `MathUtils`, `Array`).
+- `ConfiguracionPartida` (shared) toma las constantes de juego que estaban en `ConfiguracionJuego`: tamaño del mundo, del tanque y del proyectil, velocidades y vidas. En `ConfiguracionJuego` quedan los valores visuales.
+- `EntradaJugador` (shared) guarda giro, avance y disparo pendiente. `ManejadorEntradaJugador` la llena desde el teclado.
+- `Arena`, `Obstaculo`, `Pared`, `Decoracion` y `TipoDecoracion` pasan a `shared` sin texturas. Su dibujo pasa a `DibujoArena` (core).
+- `Tanque` se divide en `EstadoTanque` (shared: posición, ángulo, vidas, movimiento y colisión) y `DibujoTanque` (core: texturas y explosión).
+- `Proyectil` se divide en `EstadoProyectil` (shared) y `DibujoProyectil` (core). La animación de vuelo usa un único tiempo para todos los proyectiles.
+- Nueva clase `Partida` (shared) con toda la lógica que estaba en `PantallaJuego`. Los sonidos y efectos salen de eventos (`EventoPartida`, `TipoEvento`: disparo, impacto y muerte) que `PantallaJuego` reproduce.
+
 ## [0.6.0] - 2026-10-30
 
 ### Agregado
