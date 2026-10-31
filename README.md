@@ -125,9 +125,10 @@ Abre el puerto UDP 5555 sin ventana. Mensajes de texto separados por `-`:
 | `INPUT-g-a-d` | cliente | Giro y avance sumados 1 (0, 1 o 2) y contador de disparos. |
 | `ESTADO-...` | servidor | Tanques (x, y, ángulo, vidas), impactos de cada obstáculo y proyectiles (x, y, ángulo, jugador). |
 | `EVENTO-tipo-x-y-n` | servidor | `DISPARO`, `IMPACTO` o `MUERTE`, para efectos y sonidos. |
+| `FIN-n-m` | servidor | Ganó el jugador `n`. Motivo `m`: 0 sin vidas, 1 el rival se desconectó. |
 | `DESCONECTAR` | cliente | Libera su lugar. |
 
-Si un jugador pasa 5 segundos sin mandar nada, el servidor libera su lugar.
+Si un jugador pasa 5 segundos sin mandar nada, el servidor libera su lugar y, si había una partida en curso, le da la victoria al otro. Al terminar la partida los dos clientes se desconectan y la sala queda libre para otra, sin reiniciar el servidor.
 
 Para probar la conexión en una sola PC: abrir una terminal con `gradlew.bat server:run`, otras dos con `gradlew.bat lwjgl3:run`, y en ambos juegos elegir PARTIDA LAN y conectar a `127.0.0.1`. El primero queda como Jugador 1 esperando y, al entrar el segundo, empieza la partida en las dos ventanas. En red cada jugador maneja su tanque con W/S/A/D y ESPACIO; ESC sale al menú.
 

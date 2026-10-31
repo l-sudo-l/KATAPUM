@@ -7,6 +7,13 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.10.0] - 2026-10-30
+
+### Agregado
+- Fin de partida sincronizado: el servidor manda `FIN-ganador-motivo` (`MotivoFin`: `SIN_VIDAS` o `RIVAL_DESCONECTADO`). Los clientes esperan la explosión, se desconectan y muestran la pantalla de fin. VOLVER A JUGAR lleva a la pantalla de conexión, sin reiniciar el ejecutable.
+- Si un jugador se cae o sale en medio de la partida, el servidor le da la victoria al otro, que ve el aviso "El rival se desconecto".
+- Si el cliente pasa 5 segundos sin recibir el estado, vuelve a la pantalla de conexión con el aviso "Se perdio la conexion con el servidor".
+
 ## [0.9.0] - 2026-10-30
 
 ### Agregado
