@@ -7,6 +7,14 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.14.0] - 2026-10-30
+
+### Agregado
+- Revancha en red: al terminar, los dos jugadores siguen conectados en `PantallaFinPartidaRed`. VOLVER A JUGAR pide la revancha, el rival ve "El rival quiere la revancha!" y, si la acepta, el servidor arranca otra partida con los mismos jugadores sin volver a la lista. Mensajes nuevos: `REVANCHA`, `ESTADO_REVANCHA` y `RIVAL_SALIO`.
+
+### Cambiado
+- `PantallaFinPartida` vuelve a ser solo del modo local. El fin de la partida en red lo muestra `PantallaFinPartidaRed`.
+
 ## [0.13.0] - 2026-10-30
 
 ### Agregado
