@@ -65,14 +65,19 @@ public class DibujoTanque {
     private void dibujarExplosionOCarcasa(SpriteBatch lote) {
         Vector2 posicion = ESTADO.obtenerPosicion();
         Rectangle limites = ESTADO.obtenerLimites();
+        float origenX = limites.width / 2f;
+        float origenY = limites.height / 2f;
+        float rotacion = ESTADO.obtenerAngulo() - ANGULO_BASE_SPRITE;
         if (!ANIMACION_EXPLOSION.isAnimationFinished(tiempoExplosion)) {
             TextureRegion frame = ANIMACION_EXPLOSION.getKeyFrame(tiempoExplosion, false);
-            float offsetX = (frame.getRegionWidth() - limites.width) / 2f;
-            float offsetY = (frame.getRegionHeight() - limites.height) / 2f;
-            lote.draw(frame, posicion.x - offsetX, posicion.y - offsetY,
-                frame.getRegionWidth(), frame.getRegionHeight());
+            float ancho = frame.getRegionWidth();
+            float alto = frame.getRegionHeight();
+            float y = posicion.y - (alto - limites.height) / 2f;
+            lote.draw(frame, posicion.x, y, origenX, alto / 2f, ancho, alto, 1f, 1f, rotacion);
         } else {
-            lote.draw(TEXTURA_DESTRUIDO, posicion.x, posicion.y, limites.width, limites.height);
+            lote.draw(TEXTURA_DESTRUIDO, posicion.x, posicion.y, origenX, origenY,
+                limites.width, limites.height, 1f, 1f, rotacion,
+                0, 0, TEXTURA_DESTRUIDO.getWidth(), TEXTURA_DESTRUIDO.getHeight(), false, false);
         }
     }
 }
