@@ -59,6 +59,8 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
     private final Hud HUD;
 
     private int contadorDisparos = 0;
+    private int secuenciaEntrada = 0;
+    private int ultimaSecuenciaEstado = 0;
     private float tiempoDesdeEnvio = 0f;
     private int numeroGanador = 0;
     private String avisoFin = "";
@@ -115,6 +117,11 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
     public void mensajeRecibido(TipoMensaje tipo, String[] partes) {
         switch (tipo) {
             case ESTADO:
+                int secuencia = CodificadorEstado.leerSecuencia(partes);
+                if (secuencia <= ultimaSecuenciaEstado) {
+                    return;
+                }
+                ultimaSecuenciaEstado = secuencia;
                 tiempoSinEstado = 0f;
                 CodificadorEstado.aplicar(partes, PARTIDA);
                 revisarTanqueSinVidas(PARTIDA.obtenerJugador1(), DIBUJO_JUGADOR1);
@@ -228,7 +235,8 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
         }
         int giro = Math.round(entrada.obtenerGiro()) + 1;
         int avance = Math.round(entrada.obtenerAvance()) + 1;
-        CLIENTE.enviar(Protocolo.armar(TipoMensaje.INPUT,
+        secuenciaEntrada++;
+        CLIENTE.enviar(Protocolo.armar(TipoMensaje.INPUT, String.valueOf(secuenciaEntrada),
             String.valueOf(giro), String.valueOf(avance), String.valueOf(contadorDisparos)));
     }
 
