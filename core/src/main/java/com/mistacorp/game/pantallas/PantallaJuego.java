@@ -6,8 +6,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -19,7 +17,8 @@ import com.mistacorp.game.KatapumPrincipal;
 import com.mistacorp.game.RecursosGraficos;
 import com.mistacorp.game.RecursosSonido;
 import com.mistacorp.game.entidades.Efecto;
-import com.mistacorp.game.entidades.Proyectil;
+import com.mistacorp.game.entidades.DibujoProyectil;
+import com.mistacorp.game.compartido.entidades.EstadoProyectil;
 import com.mistacorp.game.entidades.DibujoTanque;
 import com.mistacorp.game.compartido.entidades.EstadoTanque;
 import com.mistacorp.game.entrada.ManejadorEntradaJugador;
@@ -46,7 +45,8 @@ public class PantallaJuego extends ScreenAdapter {
     private final EstadoTanque JUGADOR2;
     private final DibujoTanque DIBUJO_JUGADOR1;
     private final DibujoTanque DIBUJO_JUGADOR2;
-    private final Array<Proyectil> PROYECTILES = new Array<>();
+    private final Array<EstadoProyectil> PROYECTILES = new Array<>();
+    private final DibujoProyectil DIBUJO_PROYECTIL;
     private final Array<Efecto> EFECTOS = new Array<>();
 
     private final ManejadorEntradaJugador ENTRADA1;
@@ -63,6 +63,8 @@ public class PantallaJuego extends ScreenAdapter {
         this.RECURSOS = juego.obtenerRecursos();
         this.SONIDOS = juego.obtenerSonidos();
         this.DIBUJO_ARENA = new DibujoArena(RECURSOS);
+        this.DIBUJO_PROYECTIL = new DibujoProyectil(RECURSOS.obtenerAnimacionProyectilRojo(),
+            RECURSOS.obtenerAnimacionProyectilAzul());
 
         float posicionY = ConfiguracionPartida.ALTO_MUNDO / 2f - ConfiguracionPartida.TAMANO_TANQUE / 2f;
         JUGADOR1 = new EstadoTanque(1, "Jugador 1", 60, posicionY, 0f);
@@ -125,8 +127,8 @@ public class PantallaJuego extends ScreenAdapter {
         DIBUJO_ARENA.dibujar(JUEGO.obtenerLote(), ARENA);
         DIBUJO_JUGADOR1.dibujar(JUEGO.obtenerLote());
         DIBUJO_JUGADOR2.dibujar(JUEGO.obtenerLote());
-        for (Proyectil proyectil : PROYECTILES) {
-            proyectil.dibujar(JUEGO.obtenerLote());
+        for (EstadoProyectil proyectil : PROYECTILES) {
+            DIBUJO_PROYECTIL.dibujar(JUEGO.obtenerLote(), proyectil);
         }
         for (Efecto efecto : EFECTOS) {
             efecto.dibujar(JUEGO.obtenerLote());
@@ -165,6 +167,7 @@ public class PantallaJuego extends ScreenAdapter {
 
         DIBUJO_JUGADOR1.actualizar(delta);
         DIBUJO_JUGADOR2.actualizar(delta);
+        DIBUJO_PROYECTIL.actualizar(delta);
 
         actualizarProyectiles(delta);
         actualizarEfectos(delta);
@@ -190,12 +193,10 @@ public class PantallaJuego extends ScreenAdapter {
 
         if (entrada.consumirDisparo()) {
             boolean esJugador1 = tanque == JUGADOR1;
-            Animation<TextureRegion> animacionVuelo = esJugador1
-                ? RECURSOS.obtenerAnimacionProyectilRojo() : RECURSOS.obtenerAnimacionProyectilAzul();
             Texture flash = esJugador1 ? RECURSOS.obtenerTexturaFlashRojo() : RECURSOS.obtenerTexturaFlashAzul();
 
             Vector2 posicionCanon = tanque.obtenerPosicionCanon();
-            PROYECTILES.add(new Proyectil(posicionCanon, tanque.obtenerAngulo(), tanque, animacionVuelo));
+            PROYECTILES.add(new EstadoProyectil(posicionCanon, tanque.obtenerAngulo(), tanque));
             EFECTOS.add(new Efecto(flash, posicionCanon, 16, 16));
             SONIDOS.obtenerSonidoDisparo().play(ControlVolumen.obtenerVolumenEfectivo());
         }
@@ -203,7 +204,7 @@ public class PantallaJuego extends ScreenAdapter {
 
     private void actualizarProyectiles(float delta) {
         for (int i = PROYECTILES.size - 1; i >= 0; i--) {
-            Proyectil proyectil = PROYECTILES.get(i);
+            EstadoProyectil proyectil = PROYECTILES.get(i);
             proyectil.actualizar(delta);
 
             boolean debeEliminarse = false;
@@ -232,7 +233,7 @@ public class PantallaJuego extends ScreenAdapter {
         }
     }
 
-    private void agregarEfectoImpacto(Proyectil proyectil) {
+    private void agregarEfectoImpacto(EstadoProyectil proyectil) {
         boolean esJugador1 = proyectil.obtenerPropietario() == JUGADOR1;
         Texture impacto = esJugador1 ? RECURSOS.obtenerTexturaImpactoRojo() : RECURSOS.obtenerTexturaImpactoAzul();
         EFECTOS.add(new Efecto(impacto, proyectil.obtenerCentro(), 16, 16));
