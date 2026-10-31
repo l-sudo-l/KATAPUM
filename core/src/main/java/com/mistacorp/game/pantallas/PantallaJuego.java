@@ -22,6 +22,7 @@ import com.mistacorp.game.entidades.Efecto;
 import com.mistacorp.game.entidades.Proyectil;
 import com.mistacorp.game.entidades.Tanque;
 import com.mistacorp.game.entrada.ManejadorEntradaJugador;
+import com.mistacorp.game.compartido.entrada.EntradaJugador;
 import com.mistacorp.game.interfaz.Accion;
 import com.mistacorp.game.interfaz.Hud;
 import com.mistacorp.game.interfaz.MenuPausa;
@@ -102,8 +103,8 @@ public class PantallaJuego extends ScreenAdapter {
             actualizar(delta);
         } else {
             manejarMousePausa();
-            ENTRADA1.consumirDisparo();
-            ENTRADA2.consumirDisparo();
+            ENTRADA1.obtenerEntrada().consumirDisparo();
+            ENTRADA2.obtenerEntrada().consumirDisparo();
         }
 
         ScreenUtils.clear(0, 0, 0, 1);
@@ -151,8 +152,8 @@ public class PantallaJuego extends ScreenAdapter {
     }
 
     private void actualizar(float delta) {
-        manejarJugador(delta, ENTRADA1, JUGADOR1, JUGADOR2);
-        manejarJugador(delta, ENTRADA2, JUGADOR2, JUGADOR1);
+        manejarJugador(delta, ENTRADA1.obtenerEntrada(), JUGADOR1, JUGADOR2);
+        manejarJugador(delta, ENTRADA2.obtenerEntrada(), JUGADOR2, JUGADOR1);
 
         JUGADOR1.actualizar(delta);
         JUGADOR2.actualizar(delta);
@@ -162,7 +163,7 @@ public class PantallaJuego extends ScreenAdapter {
         revisarFinDePartida(delta);
     }
 
-    private void manejarJugador(float delta, ManejadorEntradaJugador entrada, Tanque tanque, Tanque otro) {
+    private void manejarJugador(float delta, EntradaJugador entrada, Tanque tanque, Tanque otro) {
         if (!tanque.estaVivo()) {
             return;
         }
