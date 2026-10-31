@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mistacorp.game.compartido.TipoMapa;
+import com.mistacorp.game.mundo.SpritesMapa;
 
 public class RecursosGraficos {
 
@@ -32,31 +34,11 @@ public class RecursosGraficos {
     private final Texture TEXTURA_IMPACTO_ROJO;
     private final Texture TEXTURA_IMPACTO_AZUL;
 
-    private final Texture TEXTURA_SUELO;
-    private final Texture HOJA_DESTRUCCION_ARBUSTO;
-    private final TextureRegion REGION_SUELO;
-    private final TextureRegion[] FRAMES_DESTRUCCION_ARBUSTO;
-    private final Texture TEXTURA_ARBUSTO_DESTRUIDO;
-    private final TextureRegion REGION_ARBUSTO_DESTRUIDO;
 
-    private final Texture HOJA_DESTRUCCION_PARED;
-    private final Texture HOJA_DESTRUCCION_CAJA;
-    private final Texture HOJA_DESTRUCCION_BARRIL;
-    private final TextureRegion[] FRAMES_DESTRUCCION_PARED;
-    private final TextureRegion[] FRAMES_DESTRUCCION_CAJA;
-    private final TextureRegion[] FRAMES_DESTRUCCION_BARRIL;
 
-    private final Texture TEXTURA_PARED_DESTRUIDA;
-    private final Texture TEXTURA_CAJA_DESTRUIDA;
-    private final Texture TEXTURA_BARRIL_DESTRUIDO;
-    private final TextureRegion REGION_PARED_DESTRUIDA;
-    private final TextureRegion REGION_CAJA_DESTRUIDA;
-    private final TextureRegion REGION_BARRIL_DESTRUIDO;
     private final Texture TEXTURA_CORAZON;
+    private final SpritesMapa SPRITES_BOSQUE;
 
-    private final Texture TEXTURA_MINIATURA_BOSQUE;
-    private final Texture TEXTURA_MARCO_MAPA;
-    private final Texture TEXTURA_MARCO_MAPA_SELECCIONADO;
     private final Texture TEXTURA_SLOT_VACIO;
     private final Texture TEXTURA_ICONO_HOST;
     private final Texture TEXTURA_ICONO_LISTO;
@@ -101,31 +83,13 @@ public class RecursosGraficos {
         TEXTURA_IMPACTO_ROJO = cargar("imagenes/proyectiles/bola_fuego_roja_impacto.png");
         TEXTURA_IMPACTO_AZUL = cargar("imagenes/proyectiles/bola_fuego_azul_impacto.png");
 
-        TEXTURA_SUELO = cargar("imagenes/mapas/bosque/suelo.png");
-        HOJA_DESTRUCCION_ARBUSTO = cargar("imagenes/mapas/bosque/arbusto_destruccion.png");
-        FRAMES_DESTRUCCION_ARBUSTO = crearFrames(HOJA_DESTRUCCION_ARBUSTO, 32, 32, 3);
-        TEXTURA_ARBUSTO_DESTRUIDO = cargar("imagenes/mapas/bosque/arbusto_destruido.png");
-        REGION_SUELO = new TextureRegion(TEXTURA_SUELO);
-        REGION_ARBUSTO_DESTRUIDO = new TextureRegion(TEXTURA_ARBUSTO_DESTRUIDO);
 
-        HOJA_DESTRUCCION_PARED = cargar("imagenes/mapas/bosque/pared_destruccion.png");
-        HOJA_DESTRUCCION_CAJA = cargar("imagenes/mapas/bosque/caja_destruccion.png");
-        HOJA_DESTRUCCION_BARRIL = cargar("imagenes/mapas/bosque/barril_destruccion.png");
-        FRAMES_DESTRUCCION_PARED = crearFrames(HOJA_DESTRUCCION_PARED, 32, 32, 6);
-        FRAMES_DESTRUCCION_CAJA = crearFrames(HOJA_DESTRUCCION_CAJA, 32, 32, 3);
-        FRAMES_DESTRUCCION_BARRIL = crearFrames(HOJA_DESTRUCCION_BARRIL, 32, 32, 3);
 
-        TEXTURA_PARED_DESTRUIDA = cargar("imagenes/mapas/bosque/pared_destruida.png");
-        TEXTURA_CAJA_DESTRUIDA = cargar("imagenes/mapas/bosque/caja_destruida.png");
-        TEXTURA_BARRIL_DESTRUIDO = cargar("imagenes/mapas/bosque/barril_destruido.png");
-        REGION_PARED_DESTRUIDA = new TextureRegion(TEXTURA_PARED_DESTRUIDA);
-        REGION_CAJA_DESTRUIDA = new TextureRegion(TEXTURA_CAJA_DESTRUIDA);
-        REGION_BARRIL_DESTRUIDO = new TextureRegion(TEXTURA_BARRIL_DESTRUIDO);
+        SPRITES_BOSQUE = new SpritesMapa("imagenes/mapas/bosque", "suelo", "pared", "pared_destruida",
+            "caja", "caja_destruida", "barril", "barril_destruido", "arbusto", "arbusto_destruido",
+            "mapa_bosque_miniatura", "marco_mapa");
         TEXTURA_CORAZON = cargar("imagenes/interfaz/corazon.png");
 
-        TEXTURA_MINIATURA_BOSQUE = cargar("imagenes/mapas/bosque/mapa_bosque_miniatura.png");
-        TEXTURA_MARCO_MAPA = cargar("imagenes/mapas/bosque/marco_mapa.png");
-        TEXTURA_MARCO_MAPA_SELECCIONADO = cargar("imagenes/mapas/bosque/marco_mapa_seleccionado.png");
         TEXTURA_SLOT_VACIO = cargar("imagenes/interfaz/slot_vacio.png");
         TEXTURA_ICONO_HOST = cargar("imagenes/interfaz/icono_host.png");
         TEXTURA_ICONO_LISTO = cargar("imagenes/interfaz/icono_listo.png");
@@ -224,56 +188,12 @@ public class RecursosGraficos {
         return TEXTURA_IMPACTO_AZUL;
     }
 
-    public TextureRegion obtenerRegionSuelo() {
-        return REGION_SUELO;
-    }
-
-    public TextureRegion[] obtenerFramesDestruccionArbusto() {
-        return FRAMES_DESTRUCCION_ARBUSTO;
-    }
-
-    public TextureRegion obtenerRegionArbustoDestruido() {
-        return REGION_ARBUSTO_DESTRUIDO;
-    }
-
-    public TextureRegion[] obtenerFramesDestruccionPared() {
-        return FRAMES_DESTRUCCION_PARED;
-    }
-
-    public TextureRegion[] obtenerFramesDestruccionCaja() {
-        return FRAMES_DESTRUCCION_CAJA;
-    }
-
-    public TextureRegion[] obtenerFramesDestruccionBarril() {
-        return FRAMES_DESTRUCCION_BARRIL;
-    }
-
-    public TextureRegion obtenerRegionParedDestruida() {
-        return REGION_PARED_DESTRUIDA;
-    }
-
-    public TextureRegion obtenerRegionCajaDestruida() {
-        return REGION_CAJA_DESTRUIDA;
-    }
-
-    public TextureRegion obtenerRegionBarrilDestruido() {
-        return REGION_BARRIL_DESTRUIDO;
+    public SpritesMapa obtenerSpritesMapa(TipoMapa mapa) {
+        return SPRITES_BOSQUE;
     }
 
     public Texture obtenerTexturaCorazon() {
         return TEXTURA_CORAZON;
-    }
-
-    public Texture obtenerTexturaMiniaturaBosque() {
-        return TEXTURA_MINIATURA_BOSQUE;
-    }
-
-    public Texture obtenerTexturaMarcoMapa() {
-        return TEXTURA_MARCO_MAPA;
-    }
-
-    public Texture obtenerTexturaMarcoMapaSeleccionado() {
-        return TEXTURA_MARCO_MAPA_SELECCIONADO;
     }
 
     public Texture obtenerTexturaSlotVacio() {
@@ -350,19 +270,8 @@ public class RecursosGraficos {
         HOJA_PROYECTIL_AZUL.dispose();
         TEXTURA_IMPACTO_ROJO.dispose();
         TEXTURA_IMPACTO_AZUL.dispose();
-        TEXTURA_SUELO.dispose();
-        HOJA_DESTRUCCION_ARBUSTO.dispose();
-        TEXTURA_ARBUSTO_DESTRUIDO.dispose();
-        HOJA_DESTRUCCION_PARED.dispose();
-        HOJA_DESTRUCCION_CAJA.dispose();
-        HOJA_DESTRUCCION_BARRIL.dispose();
-        TEXTURA_PARED_DESTRUIDA.dispose();
-        TEXTURA_CAJA_DESTRUIDA.dispose();
-        TEXTURA_BARRIL_DESTRUIDO.dispose();
         TEXTURA_CORAZON.dispose();
-        TEXTURA_MINIATURA_BOSQUE.dispose();
-        TEXTURA_MARCO_MAPA.dispose();
-        TEXTURA_MARCO_MAPA_SELECCIONADO.dispose();
+        SPRITES_BOSQUE.dispose();
         TEXTURA_SLOT_VACIO.dispose();
         TEXTURA_ICONO_HOST.dispose();
         TEXTURA_ICONO_LISTO.dispose();

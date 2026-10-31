@@ -3,6 +3,7 @@ package com.mistacorp.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.mistacorp.game.compartido.TipoMapa;
 
 public class RecursosSonido {
 
@@ -11,7 +12,7 @@ public class RecursosSonido {
     private final Sound SONIDO_MUERTE;
     private final Sound SONIDO_GANAR;
     private final Music MUSICA_MENU;
-    private final Music MUSICA_JUEGO;
+    private final Music MUSICA_BOSQUE;
 
     public RecursosSonido() {
         SONIDO_DISPARO = Gdx.audio.newSound(Gdx.files.internal("sonidos/disparo.wav"));
@@ -20,9 +21,9 @@ public class RecursosSonido {
         SONIDO_GANAR = Gdx.audio.newSound(Gdx.files.internal("sonidos/ganar.wav"));
 
         MUSICA_MENU = Gdx.audio.newMusic(Gdx.files.internal("musica/menu_juego.wav"));
-        MUSICA_JUEGO = Gdx.audio.newMusic(Gdx.files.internal("musica/musica_bosque.wav"));
+        MUSICA_BOSQUE = Gdx.audio.newMusic(Gdx.files.internal("musica/musica_bosque.wav"));
         MUSICA_MENU.setLooping(true);
-        MUSICA_JUEGO.setLooping(true);
+        MUSICA_BOSQUE.setLooping(true);
     }
 
     public Sound obtenerSonidoDisparo() {
@@ -45,8 +46,8 @@ public class RecursosSonido {
         return MUSICA_MENU;
     }
 
-    public Music obtenerMusicaJuego() {
-        return MUSICA_JUEGO;
+    public Music obtenerMusicaPartida(TipoMapa mapa) {
+        return MUSICA_BOSQUE;
     }
 
     public void dispose() {
@@ -55,6 +56,6 @@ public class RecursosSonido {
         SONIDO_MUERTE.dispose();
         SONIDO_GANAR.dispose();
         MUSICA_MENU.dispose();
-        MUSICA_JUEGO.dispose();
+        MUSICA_BOSQUE.dispose();
     }
 }

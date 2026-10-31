@@ -19,44 +19,18 @@ public class DibujoArena {
     }
 
     public void dibujar(SpriteBatch lote, Arena arena) {
+        SpritesMapa sprites = RECURSOS.obtenerSpritesMapa(arena.obtenerMapa());
         Rectangle mundo = arena.obtenerLimitesMundo();
-        dibujarTileado(lote, RECURSOS.obtenerRegionSuelo(), 0, 0, mundo.width, mundo.height);
+        dibujarTileado(lote, sprites.obtenerRegionSuelo(), 0, 0, mundo.width, mundo.height);
 
         for (Pared pared : arena.obtenerParedes()) {
             Rectangle b = pared.obtenerLimites();
-            dibujarTileado(lote, regionDePared(pared), b.x, b.y, b.width, b.height);
+            dibujarTileado(lote, sprites.obtenerRegionPared(pared), b.x, b.y, b.width, b.height);
         }
 
         for (Decoracion decoracion : arena.obtenerDecoraciones()) {
             Rectangle b = decoracion.obtenerLimites();
-            lote.draw(regionDeDecoracion(decoracion), b.x, b.y, b.width, b.height);
-        }
-    }
-
-    private TextureRegion regionDePared(Pared pared) {
-        if (pared.estaDestruido()) {
-            return RECURSOS.obtenerRegionParedDestruida();
-        }
-        return RECURSOS.obtenerFramesDestruccionPared()[pared.obtenerImpactosRecibidos()];
-    }
-
-    private TextureRegion regionDeDecoracion(Decoracion decoracion) {
-        switch (decoracion.obtenerTipo()) {
-            case CAJA:
-                if (decoracion.estaDestruido()) {
-                    return RECURSOS.obtenerRegionCajaDestruida();
-                }
-                return RECURSOS.obtenerFramesDestruccionCaja()[decoracion.obtenerImpactosRecibidos()];
-            case BARRIL:
-                if (decoracion.estaDestruido()) {
-                    return RECURSOS.obtenerRegionBarrilDestruido();
-                }
-                return RECURSOS.obtenerFramesDestruccionBarril()[decoracion.obtenerImpactosRecibidos()];
-            default:
-                if (decoracion.estaDestruido()) {
-                    return RECURSOS.obtenerRegionArbustoDestruido();
-                }
-                return RECURSOS.obtenerFramesDestruccionArbusto()[decoracion.obtenerImpactosRecibidos()];
+            lote.draw(sprites.obtenerRegionDecoracion(decoracion), b.x, b.y, b.width, b.height);
         }
     }
 

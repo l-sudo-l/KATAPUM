@@ -306,6 +306,10 @@ public class HiloServidor extends Thread {
         }
     }
 
+    public TipoMapa obtenerMapa() {
+        return MAPA;
+    }
+
     public String obtenerNombreSala() {
         return NOMBRE_SALA;
     }

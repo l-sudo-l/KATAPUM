@@ -3,38 +3,50 @@ package com.mistacorp.game.compartido.mundo;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.mistacorp.game.compartido.ConfiguracionPartida;
+import com.mistacorp.game.compartido.TipoMapa;
 
 public class Arena {
 
+    private static final int TAMANO_TILE = 32;
+
+    private final TipoMapa MAPA;
     private final Array<Pared> PAREDES = new Array<>();
     private final Array<Decoracion> DECORACIONES = new Array<>();
     private final Rectangle LIMITES_MUNDO;
 
-    public Arena() {
+    public Arena(TipoMapa mapa) {
+        this.MAPA = mapa;
         this.LIMITES_MUNDO = new Rectangle(0, 0, ConfiguracionPartida.ANCHO_MUNDO, ConfiguracionPartida.ALTO_MUNDO);
-        construirDisposicion();
-        construirDecoraciones();
+        construirDesdeGrilla(DisenoMapa.obtenerGrilla(mapa));
     }
 
-    private void construirDisposicion() {
-        PAREDES.add(new Pared(220, 380, 96, 32));
-        PAREDES.add(new Pared(640, 380, 96, 32));
-        PAREDES.add(new Pared(150, 250, 32, 96));
-        PAREDES.add(new Pared(778, 250, 32, 96));
-        PAREDES.add(new Pared(432, 290, 96, 32));
-        PAREDES.add(new Pared(150, 120, 96, 32));
-        PAREDES.add(new Pared(714, 120, 96, 32));
-        PAREDES.add(new Pared(432, 70, 32, 96));
+    private void construirDesdeGrilla(String[] grilla) {
+        for (int fila = 0; fila < grilla.length; fila++) {
+            float y = Math.max(0, ConfiguracionPartida.ALTO_MUNDO - (fila + 1) * TAMANO_TILE);
+            for (int columna = 0; columna < grilla[fila].length(); columna++) {
+                float x = columna * TAMANO_TILE;
+                agregarObjeto(grilla[fila].charAt(columna), x, y);
+            }
+        }
     }
 
-    private void construirDecoraciones() {
-        DECORACIONES.add(new Decoracion(60, 420, TipoDecoracion.ARBUSTO));
-        DECORACIONES.add(new Decoracion(860, 420, TipoDecoracion.ARBUSTO));
-        DECORACIONES.add(new Decoracion(60, 90, TipoDecoracion.ARBUSTO));
-        DECORACIONES.add(new Decoracion(480, 460, TipoDecoracion.CAJA));
-        DECORACIONES.add(new Decoracion(480, 200, TipoDecoracion.CAJA));
-        DECORACIONES.add(new Decoracion(300, 460, TipoDecoracion.BARRIL));
-        DECORACIONES.add(new Decoracion(660, 90, TipoDecoracion.BARRIL));
+    private void agregarObjeto(char simbolo, float x, float y) {
+        switch (simbolo) {
+            case DisenoMapa.PARED:
+                PAREDES.add(new Pared(x, y, TAMANO_TILE, TAMANO_TILE));
+                break;
+            case DisenoMapa.VEGETACION:
+                DECORACIONES.add(new Decoracion(x, y, TipoDecoracion.VEGETACION));
+                break;
+            case DisenoMapa.CAJA:
+                DECORACIONES.add(new Decoracion(x, y, TipoDecoracion.CAJA));
+                break;
+            case DisenoMapa.BARRIL:
+                DECORACIONES.add(new Decoracion(x, y, TipoDecoracion.BARRIL));
+                break;
+            default:
+                break;
+        }
     }
 
     public boolean estaDentroDeLimites(Rectangle limites) {
@@ -66,6 +78,10 @@ public class Arena {
             }
         }
         return null;
+    }
+
+    public TipoMapa obtenerMapa() {
+        return MAPA;
     }
 
     public Array<Pared> obtenerParedes() {

@@ -15,6 +15,7 @@ import com.mistacorp.game.compartido.red.ConfiguracionRed;
 import com.mistacorp.game.interfaz.BotonMouse;
 import com.mistacorp.game.interfaz.CampoTexto;
 import com.mistacorp.game.interfaz.TipoCampoTexto;
+import com.mistacorp.game.mundo.SpritesMapa;
 
 public class PantallaCrearPartida extends PantallaBase {
 
@@ -112,8 +113,9 @@ public class PantallaCrearPartida extends PantallaBase {
 
         TipoMapa mapa = TipoMapa.values()[indiceMapa];
         dibujarTexto("Mapa:", X_MARCO, Y_MARCO + 175f);
-        lote.draw(recursos.obtenerTexturaMarcoMapaSeleccionado(), X_MARCO, Y_MARCO);
-        lote.draw(recursos.obtenerTexturaMiniaturaBosque(), X_MARCO + 4f, Y_MARCO + 4f);
+        SpritesMapa sprites = recursos.obtenerSpritesMapa(mapa);
+        lote.draw(sprites.obtenerTexturaMarcoSeleccionado(), X_MARCO, Y_MARCO);
+        lote.draw(sprites.obtenerTexturaMiniatura(), X_MARCO + 4f, Y_MARCO + 4f);
         lote.draw(recursos.obtenerTexturaFlechaIzquierda(), FLECHA_MAPA_ANTERIOR.x, FLECHA_MAPA_ANTERIOR.y, TAMANO_FLECHA, TAMANO_FLECHA);
         dibujarCentrado(mapa.obtenerNombreVisible(), X_MARCO + 124f, FLECHA_MAPA_ANTERIOR.y + 22f);
         lote.draw(recursos.obtenerTexturaFlechaDerecha(), FLECHA_MAPA_SIGUIENTE.x, FLECHA_MAPA_SIGUIENTE.y, TAMANO_FLECHA, TAMANO_FLECHA);

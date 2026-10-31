@@ -18,6 +18,7 @@ import com.mistacorp.game.RecursosSonido;
 import com.mistacorp.game.compartido.ConfiguracionPartida;
 import com.mistacorp.game.compartido.EventoPartida;
 import com.mistacorp.game.compartido.Partida;
+import com.mistacorp.game.compartido.TipoMapa;
 import com.mistacorp.game.compartido.entidades.EstadoProyectil;
 import com.mistacorp.game.compartido.entidades.EstadoTanque;
 import com.mistacorp.game.entidades.DibujoProyectil;
@@ -39,7 +40,8 @@ public class PantallaJuego extends ScreenAdapter {
     private final OrthographicCamera CAMARA = new OrthographicCamera();
     private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionPartida.ANCHO_MUNDO, ConfiguracionPartida.ALTO_MUNDO, CAMARA);
 
-    private final Partida PARTIDA = new Partida();
+    private final TipoMapa MAPA = TipoMapa.BOSQUE;
+    private final Partida PARTIDA = new Partida(MAPA);
     private final DibujoArena DIBUJO_ARENA;
     private final DibujoTanque DIBUJO_JUGADOR1;
     private final DibujoTanque DIBUJO_JUGADOR2;
@@ -80,13 +82,13 @@ public class PantallaJuego extends ScreenAdapter {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(new InputMultiplexer(ENTRADA1, ENTRADA2));
-        SONIDOS.obtenerMusicaJuego().setVolume(ControlVolumen.obtenerVolumenEfectivo());
-        SONIDOS.obtenerMusicaJuego().play();
+        SONIDOS.obtenerMusicaPartida(MAPA).setVolume(ControlVolumen.obtenerVolumenEfectivo());
+        SONIDOS.obtenerMusicaPartida(MAPA).play();
     }
 
     @Override
     public void hide() {
-        SONIDOS.obtenerMusicaJuego().stop();
+        SONIDOS.obtenerMusicaPartida(MAPA).stop();
     }
 
     @Override
@@ -101,7 +103,7 @@ public class PantallaJuego extends ScreenAdapter {
             pausado = !pausado;
         }
         manejarControlesDeVolumen();
-        SONIDOS.obtenerMusicaJuego().setVolume(ControlVolumen.obtenerVolumenEfectivo());
+        SONIDOS.obtenerMusicaPartida(MAPA).setVolume(ControlVolumen.obtenerVolumenEfectivo());
 
         if (!pausado) {
             actualizar(delta);

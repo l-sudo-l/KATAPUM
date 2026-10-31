@@ -11,14 +11,15 @@ public class Partida {
 
     private static final float MARGEN_INICIAL = 60f;
 
-    private final Arena ARENA = new Arena();
+    private final Arena ARENA;
     private final EstadoTanque JUGADOR1;
     private final EstadoTanque JUGADOR2;
     private final Array<EstadoProyectil> PROYECTILES = new Array<>();
     private final Array<EventoPartida> EVENTOS = new Array<>();
     private EstadoTanque ganador = null;
 
-    public Partida() {
+    public Partida(TipoMapa mapa) {
+        ARENA = new Arena(mapa);
         float posicionY = ConfiguracionPartida.ALTO_MUNDO / 2f - ConfiguracionPartida.TAMANO_TANQUE / 2f;
         float posicionXJugador2 = ConfiguracionPartida.ANCHO_MUNDO - MARGEN_INICIAL - ConfiguracionPartida.TAMANO_TANQUE;
         JUGADOR1 = new EstadoTanque(1, "Jugador 1", MARGEN_INICIAL, posicionY, 0f);
