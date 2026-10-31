@@ -40,8 +40,8 @@ public class PantallaJuego extends ScreenAdapter {
     private final OrthographicCamera CAMARA = new OrthographicCamera();
     private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionPartida.ANCHO_MUNDO, ConfiguracionPartida.ALTO_MUNDO, CAMARA);
 
-    private final TipoMapa MAPA = TipoMapa.BOSQUE;
-    private final Partida PARTIDA = new Partida(MAPA);
+    private final TipoMapa MAPA;
+    private final Partida PARTIDA;
     private final DibujoArena DIBUJO_ARENA;
     private final DibujoTanque DIBUJO_JUGADOR1;
     private final DibujoTanque DIBUJO_JUGADOR2;
@@ -57,7 +57,9 @@ public class PantallaJuego extends ScreenAdapter {
     private boolean pausado = false;
     private float tiempoEsperaFinPartida = 0f;
 
-    public PantallaJuego(KatapumPrincipal juego) {
+    public PantallaJuego(KatapumPrincipal juego, TipoMapa mapa) {
+        this.MAPA = mapa;
+        this.PARTIDA = new Partida(mapa);
         this.JUEGO = juego;
         this.RECURSOS = juego.obtenerRecursos();
         this.SONIDOS = juego.obtenerSonidos();
@@ -197,7 +199,7 @@ public class PantallaJuego extends ScreenAdapter {
         }
         tiempoEsperaFinPartida += delta;
         if (tiempoEsperaFinPartida >= ConfiguracionJuego.RETRASO_FIN_PARTIDA) {
-            JUEGO.setScreen(new PantallaFinPartida(JUEGO, ganador.obtenerNombre()));
+            JUEGO.setScreen(new PantallaFinPartida(JUEGO, ganador.obtenerNombre(), MAPA));
         }
     }
 
