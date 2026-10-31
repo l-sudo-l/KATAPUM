@@ -1,6 +1,7 @@
 package com.mistacorp.game.entrada;
 
 import com.badlogic.gdx.InputAdapter;
+import com.mistacorp.game.compartido.entrada.EntradaJugador;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +15,7 @@ public class ManejadorEntradaJugador extends InputAdapter {
     private final int TECLA_DISPARO;
 
     private final Set<Integer> TECLAS_PRESIONADAS = new HashSet<>();
-    private boolean disparoSolicitado = false;
+    private final EntradaJugador ENTRADA = new EntradaJugador();
 
     public ManejadorEntradaJugador(int teclaArriba, int teclaAbajo, int teclaIzquierda, int teclaDerecha, int teclaDisparo) {
         this.TECLA_ARRIBA = teclaArriba;
@@ -31,8 +32,9 @@ public class ManejadorEntradaJugador extends InputAdapter {
         }
         TECLAS_PRESIONADAS.add(keycode);
         if (keycode == TECLA_DISPARO) {
-            disparoSolicitado = true;
+            ENTRADA.solicitarDisparo();
         }
+        actualizarMovimiento();
         return true;
     }
 
@@ -42,6 +44,7 @@ public class ManejadorEntradaJugador extends InputAdapter {
             return false;
         }
         TECLAS_PRESIONADAS.remove(keycode);
+        actualizarMovimiento();
         return true;
     }
 
@@ -51,25 +54,19 @@ public class ManejadorEntradaJugador extends InputAdapter {
             || keycode == TECLA_DISPARO;
     }
 
-    public float obtenerGiro() {
+    private void actualizarMovimiento() {
         float giro = 0;
         if (TECLAS_PRESIONADAS.contains(TECLA_IZQUIERDA)) giro += 1;
         if (TECLAS_PRESIONADAS.contains(TECLA_DERECHA)) giro -= 1;
-        return giro;
-    }
 
-    public float obtenerAvance() {
         float avance = 0;
         if (TECLAS_PRESIONADAS.contains(TECLA_ARRIBA)) avance += 1;
         if (TECLAS_PRESIONADAS.contains(TECLA_ABAJO)) avance -= 1;
-        return avance;
+
+        ENTRADA.establecerMovimiento(giro, avance);
     }
 
-    public boolean consumirDisparo() {
-        if (disparoSolicitado) {
-            disparoSolicitado = false;
-            return true;
-        }
-        return false;
+    public EntradaJugador obtenerEntrada() {
+        return ENTRADA;
     }
 }
