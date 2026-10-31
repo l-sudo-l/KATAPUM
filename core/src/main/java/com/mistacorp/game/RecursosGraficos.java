@@ -39,6 +39,7 @@ public class RecursosGraficos {
     private final Texture TEXTURA_CORAZON;
     private final SpritesMapa SPRITES_BOSQUE;
     private final SpritesMapa SPRITES_DESIERTO;
+    private final SpritesMapa SPRITES_CIUDAD;
 
     private final Texture TEXTURA_SLOT_VACIO;
     private final Texture TEXTURA_ICONO_HOST;
@@ -92,6 +93,9 @@ public class RecursosGraficos {
         SPRITES_DESIERTO = new SpritesMapa("imagenes/mapas/desierto", "suelo_arena", "pared_arena", "pared_arena_destruida",
             "caja_roble", "caja_roble_destruida", "barril_roble", "barril_roble_destruido", "palmera_desierto",
             "palmera_desierto_destruida", "mapa_desierto_miniatura", "marco_mapa_desierto");
+        SPRITES_CIUDAD = new SpritesMapa("imagenes/mapas/ciudad", "suelo_asfalto", "pared_ladrillo", "pared_ladrillo_destruida",
+            "caja_vieja", "caja_vieja_destruida", "barril_oxidado", "barril_oxidado_destruido", "arbusto_seco",
+            "arbusto_seco_destruido", "mapa_ciudad_miniatura", "marco_mapa_ciudad");
         TEXTURA_CORAZON = cargar("imagenes/interfaz/corazon.png");
 
         TEXTURA_SLOT_VACIO = cargar("imagenes/interfaz/slot_vacio.png");
@@ -193,10 +197,14 @@ public class RecursosGraficos {
     }
 
     public SpritesMapa obtenerSpritesMapa(TipoMapa mapa) {
-        if (mapa == TipoMapa.DESIERTO) {
-            return SPRITES_DESIERTO;
+        switch (mapa) {
+            case DESIERTO:
+                return SPRITES_DESIERTO;
+            case CIUDAD:
+                return SPRITES_CIUDAD;
+            default:
+                return SPRITES_BOSQUE;
         }
-        return SPRITES_BOSQUE;
     }
 
     public Texture obtenerTexturaCorazon() {
@@ -280,6 +288,7 @@ public class RecursosGraficos {
         TEXTURA_CORAZON.dispose();
         SPRITES_BOSQUE.dispose();
         SPRITES_DESIERTO.dispose();
+        SPRITES_CIUDAD.dispose();
         TEXTURA_SLOT_VACIO.dispose();
         TEXTURA_ICONO_HOST.dispose();
         TEXTURA_ICONO_LISTO.dispose();
