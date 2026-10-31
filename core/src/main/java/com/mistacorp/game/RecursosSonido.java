@@ -13,6 +13,7 @@ public class RecursosSonido {
     private final Sound SONIDO_GANAR;
     private final Music MUSICA_MENU;
     private final Music MUSICA_BOSQUE;
+    private final Music MUSICA_DESIERTO;
 
     public RecursosSonido() {
         SONIDO_DISPARO = Gdx.audio.newSound(Gdx.files.internal("sonidos/disparo.wav"));
@@ -22,8 +23,10 @@ public class RecursosSonido {
 
         MUSICA_MENU = Gdx.audio.newMusic(Gdx.files.internal("musica/menu_juego.wav"));
         MUSICA_BOSQUE = Gdx.audio.newMusic(Gdx.files.internal("musica/musica_bosque.wav"));
+        MUSICA_DESIERTO = Gdx.audio.newMusic(Gdx.files.internal("musica/musica_desierto.wav"));
         MUSICA_MENU.setLooping(true);
         MUSICA_BOSQUE.setLooping(true);
+        MUSICA_DESIERTO.setLooping(true);
     }
 
     public Sound obtenerSonidoDisparo() {
@@ -47,6 +50,9 @@ public class RecursosSonido {
     }
 
     public Music obtenerMusicaPartida(TipoMapa mapa) {
+        if (mapa == TipoMapa.DESIERTO) {
+            return MUSICA_DESIERTO;
+        }
         return MUSICA_BOSQUE;
     }
 
@@ -57,5 +63,6 @@ public class RecursosSonido {
         SONIDO_GANAR.dispose();
         MUSICA_MENU.dispose();
         MUSICA_BOSQUE.dispose();
+        MUSICA_DESIERTO.dispose();
     }
 }
