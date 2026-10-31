@@ -7,6 +7,11 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.16.1] - 2026-10-31
+
+### Corregido
+- La explosión y la carcasa del tanque destruido ahora giran según hacia dónde apuntaba el tanque, en vez de mirar siempre a la derecha.
+
 ## [0.16.0] - 2026-10-31
 
 ### Agregado
