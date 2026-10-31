@@ -126,11 +126,14 @@ Abre el puerto UDP 5555 sin ventana. Mensajes de texto separados por `-`:
 | `ESTADO-s-...` | servidor | Secuencia, tanques (x, y, ángulo, vidas), impactos de cada obstáculo y proyectiles (x, y, ángulo, jugador). |
 | `EVENTO-tipo-x-y-n` | servidor | `DISPARO`, `IMPACTO` o `MUERTE`, para efectos y sonidos. |
 | `FIN-n-m` | servidor | Ganó el jugador `n`. Motivo `m`: 0 sin vidas, 1 el rival se desconectó. |
+| `REVANCHA-p` | cliente | En la pantalla de fin, cada medio segundo: `p` 1 si pide la revancha, 0 si no. |
+| `ESTADO_REVANCHA-a-b` | servidor | Quién pide la revancha (jugador 1 y jugador 2). Con los dos en 1 manda `EMPEZAR` y arranca otra partida. |
+| `RIVAL_SALIO` | servidor | El rival dejó la pantalla de fin. |
 | `DESCONECTAR` | cliente | Libera su lugar. |
 | `BUSCAR` | cliente (broadcast) | Pregunta qué partidas hay en la red local. |
 | `SALA-nombre-j-m-mapa` | servidor | Responde a `BUSCAR` con el nombre de la sala, jugadores conectados, máximo y mapa. |
 
-Si un jugador pasa 5 segundos sin mandar nada, el servidor libera su lugar y, si había una partida en curso, le da la victoria al otro. Al terminar la partida los dos clientes se desconectan y la sala queda libre para otra, sin reiniciar el servidor.
+Si un jugador pasa 5 segundos sin mandar nada, el servidor libera su lugar y, si había una partida en curso, le da la victoria al otro. Al terminar la partida los dos quedan en la pantalla de fin: si ambos tocan VOLVER A JUGAR, arranca la revancha; si uno sale, su lugar queda libre para otro jugador, sin reiniciar el servidor.
 
 Cómo jugar en red: un jugador va a PARTIDA LAN, CREAR PARTIDA, elige nombre y mapa y toca CREAR Y ESPERAR. Su juego levanta el servidor y lo deja en la sala. El otro va a PARTIDA LAN y la sala aparece sola en la lista (se busca por broadcast UDP); un clic y entra. Si no aparece (por ejemplo, si la red bloquea el broadcast), CONECTAR POR IP permite escribir la IP de la PC del anfitrión (se ve con `ipconfig`). También se puede usar un servidor aparte con `gradlew.bat server:run` y conectar los dos juegos por IP.
 
