@@ -1,5 +1,6 @@
 package com.mistacorp.game.servidor;
 
+import com.mistacorp.game.compartido.TipoMapa;
 import com.mistacorp.game.compartido.entrada.EntradaJugador;
 import com.mistacorp.game.compartido.red.ConfiguracionRed;
 import com.mistacorp.game.compartido.red.MotivoFin;
@@ -20,11 +21,15 @@ public class HiloServidor extends Thread {
     private static final int REPETICIONES_AVISO_FIN = 3;
 
     private final DatagramSocket SOCKET;
+    private final String NOMBRE_SALA;
+    private final TipoMapa MAPA;
     private final ClienteConectado[] CLIENTES = new ClienteConectado[MAXIMO_JUGADORES];
     private volatile boolean activo = true;
     private volatile HiloPartida partida = null;
 
-    public HiloServidor(int puerto) throws SocketException {
+    public HiloServidor(int puerto, String nombreSala, TipoMapa mapa) throws SocketException {
+        this.NOMBRE_SALA = Protocolo.limpiarNombreSala(nombreSala);
+        this.MAPA = mapa;
         this.SOCKET = new DatagramSocket(puerto);
         this.SOCKET.setSoTimeout(ConfiguracionRed.MILISEGUNDOS_ESPERA_RECEPCION);
     }
@@ -177,7 +182,8 @@ public class HiloServidor extends Thread {
     }
 
     private void enviarAsignacion(ClienteConectado cliente) {
-        String mensaje = Protocolo.armar(TipoMensaje.ASIGNAR, String.valueOf(cliente.obtenerNumeroJugador()));
+        String mensaje = Protocolo.armar(TipoMensaje.ASIGNAR, String.valueOf(cliente.obtenerNumeroJugador()),
+            NOMBRE_SALA, MAPA.name());
         enviar(mensaje, cliente.obtenerDireccion(), cliente.obtenerPuerto());
     }
 
@@ -227,6 +233,10 @@ public class HiloServidor extends Thread {
         } catch (InterruptedException e) {
             activo = false;
         }
+    }
+
+    public String obtenerNombreSala() {
+        return NOMBRE_SALA;
     }
 
     public void detener() {

@@ -27,6 +27,21 @@ public final class Protocolo {
         }
     }
 
+    public static String limpiarNombreSala(String nombre) {
+        StringBuilder limpio = new StringBuilder();
+        for (int i = 0; i < nombre.length() && limpio.length() < ConfiguracionRed.LARGO_MAXIMO_NOMBRE_SALA; i++) {
+            char caracter = nombre.charAt(i);
+            if (Character.isLetterOrDigit(caracter) || caracter == ' ') {
+                limpio.append(caracter);
+            }
+        }
+        String resultado = limpio.toString().trim();
+        if (resultado.isEmpty()) {
+            return ConfiguracionRed.NOMBRE_SALA_POR_DEFECTO;
+        }
+        return resultado;
+    }
+
     public static String entero(float valor) {
         return String.valueOf(Math.max(0, Math.round(valor)));
     }
