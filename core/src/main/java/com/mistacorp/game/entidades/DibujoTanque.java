@@ -30,6 +30,10 @@ public class DibujoTanque {
         tiempoExplosion = 0f;
     }
 
+    public boolean estaExplotando() {
+        return tiempoExplosion >= 0;
+    }
+
     public boolean explosionTerminada() {
         return tiempoExplosion >= 0 && ANIMACION_EXPLOSION.isAnimationFinished(tiempoExplosion);
     }
