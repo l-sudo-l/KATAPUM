@@ -33,9 +33,11 @@ public class RecursosGraficos {
     private final Texture TEXTURA_IMPACTO_AZUL;
 
     private final Texture TEXTURA_SUELO;
-    private final Texture TEXTURA_ARBUSTO;
+    private final Texture HOJA_DESTRUCCION_ARBUSTO;
     private final TextureRegion REGION_SUELO;
-    private final TextureRegion REGION_ARBUSTO;
+    private final TextureRegion[] FRAMES_DESTRUCCION_ARBUSTO;
+    private final Texture TEXTURA_ARBUSTO_DESTRUIDO;
+    private final TextureRegion REGION_ARBUSTO_DESTRUIDO;
 
     private final Texture HOJA_DESTRUCCION_PARED;
     private final Texture HOJA_DESTRUCCION_CAJA;
@@ -100,9 +102,11 @@ public class RecursosGraficos {
         TEXTURA_IMPACTO_AZUL = cargar("imagenes/proyectiles/bola_fuego_azul_impacto.png");
 
         TEXTURA_SUELO = cargar("imagenes/mapas/bosque/suelo.png");
-        TEXTURA_ARBUSTO = cargar("imagenes/mapas/bosque/arbusto.png");
+        HOJA_DESTRUCCION_ARBUSTO = cargar("imagenes/mapas/bosque/arbusto_destruccion.png");
+        FRAMES_DESTRUCCION_ARBUSTO = crearFrames(HOJA_DESTRUCCION_ARBUSTO, 32, 32, 3);
+        TEXTURA_ARBUSTO_DESTRUIDO = cargar("imagenes/mapas/bosque/arbusto_destruido.png");
         REGION_SUELO = new TextureRegion(TEXTURA_SUELO);
-        REGION_ARBUSTO = new TextureRegion(TEXTURA_ARBUSTO);
+        REGION_ARBUSTO_DESTRUIDO = new TextureRegion(TEXTURA_ARBUSTO_DESTRUIDO);
 
         HOJA_DESTRUCCION_PARED = cargar("imagenes/mapas/bosque/pared_destruccion.png");
         HOJA_DESTRUCCION_CAJA = cargar("imagenes/mapas/bosque/caja_destruccion.png");
@@ -224,8 +228,12 @@ public class RecursosGraficos {
         return REGION_SUELO;
     }
 
-    public TextureRegion obtenerRegionArbusto() {
-        return REGION_ARBUSTO;
+    public TextureRegion[] obtenerFramesDestruccionArbusto() {
+        return FRAMES_DESTRUCCION_ARBUSTO;
+    }
+
+    public TextureRegion obtenerRegionArbustoDestruido() {
+        return REGION_ARBUSTO_DESTRUIDO;
     }
 
     public TextureRegion[] obtenerFramesDestruccionPared() {
@@ -343,7 +351,8 @@ public class RecursosGraficos {
         TEXTURA_IMPACTO_ROJO.dispose();
         TEXTURA_IMPACTO_AZUL.dispose();
         TEXTURA_SUELO.dispose();
-        TEXTURA_ARBUSTO.dispose();
+        HOJA_DESTRUCCION_ARBUSTO.dispose();
+        TEXTURA_ARBUSTO_DESTRUIDO.dispose();
         HOJA_DESTRUCCION_PARED.dispose();
         HOJA_DESTRUCCION_CAJA.dispose();
         HOJA_DESTRUCCION_BARRIL.dispose();
