@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -24,6 +23,7 @@ import com.mistacorp.game.compartido.entidades.EstadoTanque;
 import com.mistacorp.game.entidades.DibujoProyectil;
 import com.mistacorp.game.entidades.DibujoTanque;
 import com.mistacorp.game.entidades.Efecto;
+import com.mistacorp.game.entidades.ReproductorEventos;
 import com.mistacorp.game.entrada.ManejadorEntradaJugador;
 import com.mistacorp.game.interfaz.Accion;
 import com.mistacorp.game.interfaz.Hud;
@@ -45,6 +45,7 @@ public class PantallaJuego extends ScreenAdapter {
     private final DibujoTanque DIBUJO_JUGADOR2;
     private final DibujoProyectil DIBUJO_PROYECTIL;
     private final Array<Efecto> EFECTOS = new Array<>();
+    private final ReproductorEventos REPRODUCTOR;
 
     private final ManejadorEntradaJugador ENTRADA1;
     private final ManejadorEntradaJugador ENTRADA2;
@@ -66,6 +67,7 @@ public class PantallaJuego extends ScreenAdapter {
             RECURSOS.obtenerTexturaTanqueVerdeDestruido(), RECURSOS.obtenerAnimacionExplosionVerde(), 0f);
         DIBUJO_JUGADOR2 = new DibujoTanque(PARTIDA.obtenerJugador2(), RECURSOS.obtenerTexturaTanqueAzul(),
             RECURSOS.obtenerTexturaTanqueAzulDestruido(), RECURSOS.obtenerAnimacionExplosionAzul(), 0f);
+        REPRODUCTOR = new ReproductorEventos(RECURSOS, SONIDOS, EFECTOS, DIBUJO_JUGADOR1, DIBUJO_JUGADOR2);
 
         ENTRADA1 = new ManejadorEntradaJugador(Input.Keys.W, Input.Keys.S, Input.Keys.A, Input.Keys.D, Input.Keys.SPACE);
         ENTRADA2 = new ManejadorEntradaJugador(Input.Keys.UP, Input.Keys.DOWN, Input.Keys.LEFT, Input.Keys.RIGHT,
@@ -167,28 +169,7 @@ public class PantallaJuego extends ScreenAdapter {
 
     private void procesarEventos() {
         for (EventoPartida evento : PARTIDA.obtenerEventos()) {
-            Vector2 posicion = new Vector2(evento.obtenerX(), evento.obtenerY());
-            boolean esJugador1 = evento.obtenerNumeroJugador() == 1;
-            float volumen = ControlVolumen.obtenerVolumenEfectivo();
-            switch (evento.obtenerTipo()) {
-                case DISPARO:
-                    Texture flash = esJugador1 ? RECURSOS.obtenerTexturaFlashRojo() : RECURSOS.obtenerTexturaFlashAzul();
-                    EFECTOS.add(new Efecto(flash, posicion, 16, 16));
-                    SONIDOS.obtenerSonidoDisparo().play(volumen);
-                    break;
-                case IMPACTO:
-                    Texture impacto = esJugador1 ? RECURSOS.obtenerTexturaImpactoRojo() : RECURSOS.obtenerTexturaImpactoAzul();
-                    EFECTOS.add(new Efecto(impacto, posicion, 16, 16));
-                    SONIDOS.obtenerSonidoImpacto().play(volumen);
-                    break;
-                case MUERTE:
-                    DibujoTanque destruido = esJugador1 ? DIBUJO_JUGADOR1 : DIBUJO_JUGADOR2;
-                    destruido.iniciarExplosion();
-                    SONIDOS.obtenerSonidoMuerte().play(volumen);
-                    break;
-                default:
-                    break;
-            }
+            REPRODUCTOR.reproducir(evento.obtenerTipo(), evento.obtenerX(), evento.obtenerY(), evento.obtenerNumeroJugador());
         }
         PARTIDA.limpiarEventos();
     }
