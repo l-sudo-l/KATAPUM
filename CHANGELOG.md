@@ -7,6 +7,13 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.7.0] - 2026-10-30
+
+### Agregado
+- Protocolo de red en `shared` (`compartido.red`): `ConfiguracionRed` (puerto 5555, búfer de 1024 bytes, separador `-`, frecuencia de envío, timeout y reintento), `TipoMensaje` y `Protocolo`, que arma y separa mensajes de texto.
+- Servidor UDP sin ventana en el módulo `server`: `HiloServidor` corre en su propio hilo, registra a cada cliente (IP y puerto, en `ClienteConectado`) cuando manda `CONECTAR`, le responde `ASIGNAR` con su número de jugador, contesta `SALA_LLENA` al tercero y manda `EMPEZAR` cuando hay 2.
+- Timeout: si un jugador pasa 5 segundos sin mandar nada, o manda `DESCONECTAR`, se libera su lugar.
+
 ## [0.6.1] - 2026-10-30
 
 ### Cambiado
