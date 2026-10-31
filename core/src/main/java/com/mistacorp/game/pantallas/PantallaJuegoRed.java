@@ -63,7 +63,7 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
     private int ultimaSecuenciaEstado = 0;
     private float tiempoDesdeEnvio = 0f;
     private int numeroGanador = 0;
-    private String avisoFin = "";
+    private boolean rivalSeFue = false;
     private float tiempoEsperaFin = 0f;
     private float tiempoSinEstado = 0f;
 
@@ -127,6 +127,9 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
                 revisarTanqueSinVidas(PARTIDA.obtenerJugador1(), DIBUJO_JUGADOR1);
                 revisarTanqueSinVidas(PARTIDA.obtenerJugador2(), DIBUJO_JUGADOR2);
                 break;
+            case RIVAL_SALIO:
+                rivalSeFue = true;
+                break;
             case FIN:
                 registrarFin(Integer.parseInt(partes[1]), MotivoFin.values()[Integer.parseInt(partes[2])]);
                 break;
@@ -145,7 +148,7 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
         }
         numeroGanador = ganador;
         if (motivo == MotivoFin.RIVAL_DESCONECTADO) {
-            avisoFin = "El rival se desconecto";
+            rivalSeFue = true;
         }
     }
 
@@ -154,14 +157,12 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
             return;
         }
         DibujoTanque perdedor = numeroGanador == 1 ? DIBUJO_JUGADOR2 : DIBUJO_JUGADOR1;
-        if (avisoFin.isEmpty() && !perdedor.explosionTerminada()) {
+        if (!rivalSeFue && !perdedor.explosionTerminada()) {
             return;
         }
         tiempoEsperaFin += delta;
         if (tiempoEsperaFin >= ConfiguracionJuego.RETRASO_FIN_PARTIDA) {
-            CLIENTE.detener();
-            EstadoTanque ganador = numeroGanador == 1 ? PARTIDA.obtenerJugador1() : PARTIDA.obtenerJugador2();
-            JUEGO.setScreen(new PantallaFinPartida(JUEGO, ganador.obtenerNombre(), true, avisoFin));
+            JUEGO.setScreen(new PantallaFinPartidaRed(JUEGO, CLIENTE, NUMERO_JUGADOR, numeroGanador, rivalSeFue));
         }
     }
 
