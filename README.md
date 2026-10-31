@@ -16,13 +16,23 @@ Funcionalidades implementadas hasta el momento:
 - Sprites reales para tanques, proyectiles, paredes, suelo y elementos decorativos (arbustos, cajas, barriles), con el tanque rotando según hacia dónde apunta.
 - Animación por spritesheet: cada tanque tiene una secuencia de 4 cuadros (normal → cargando → estallido → carcasa quemada) que se reproduce al perder su última vida, y el proyectil vuela con una animación de 2 cuadros.
 - Sistema de disparo: cada tanque dispara proyectiles animados en la dirección hacia la que está orientado, con fogonazo al salir y destello al impactar.
-- Detección de colisiones: proyectil contra pared/decoración (se destruye), proyectil contra tanque rival (resta una vida) y tanque contra pared, decoración (arbusto/caja/barril) o tanque rival (bloquea el movimiento).
-- Mapa/arena con obstáculos fijos e indestructibles (paredes y elementos decorativos, todos colisionables), dentro de una cámara con `Viewport` (`FitViewport`) que se adapta al tamaño de la ventana.
+- Detección de colisiones: proyectil contra pared/decoración (el proyectil desaparece y daña al obstáculo si es destructible), proyectil contra tanque rival (resta una vida) y tanque contra pared, decoración (arbusto/caja/barril) o tanque rival (bloquea el movimiento).
+- Mapa/arena con obstáculos colisionables: paredes, cajas y barriles se destruyen por disparos y los arbustos son indestructibles. Ver "Obstáculos destructibles" más abajo. Todo dentro de una cámara con `Viewport` (`FitViewport`) que se adapta al tamaño de la ventana.
 - HUD fijo en pantalla: nombre de cada jugador con contorno y corazones de vida junto al nombre (a la derecha para Jugador 1, a la izquierda para Jugador 2), volumen actual, con su propio `Viewport` independiente de la cámara del mundo.
 - Música de fondo (menú y partida) y efectos de sonido (disparo, impacto, muerte, victoria), con controles de volumen y silencio (teclado y mouse).
 - Menú de inicio y menú de pausa interactivos con mouse (botones y control deslizante de volumen), con estética retro (paneles y botones dibujados en bloques de color, sin depender de imágenes extra).
 - Cooldown de 1.5s tras la animación de explosión antes de pasar a la pantalla de fin de partida, para que se alcance a ver la carcasa del tanque destruido.
 - Condición de victoria: al perder sus 3 vidas, un jugador pierde la partida (se reproduce su animación de explosión completa) y se muestra la pantalla de Fin de partida con el banner del ganador.
+
+### Obstáculos destructibles
+| Obstáculo | Disparos para destruir | Spritesheet | Estado final |
+|---|---|---|---|
+| Caja | 2 | `caja_destruccion.png` (3 cuadros de 32×32) | `caja_destruida.png` |
+| Barril | 2 | `barril_destruccion.png` (3 cuadros de 32×32) | `barril_destruido.png` |
+| Pared | 5 | `pared_destruccion.png` (6 cuadros de 32×32) | `pared_destruida.png` |
+| Arbusto | indestructible | — | — |
+
+Cada impacto avanza un cuadro de la hoja. Con el último impacto el obstáculo pasa a dibujarse con su sprite de destruido, deja de bloquear a tanques y proyectiles y queda como escombros en el suelo. Las paredes de varios tiles se dañan como una sola pieza.
 
 Pendiente para próximas entregas: la capa de red (cliente-servidor) que reemplace el modo local por partidas entre dos computadoras.
 
@@ -88,7 +98,7 @@ En Linux/macOS:
   - `com.mistacorp.game`: clase principal (`KatapumPrincipal`) y configuración (`ConfiguracionJuego`).
   - `com.mistacorp.game.pantallas`: pantallas del juego (`PantallaMenu`, `PantallaJuego`, `PantallaFinPartida`).
   - `com.mistacorp.game.entidades`: objetos del mundo de juego (`Tanque`, `Proyectil`).
-  - `com.mistacorp.game.mundo`: entorno y mapa (`Arena`, `Pared`).
+  - `com.mistacorp.game.mundo`: entorno y mapa (`Arena`, `Obstaculo`, `Pared`, `Decoracion`, `TipoDecoracion`).
   - `com.mistacorp.game.entrada`: manejo de entradas (`ManejadorEntradaJugador`).
   - `com.mistacorp.game.interfaz`: interfaz de usuario en pantalla (`Hud`).
 - `lwjgl3/`: cliente de escritorio (LibGDX + LWJGL3). Clase principal: `LanzadorLwjgl3`.

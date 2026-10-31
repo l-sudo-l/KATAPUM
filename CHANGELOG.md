@@ -7,6 +7,18 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.6.0] - 2026-10-30
+
+### Agregado
+- Obstáculos destructibles por disparos. Caja y barril se destruyen con 2 impactos (hoja de 3 cuadros) y la pared con 5 (hoja de 6 cuadros). Cada impacto avanza un cuadro de la hoja y, con el último, el obstáculo se reemplaza por su sprite de destruido, que ya no bloquea a tanques ni proyectiles. El arbusto sigue siendo indestructible.
+- Clase base `Obstaculo` (límites y contador de impactos), heredada por `Pared` y por `Decoracion`, que antes era una clase anidada en `Arena` y ahora tiene archivo propio.
+- `Arena.impactarObstaculo()`: aplica el impacto del proyectil al obstáculo que toca.
+- Assets: `caja_destruccion.png`, `caja_destruida.png`, `barril_destruccion.png`, `barril_destruido.png`, `pared_destruccion.png` y `pared_destruida.png`.
+
+### Cambiado
+- `RecursosGraficos` dibuja pared, caja y barril a partir de sus hojas de destrucción (el primer cuadro es el sprite original) y expone suelo y arbusto como `TextureRegion`. Se quitan `obtenerTexturaPared()`, `obtenerTexturaCaja()`, `obtenerTexturaBarril()`, `obtenerTexturaSuelo()` y `obtenerTexturaArbusto()`.
+- `Arena.colisionaConObstaculos()` ignora los obstáculos ya destruidos.
+
 ## [0.5.2] - 2026-09-27
 
 ### Corregido
