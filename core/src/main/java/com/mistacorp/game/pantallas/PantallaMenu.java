@@ -29,6 +29,7 @@ public class PantallaMenu extends PantallaBase {
 
     @Override
     public void show() {
+        JUEGO.detenerServidorLocal();
         JUEGO.obtenerSonidos().obtenerMusicaMenu().setVolume(ControlVolumen.obtenerVolumenEfectivo());
         JUEGO.obtenerSonidos().obtenerMusicaMenu().play();
 
@@ -75,7 +76,7 @@ public class PantallaMenu extends PantallaBase {
         if (BOTON_LOCAL.contienePunto(mouse.x, mouse.y)) {
             JUEGO.setScreen(new PantallaJuego(JUEGO));
         } else if (BOTON_LAN.contienePunto(mouse.x, mouse.y)) {
-            JUEGO.setScreen(new PantallaConectar(JUEGO));
+            JUEGO.setScreen(new PantallaPartidasLan(JUEGO));
         } else if (BOTON_CONFIGURACION.contienePunto(mouse.x, mouse.y)) {
             JUEGO.setScreen(new PantallaConfiguracion(JUEGO));
         }

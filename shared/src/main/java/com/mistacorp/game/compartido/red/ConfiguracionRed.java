@@ -6,6 +6,8 @@ public final class ConfiguracionRed {
     }
 
     public static final int PUERTO_SERVIDOR = 5555;
+    public static final int MAXIMO_JUGADORES = 2;
+    public static final int MINIMO_JUGADORES = 2;
     public static final int TAMANO_BUFER = 4096;
     public static final String SEPARADOR = "-";
     public static final int LARGO_MAXIMO_NOMBRE_SALA = 16;

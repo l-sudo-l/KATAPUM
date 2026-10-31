@@ -130,7 +130,7 @@ public class PantallaSala extends PantallaBase implements OyenteRed {
     private void dibujarMapa(SpriteBatch lote, RecursosGraficos recursos) {
         float xMarco = 520f;
         float yMarco = 220f;
-        Texture marco = recursos.obtenerTexturaMarcoMapaSeleccionado();
+        Texture marco = recursos.obtenerTexturaMarcoMapa();
         lote.draw(marco, xMarco, yMarco, marco.getWidth(), marco.getHeight());
         lote.draw(recursos.obtenerTexturaMiniaturaBosque(), xMarco + 4f, yMarco + 4f);
         dibujarCentrado("Mapa: " + MAPA.obtenerNombreVisible(), xMarco + marco.getWidth() / 2f, yMarco - 15f);

@@ -134,7 +134,7 @@ public class PantallaFinPartida extends ScreenAdapter {
 
     private void volverAJugar() {
         if (ES_PARTIDA_RED) {
-            JUEGO.setScreen(new PantallaConectar(JUEGO));
+            JUEGO.setScreen(new PantallaPartidasLan(JUEGO));
         } else {
             JUEGO.setScreen(new PantallaJuego(JUEGO));
         }
