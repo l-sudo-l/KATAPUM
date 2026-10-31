@@ -63,6 +63,7 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
     private int numeroGanador = 0;
     private String avisoFin = "";
     private float tiempoEsperaFin = 0f;
+    private float tiempoSinEstado = 0f;
 
     public PantallaJuegoRed(KatapumPrincipal juego, HiloCliente cliente, int numeroJugador) {
         this.JUEGO = juego;
@@ -114,6 +115,7 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
     public void mensajeRecibido(TipoMensaje tipo, String[] partes) {
         switch (tipo) {
             case ESTADO:
+                tiempoSinEstado = 0f;
                 CodificadorEstado.aplicar(partes, PARTIDA);
                 revisarTanqueSinVidas(PARTIDA.obtenerJugador1(), DIBUJO_JUGADOR1);
                 revisarTanqueSinVidas(PARTIDA.obtenerJugador2(), DIBUJO_JUGADOR2);
@@ -156,6 +158,17 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
         }
     }
 
+    private void revisarConexionConServidor(float delta) {
+        if (numeroGanador != 0) {
+            return;
+        }
+        tiempoSinEstado += delta;
+        if (tiempoSinEstado * 1000f > ConfiguracionRed.MILISEGUNDOS_DESCONEXION) {
+            CLIENTE.detener();
+            JUEGO.setScreen(new PantallaConectar(JUEGO, "Se perdio la conexion con el servidor"));
+        }
+    }
+
     private void revisarTanqueSinVidas(EstadoTanque tanque, DibujoTanque dibujo) {
         if (!tanque.estaVivo() && !dibujo.estaExplotando()) {
             dibujo.iniciarExplosion();
@@ -176,6 +189,7 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
         DIBUJO_PROYECTIL.actualizar(delta);
         actualizarEfectos(delta);
         revisarFinDePartida(delta);
+        revisarConexionConServidor(delta);
 
         ScreenUtils.clear(0, 0, 0, 1);
         VENTANA_GRAFICA.apply();
