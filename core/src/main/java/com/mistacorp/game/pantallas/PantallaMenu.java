@@ -24,6 +24,7 @@ public class PantallaMenu extends ScreenAdapter {
     private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionPartida.ANCHO_MUNDO, ConfiguracionPartida.ALTO_MUNDO, CAMARA);
 
     private final BotonMouse BOTON_INICIAR;
+    private final BotonMouse BOTON_LAN;
     private final SliderVolumen SLIDER;
 
     public PantallaMenu(KatapumPrincipal juego) {
@@ -33,7 +34,8 @@ public class PantallaMenu extends ScreenAdapter {
         float altoBoton = 64f;
         float centroX = ConfiguracionPartida.ANCHO_MUNDO / 2f;
 
-        BOTON_INICIAR = new BotonMouse(centroX - anchoBoton / 2f, 330, anchoBoton, altoBoton, "INICIAR PARTIDA");
+        BOTON_INICIAR = new BotonMouse(centroX - anchoBoton / 2f, 360, anchoBoton, altoBoton, "PARTIDA LOCAL");
+        BOTON_LAN = new BotonMouse(centroX - anchoBoton / 2f, 280, anchoBoton, altoBoton, "PARTIDA LAN");
         SLIDER = new SliderVolumen(centroX - anchoBoton / 2f, 150, anchoBoton, 26f);
     }
 
@@ -81,6 +83,7 @@ public class PantallaMenu extends ScreenAdapter {
             ConfiguracionPartida.ANCHO_MUNDO / 2f - titulo.width / 2f, ConfiguracionPartida.ALTO_MUNDO - 70);
 
         BOTON_INICIAR.dibujar(JUEGO.obtenerLote(), JUEGO.obtenerRecursos().obtenerTexturaPixel(), JUEGO.obtenerFuente());
+        BOTON_LAN.dibujar(JUEGO.obtenerLote(), JUEGO.obtenerRecursos().obtenerTexturaPixel(), JUEGO.obtenerFuente());
 
         JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(), "VOLUMEN", SLIDER.obtenerLimites().x, SLIDER.obtenerLimites().y + 80);
         SLIDER.dibujar(JUEGO.obtenerLote(), JUEGO.obtenerRecursos().obtenerTexturaPixel());
@@ -109,10 +112,13 @@ public class PantallaMenu extends ScreenAdapter {
         VENTANA_GRAFICA.unproject(mouseMundo);
 
         BOTON_INICIAR.actualizarResaltado(mouseMundo.x, mouseMundo.y);
+        BOTON_LAN.actualizarResaltado(mouseMundo.x, mouseMundo.y);
 
         if (Gdx.input.justTouched()) {
             if (BOTON_INICIAR.contienePunto(mouseMundo.x, mouseMundo.y)) {
                 JUEGO.setScreen(new PantallaJuego(JUEGO));
+            } else if (BOTON_LAN.contienePunto(mouseMundo.x, mouseMundo.y)) {
+                JUEGO.setScreen(new PantallaConectar(JUEGO));
             } else if (SLIDER.contienePunto(mouseMundo.x, mouseMundo.y)) {
                 SLIDER.establecerVolumenSegunClick(mouseMundo.x);
             }
