@@ -26,7 +26,8 @@ import com.mistacorp.game.compartido.entrada.EntradaJugador;
 import com.mistacorp.game.interfaz.Accion;
 import com.mistacorp.game.interfaz.Hud;
 import com.mistacorp.game.interfaz.MenuPausa;
-import com.mistacorp.game.mundo.Arena;
+import com.mistacorp.game.compartido.mundo.Arena;
+import com.mistacorp.game.mundo.DibujoArena;
 import com.mistacorp.game.compartido.ConfiguracionPartida;
 
 public class PantallaJuego extends ScreenAdapter {
@@ -39,6 +40,7 @@ public class PantallaJuego extends ScreenAdapter {
     private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionPartida.ANCHO_MUNDO, ConfiguracionPartida.ALTO_MUNDO, CAMARA);
 
     private final Arena ARENA = new Arena();
+    private final DibujoArena DIBUJO_ARENA;
     private final Tanque JUGADOR1;
     private final Tanque JUGADOR2;
     private final Array<Proyectil> PROYECTILES = new Array<>();
@@ -57,6 +59,7 @@ public class PantallaJuego extends ScreenAdapter {
         this.JUEGO = juego;
         this.RECURSOS = juego.obtenerRecursos();
         this.SONIDOS = juego.obtenerSonidos();
+        this.DIBUJO_ARENA = new DibujoArena(RECURSOS);
 
         float posicionY = ConfiguracionPartida.ALTO_MUNDO / 2f - ConfiguracionPartida.TAMANO_TANQUE / 2f;
         JUGADOR1 = new Tanque("Jugador 1", RECURSOS.obtenerTexturaTanqueVerde(), RECURSOS.obtenerTexturaTanqueVerdeDestruido(),
@@ -114,7 +117,7 @@ public class PantallaJuego extends ScreenAdapter {
         JUEGO.obtenerLote().setProjectionMatrix(CAMARA.combined);
         JUEGO.obtenerLote().begin();
 
-        ARENA.dibujar(JUEGO.obtenerLote(), RECURSOS);
+        DIBUJO_ARENA.dibujar(JUEGO.obtenerLote(), ARENA);
         JUGADOR1.dibujar(JUEGO.obtenerLote());
         JUGADOR2.dibujar(JUEGO.obtenerLote());
         for (Proyectil proyectil : PROYECTILES) {

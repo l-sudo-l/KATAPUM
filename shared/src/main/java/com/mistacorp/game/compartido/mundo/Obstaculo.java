@@ -1,4 +1,4 @@
-package com.mistacorp.game.mundo;
+package com.mistacorp.game.compartido.mundo;
 
 import com.badlogic.gdx.math.Rectangle;
 
