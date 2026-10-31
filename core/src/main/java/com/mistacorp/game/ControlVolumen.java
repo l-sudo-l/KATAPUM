@@ -20,14 +20,6 @@ public final class ControlVolumen {
         return silenciado;
     }
 
-    public static void subirVolumen() {
-        volumen = Math.min(1f, volumen + 0.1f);
-    }
-
-    public static void bajarVolumen() {
-        volumen = Math.max(0f, volumen - 0.1f);
-    }
-
     public static void establecerVolumen(float valor) {
         volumen = Math.max(0f, Math.min(1f, valor));
         silenciado = false;

@@ -57,7 +57,7 @@ public class Hud {
             return "Volumen: silenciado (M)";
         }
         int porcentaje = Math.round(ControlVolumen.obtenerVolumen() * 100);
-        return "Volumen: " + porcentaje + "% (+/- , M)";
+        return "Volumen: " + porcentaje + "% (M: silenciar)";
     }
 
     private void dibujarPanelJugador(SpriteBatch lote, EstadoTanque tanque, float xBorde, float y, boolean nombreALaIzquierda) {

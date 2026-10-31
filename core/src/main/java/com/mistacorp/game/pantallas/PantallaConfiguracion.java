@@ -50,7 +50,7 @@ public class PantallaConfiguracion extends PantallaBase {
         dibujarTexto("Partida local, Jugador 1:  W/S avanza y retrocede, A/D gira, ESPACIO dispara", x, 270f);
         dibujarTexto("Partida local, Jugador 2:  flechas, CTRL derecho dispara", x, 245f);
         dibujarTexto("Partida LAN:  cada jugador usa W/S/A/D y ESPACIO en su PC", x, 220f);
-        dibujarTexto("ESC: pausa o salir   |   M: silenciar   |   +/-: volumen", x, 195f);
+        dibujarTexto("ESC: pausa o salir   |   M: silenciar", x, 195f);
 
         BOTON_VOLVER.dibujar(lote, JUEGO.obtenerRecursos().obtenerTexturaPixel(), JUEGO.obtenerFuente());
         lote.end();
