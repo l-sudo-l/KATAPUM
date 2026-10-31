@@ -7,6 +7,21 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.15.0] - 2026-10-31
+
+### Agregado
+- Mapa Desierto: suelo y paredes de arena, cajas y barriles de roble, palmeras y música propia (`musica_desierto.wav`). Se elige en CREAR PARTIDA con las flechas del selector de mapa, que muestran su miniatura.
+- El arbusto del Bosque se destruye con 2 disparos, como la caja y el barril.
+
+### Cambiado
+- Cada mapa se define como una grilla de texto en `DisenoMapa` (`#` pared, `v` vegetación, `c` caja, `b` barril). Cada pared es un tile de 32×32 que se destruye por separado.
+- El Bosque se rearma según su miniatura: borde de paredes, esquinas en L, bloques centrales y decoraciones en espejo.
+- Los sprites de cada mapa se agrupan en `SpritesMapa`, y la música de la partida depende del mapa.
+- `assets` se ordena en carpetas: `imagenes/tanques`, `imagenes/proyectiles`, `imagenes/mapas/bosque`, `imagenes/mapas/desierto`, `imagenes/interfaz`, `sonidos` y `musica`. La música de la partida pasa a llamarse `musica_bosque.wav`.
+
+### Eliminado
+- `libgdx.png`, imagen de la plantilla que no se usaba.
+
 ## [0.14.1] - 2026-10-30
 
 ### Eliminado
