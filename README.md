@@ -47,7 +47,7 @@ Pendiente para próximas entregas: la capa de red (cliente-servidor) que reempla
 | Confirmar / jugar de nuevo | `Enter` | `Enter` |
 | Pausar / reanudar (durante la partida) | `Esc` o botón **CONTINUAR** (mouse) | `Esc` o botón **CONTINUAR** (mouse) |
 | Volver al menú (en pausa o en fin de partida) | `Esc` o botón (mouse) | `Esc` o botón (mouse) |
-| Subir / bajar volumen | `+` / `-` o clic/arrastre en la barra | `+` / `-` o clic/arrastre en la barra |
+| Subir / bajar volumen | clic/arrastre en la barra (Configuración o pausa) | clic/arrastre en la barra (Configuración o pausa) |
 | Silenciar / activar sonido | `M` | `M` |
 
 > El tanque se mueve como un vehículo real: `A`/`D` solo rotan el tanque sobre su propio eje (no desplazan lateralmente), y `W`/`S` avanzan o retroceden según hacia dónde esté apuntando en ese momento. El cañón y la dirección de disparo siempre coinciden con la orientación actual del tanque.
