@@ -7,6 +7,11 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.13.0] - 2026-10-30
+
+### Agregado
+- Lista automática de partidas en la red local. `HiloBusqueda` manda `BUSCAR` por broadcast cada 2 segundos y cada servidor responde `SALA-nombre-jugadores-maximo-mapa`. `PantallaPartidasLan` las muestra con señal según el ping, mapa, jugadores (con ícono de sala llena) e IP, y permite unirse con un clic o actualizar la lista.
+
 ## [0.12.0] - 2026-10-30
 
 ### Agregado
