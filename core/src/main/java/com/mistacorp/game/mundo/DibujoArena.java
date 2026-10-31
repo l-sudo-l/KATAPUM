@@ -53,7 +53,10 @@ public class DibujoArena {
                 }
                 return RECURSOS.obtenerFramesDestruccionBarril()[decoracion.obtenerImpactosRecibidos()];
             default:
-                return RECURSOS.obtenerRegionArbusto();
+                if (decoracion.estaDestruido()) {
+                    return RECURSOS.obtenerRegionArbustoDestruido();
+                }
+                return RECURSOS.obtenerFramesDestruccionArbusto()[decoracion.obtenerImpactosRecibidos()];
         }
     }
 
