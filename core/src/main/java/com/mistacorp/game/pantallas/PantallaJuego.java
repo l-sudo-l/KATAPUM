@@ -20,7 +20,8 @@ import com.mistacorp.game.RecursosGraficos;
 import com.mistacorp.game.RecursosSonido;
 import com.mistacorp.game.entidades.Efecto;
 import com.mistacorp.game.entidades.Proyectil;
-import com.mistacorp.game.entidades.Tanque;
+import com.mistacorp.game.entidades.DibujoTanque;
+import com.mistacorp.game.compartido.entidades.EstadoTanque;
 import com.mistacorp.game.entrada.ManejadorEntradaJugador;
 import com.mistacorp.game.compartido.entrada.EntradaJugador;
 import com.mistacorp.game.interfaz.Accion;
@@ -41,8 +42,10 @@ public class PantallaJuego extends ScreenAdapter {
 
     private final Arena ARENA = new Arena();
     private final DibujoArena DIBUJO_ARENA;
-    private final Tanque JUGADOR1;
-    private final Tanque JUGADOR2;
+    private final EstadoTanque JUGADOR1;
+    private final EstadoTanque JUGADOR2;
+    private final DibujoTanque DIBUJO_JUGADOR1;
+    private final DibujoTanque DIBUJO_JUGADOR2;
     private final Array<Proyectil> PROYECTILES = new Array<>();
     private final Array<Efecto> EFECTOS = new Array<>();
 
@@ -62,11 +65,13 @@ public class PantallaJuego extends ScreenAdapter {
         this.DIBUJO_ARENA = new DibujoArena(RECURSOS);
 
         float posicionY = ConfiguracionPartida.ALTO_MUNDO / 2f - ConfiguracionPartida.TAMANO_TANQUE / 2f;
-        JUGADOR1 = new Tanque("Jugador 1", RECURSOS.obtenerTexturaTanqueVerde(), RECURSOS.obtenerTexturaTanqueVerdeDestruido(),
-            RECURSOS.obtenerAnimacionExplosionVerde(), 0f, 60, posicionY, 0f);
-        JUGADOR2 = new Tanque("Jugador 2", RECURSOS.obtenerTexturaTanqueAzul(), RECURSOS.obtenerTexturaTanqueAzulDestruido(),
-            RECURSOS.obtenerAnimacionExplosionAzul(), 0f,
+        JUGADOR1 = new EstadoTanque(1, "Jugador 1", 60, posicionY, 0f);
+        JUGADOR2 = new EstadoTanque(2, "Jugador 2",
             ConfiguracionPartida.ANCHO_MUNDO - 60 - ConfiguracionPartida.TAMANO_TANQUE, posicionY, 180f);
+        DIBUJO_JUGADOR1 = new DibujoTanque(JUGADOR1, RECURSOS.obtenerTexturaTanqueVerde(),
+            RECURSOS.obtenerTexturaTanqueVerdeDestruido(), RECURSOS.obtenerAnimacionExplosionVerde(), 0f);
+        DIBUJO_JUGADOR2 = new DibujoTanque(JUGADOR2, RECURSOS.obtenerTexturaTanqueAzul(),
+            RECURSOS.obtenerTexturaTanqueAzulDestruido(), RECURSOS.obtenerAnimacionExplosionAzul(), 0f);
 
         ENTRADA1 = new ManejadorEntradaJugador(Input.Keys.W, Input.Keys.S, Input.Keys.A, Input.Keys.D, Input.Keys.SPACE);
         ENTRADA2 = new ManejadorEntradaJugador(Input.Keys.UP, Input.Keys.DOWN, Input.Keys.LEFT, Input.Keys.RIGHT,
@@ -118,8 +123,8 @@ public class PantallaJuego extends ScreenAdapter {
         JUEGO.obtenerLote().begin();
 
         DIBUJO_ARENA.dibujar(JUEGO.obtenerLote(), ARENA);
-        JUGADOR1.dibujar(JUEGO.obtenerLote());
-        JUGADOR2.dibujar(JUEGO.obtenerLote());
+        DIBUJO_JUGADOR1.dibujar(JUEGO.obtenerLote());
+        DIBUJO_JUGADOR2.dibujar(JUEGO.obtenerLote());
         for (Proyectil proyectil : PROYECTILES) {
             proyectil.dibujar(JUEGO.obtenerLote());
         }
@@ -158,15 +163,15 @@ public class PantallaJuego extends ScreenAdapter {
         manejarJugador(delta, ENTRADA1.obtenerEntrada(), JUGADOR1, JUGADOR2);
         manejarJugador(delta, ENTRADA2.obtenerEntrada(), JUGADOR2, JUGADOR1);
 
-        JUGADOR1.actualizar(delta);
-        JUGADOR2.actualizar(delta);
+        DIBUJO_JUGADOR1.actualizar(delta);
+        DIBUJO_JUGADOR2.actualizar(delta);
 
         actualizarProyectiles(delta);
         actualizarEfectos(delta);
         revisarFinDePartida(delta);
     }
 
-    private void manejarJugador(float delta, EntradaJugador entrada, Tanque tanque, Tanque otro) {
+    private void manejarJugador(float delta, EntradaJugador entrada, EstadoTanque tanque, EstadoTanque otro) {
         if (!tanque.estaVivo()) {
             return;
         }
@@ -207,14 +212,14 @@ public class PantallaJuego extends ScreenAdapter {
                 debeEliminarse = true;
                 agregarEfectoImpacto(proyectil);
             } else {
-                Tanque objetivo = proyectil.obtenerPropietario() == JUGADOR1 ? JUGADOR2 : JUGADOR1;
+                EstadoTanque objetivo = proyectil.obtenerPropietario() == JUGADOR1 ? JUGADOR2 : JUGADOR1;
                 if (objetivo.estaVivo() && proyectil.obtenerLimites().overlaps(objetivo.obtenerLimites())) {
                     objetivo.recibirImpacto();
                     debeEliminarse = true;
                     agregarEfectoImpacto(proyectil);
 
                     if (!objetivo.estaVivo()) {
-                        objetivo.iniciarExplosion();
+                        dibujoDe(objetivo).iniciarExplosion();
                         ganadorPendiente = proyectil.obtenerPropietario().obtenerNombre();
                         SONIDOS.obtenerSonidoMuerte().play(ControlVolumen.obtenerVolumenEfectivo());
                     }
@@ -248,7 +253,7 @@ public class PantallaJuego extends ScreenAdapter {
         if (ganadorPendiente == null) {
             return;
         }
-        Tanque tanqueDestruido = JUGADOR1.estaVivo() ? JUGADOR2 : JUGADOR1;
+        DibujoTanque tanqueDestruido = JUGADOR1.estaVivo() ? DIBUJO_JUGADOR2 : DIBUJO_JUGADOR1;
         if (!tanqueDestruido.explosionTerminada()) {
             return;
         }
@@ -256,6 +261,10 @@ public class PantallaJuego extends ScreenAdapter {
         if (tiempoEsperaFinPartida >= ConfiguracionJuego.RETRASO_FIN_PARTIDA) {
             JUEGO.setScreen(new PantallaFinPartida(JUEGO, ganadorPendiente));
         }
+    }
+
+    private DibujoTanque dibujoDe(EstadoTanque tanque) {
+        return tanque == JUGADOR1 ? DIBUJO_JUGADOR1 : DIBUJO_JUGADOR2;
     }
 
     private void manejarControlesDeVolumen() {
