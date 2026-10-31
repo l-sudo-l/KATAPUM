@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mistacorp.game.mundo.Arena;
+import com.mistacorp.game.compartido.mundo.Arena;
 import com.mistacorp.game.compartido.ConfiguracionPartida;
 
 public class Tanque {
