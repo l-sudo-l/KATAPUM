@@ -7,6 +7,18 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.9.0] - 2026-10-30
+
+### Agregado
+- Partida en red. Al completarse la sala, el servidor arranca `HiloPartida`, que corre la misma `Partida` del modo local, aplica los `INPUT` de cada jugador, manda los eventos (`EVENTO-tipo-x-y-jugador`) y 30 veces por segundo el `ESTADO` completo.
+- `PantallaJuegoRed`: manda `INPUT-giro-avance-disparos` 30 veces por segundo con W/S/A/D y ESPACIO, dibuja el `ESTADO` recibido y reproduce los eventos. ESC desconecta y vuelve al menú.
+- `CodificadorEstado` (shared): arma y lee el mensaje `ESTADO` (tanques, impactos de los obstáculos y proyectiles, todo en enteros sin signo).
+- `ReproductorEventos` (core): muestra efectos y reproduce sonidos a partir de un evento. Lo usan el modo local y el de red.
+
+### Cambiado
+- Búfer de red de 1024 a 4096 bytes, para que el `ESTADO` entre con muchos proyectiles en vuelo.
+- El disparo viaja como un contador que solo crece, así un paquete perdido o repetido no pierde ni duplica disparos.
+
 ## [0.8.0] - 2026-10-30
 
 ### Agregado

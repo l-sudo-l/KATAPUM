@@ -122,11 +122,16 @@ Abre el puerto UDP 5555 sin ventana. Mensajes de texto separados por `-`:
 | `ASIGNAR-n` | servidor | Le dice al cliente que es el jugador `n` (1 o 2). |
 | `SALA_LLENA` | servidor | Ya hay 2 jugadores. |
 | `EMPEZAR` | servidor | La sala está completa. |
+| `INPUT-g-a-d` | cliente | Giro y avance sumados 1 (0, 1 o 2) y contador de disparos. |
+| `ESTADO-...` | servidor | Tanques (x, y, ángulo, vidas), impactos de cada obstáculo y proyectiles (x, y, ángulo, jugador). |
+| `EVENTO-tipo-x-y-n` | servidor | `DISPARO`, `IMPACTO` o `MUERTE`, para efectos y sonidos. |
 | `DESCONECTAR` | cliente | Libera su lugar. |
 
 Si un jugador pasa 5 segundos sin mandar nada, el servidor libera su lugar.
 
-Para probar la conexión en una sola PC: abrir una terminal con `gradlew.bat server:run`, otras dos con `gradlew.bat lwjgl3:run`, y en ambos juegos elegir PARTIDA LAN y conectar a `127.0.0.1`. El primero queda como Jugador 1 esperando y, al entrar el segundo, los dos ven "Sala completa". Entre dos PCs se escribe la IP local de la PC que corre el servidor (se ve con `ipconfig`).
+Para probar la conexión en una sola PC: abrir una terminal con `gradlew.bat server:run`, otras dos con `gradlew.bat lwjgl3:run`, y en ambos juegos elegir PARTIDA LAN y conectar a `127.0.0.1`. El primero queda como Jugador 1 esperando y, al entrar el segundo, empieza la partida en las dos ventanas. En red cada jugador maneja su tanque con W/S/A/D y ESPACIO; ESC sale al menú.
+
+El servidor decide todo con la misma `Partida` del modo local (`HiloPartida`, un hilo aparte del que recibe paquetes). Los clientes solo mandan lo que tocan y dibujan lo que reciben. Entre el hilo que recibe y el que simula, la entrada de cada jugador se comparte con `EntradaJugador`, cuyos métodos son `synchronized`. En el cliente, lo recibido pasa al hilo de LibGDX con `Gdx.app.postRunnable`. Entre dos PCs se escribe la IP local de la PC que corre el servidor (se ve con `ipconfig`).
 
 ### Cómo se separa la lógica del dibujo
 `Partida` decide todo: mueve los tanques según su `EntradaJugador`, mueve los proyectiles, aplica los impactos y define el ganador. Lo que antes reproducía sonidos lo anota como `EventoPartida`. `PantallaJuego` solo le pasa las entradas del teclado, lee los eventos para mostrar efectos y sonidos, y dibuja el estado con `DibujoArena`, `DibujoTanque` y `DibujoProyectil`. Así el modo local y el modo en red usan la misma simulación: el servidor decide, el cliente muestra.
