@@ -72,6 +72,9 @@ public class HiloServidor extends Thread {
                 cliente.registrarActividad();
             }
             switch (tipo) {
+                case BUSCAR:
+                    responderBusqueda(direccion, puerto);
+                    break;
                 case CONECTAR:
                     registrarCliente(cliente, direccion, puerto);
                     break;
@@ -162,6 +165,18 @@ public class HiloServidor extends Thread {
             partida.detener();
             partida = null;
         }
+    }
+
+    private synchronized void responderBusqueda(InetAddress direccion, int puerto) {
+        int ocupados = 0;
+        for (ClienteConectado cliente : CLIENTES) {
+            if (cliente != null) {
+                ocupados++;
+            }
+        }
+        String mensaje = Protocolo.armar(TipoMensaje.SALA, NOMBRE_SALA, String.valueOf(ocupados),
+            String.valueOf(ConfiguracionRed.MAXIMO_JUGADORES), MAPA.name());
+        enviar(mensaje, direccion, puerto);
     }
 
     private synchronized void revisarDesconexiones() {
