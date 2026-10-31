@@ -122,7 +122,12 @@ public class PantallaConectar extends ScreenAdapter implements OyenteRed {
                 }
                 break;
             case EMPEZAR:
-                estado = EstadoConexion.SALA_COMPLETA;
+                if (numeroJugador > 0 && cliente != null) {
+                    estado = EstadoConexion.SALA_COMPLETA;
+                    HiloCliente clienteEnPartida = cliente;
+                    cliente = null;
+                    JUEGO.setScreen(new PantallaJuegoRed(JUEGO, clienteEnPartida, numeroJugador));
+                }
                 break;
             case SALA_LLENA:
                 detenerCliente();
