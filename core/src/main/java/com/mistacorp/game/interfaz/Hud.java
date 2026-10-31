@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mistacorp.game.ControlVolumen;
 import com.mistacorp.game.RecursosGraficos;
-import com.mistacorp.game.entidades.Tanque;
+import com.mistacorp.game.compartido.entidades.EstadoTanque;
 import com.mistacorp.game.compartido.ConfiguracionPartida;
 
 public class Hud {
@@ -37,7 +37,7 @@ public class Hud {
         VENTANA_GRAFICA.update(ancho, alto, true);
     }
 
-    public void dibujar(SpriteBatch lote, Tanque jugador1, Tanque jugador2) {
+    public void dibujar(SpriteBatch lote, EstadoTanque jugador1, EstadoTanque jugador2) {
         VENTANA_GRAFICA.apply();
         lote.setProjectionMatrix(CAMARA.combined);
         lote.begin();
@@ -60,7 +60,7 @@ public class Hud {
         return "Volumen: " + porcentaje + "% (+/- , M)";
     }
 
-    private void dibujarPanelJugador(SpriteBatch lote, Tanque tanque, float xBorde, float y, boolean nombreALaIzquierda) {
+    private void dibujarPanelJugador(SpriteBatch lote, EstadoTanque tanque, float xBorde, float y, boolean nombreALaIzquierda) {
         FUENTE.getData().setScale(ESCALA_NOMBRE);
         LAYOUT.setText(FUENTE, tanque.obtenerNombre());
         float anchoNombre = LAYOUT.width;
