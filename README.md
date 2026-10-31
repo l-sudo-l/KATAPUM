@@ -107,7 +107,24 @@ En Linux/macOS:
   - `com.mistacorp.game.entrada`: teclado (`ManejadorEntradaJugador`, que llena una `EntradaJugador`).
   - `com.mistacorp.game.interfaz`: interfaz de usuario en pantalla (`Hud`, `MenuPausa`, `BotonMouse`, `SliderVolumen`).
 - `lwjgl3/`: cliente de escritorio (LibGDX + LWJGL3). Clase principal: `LanzadorLwjgl3`.
-- `server/`: servidor headless que coordinará el estado de la partida en red (en desarrollo en la rama `red`). Clase principal: `LanzadorServidor`.
+- `server/`: servidor UDP sin ventana (`HiloServidor`, `ClienteConectado`). Clase principal: `LanzadorServidor`.
+- `shared/` también tiene el protocolo de red (`com.mistacorp.game.compartido.red`: `ConfiguracionRed`, `TipoMensaje`, `Protocolo`).
+
+### Servidor de red (en desarrollo)
+```bash
+gradlew.bat server:run
+```
+Abre el puerto UDP 5555 sin ventana. Mensajes de texto separados por `-`:
+
+| Mensaje | Quién lo manda | Significado |
+|---|---|---|
+| `CONECTAR` | cliente | Pide un lugar en la sala (UDP no tiene conexión, así que el servidor anota IP y puerto). |
+| `ASIGNAR-n` | servidor | Le dice al cliente que es el jugador `n` (1 o 2). |
+| `SALA_LLENA` | servidor | Ya hay 2 jugadores. |
+| `EMPEZAR` | servidor | La sala está completa. |
+| `DESCONECTAR` | cliente | Libera su lugar. |
+
+Si un jugador pasa 5 segundos sin mandar nada, el servidor libera su lugar.
 
 ### Cómo se separa la lógica del dibujo
 `Partida` decide todo: mueve los tanques según su `EntradaJugador`, mueve los proyectiles, aplica los impactos y define el ganador. Lo que antes reproducía sonidos lo anota como `EventoPartida`. `PantallaJuego` solo le pasa las entradas del teclado, lee los eventos para mostrar efectos y sonidos, y dibuja el estado con `DibujoArena`, `DibujoTanque` y `DibujoProyectil`. Así el modo local y el modo en red usan la misma simulación: el servidor decide, el cliente muestra.
