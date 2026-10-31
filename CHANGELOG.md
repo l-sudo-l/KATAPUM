@@ -7,6 +7,11 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.14.1] - 2026-10-30
+
+### Eliminado
+- Atajos `+` y `-` para subir y bajar el volumen, que no funcionaban. El volumen se ajusta con la barra en Configuración o en el menú de pausa. `M` para silenciar se mantiene.
+
 ## [0.14.0] - 2026-10-30
 
 ### Agregado
