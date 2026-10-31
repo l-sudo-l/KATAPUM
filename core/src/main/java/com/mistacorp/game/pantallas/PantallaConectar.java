@@ -133,7 +133,7 @@ public class PantallaConectar extends PantallaBase implements OyenteRed {
 
     private void volver() {
         detenerCliente();
-        JUEGO.setScreen(new PantallaMenu(JUEGO));
+        JUEGO.setScreen(new PantallaPartidasLan(JUEGO));
     }
 
     @Override
