@@ -1,26 +1,19 @@
-package com.mistacorp.game.entidades;
+package com.mistacorp.game.compartido.entidades;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mistacorp.game.compartido.ConfiguracionPartida;
-import com.mistacorp.game.compartido.entidades.EstadoTanque;
 
-public class Proyectil {
+public class EstadoProyectil {
 
     private final Vector2 POSICION;
     private final Vector2 VELOCIDAD;
     private final Rectangle LIMITES;
     private final EstadoTanque PROPIETARIO;
     private final float ANGULO;
-    private final Animation<TextureRegion> ANIMACION_VUELO;
-    private float tiempoTranscurrido = 0f;
 
-    public Proyectil(Vector2 posicionInicial, float angulo, EstadoTanque propietario,
-                      Animation<TextureRegion> animacionVuelo) {
+    public EstadoProyectil(Vector2 posicionInicial, float angulo, EstadoTanque propietario) {
         this.POSICION = new Vector2(
             posicionInicial.x - ConfiguracionPartida.TAMANO_PROYECTIL / 2f,
             posicionInicial.y - ConfiguracionPartida.TAMANO_PROYECTIL / 2f
@@ -30,28 +23,27 @@ public class Proyectil {
             .scl(ConfiguracionPartida.VELOCIDAD_PROYECTIL);
         this.LIMITES = new Rectangle(POSICION.x, POSICION.y, ConfiguracionPartida.TAMANO_PROYECTIL, ConfiguracionPartida.TAMANO_PROYECTIL);
         this.PROPIETARIO = propietario;
-        this.ANIMACION_VUELO = animacionVuelo;
     }
 
     public void actualizar(float delta) {
         POSICION.mulAdd(VELOCIDAD, delta);
         LIMITES.setPosition(POSICION.x, POSICION.y);
-        tiempoTranscurrido += delta;
-    }
-
-    public void dibujar(SpriteBatch lote) {
-        TextureRegion frame = ANIMACION_VUELO.getKeyFrame(tiempoTranscurrido, true);
-        float origen = LIMITES.width / 2f;
-        lote.draw(frame, POSICION.x, POSICION.y, origen, origen,
-            LIMITES.width, LIMITES.height, 1f, 1f, ANGULO);
     }
 
     public Vector2 obtenerCentro() {
         return new Vector2(POSICION.x + LIMITES.width / 2f, POSICION.y + LIMITES.height / 2f);
     }
 
+    public Vector2 obtenerPosicion() {
+        return POSICION;
+    }
+
     public Rectangle obtenerLimites() {
         return LIMITES;
+    }
+
+    public float obtenerAngulo() {
+        return ANGULO;
     }
 
     public EstadoTanque obtenerPropietario() {
