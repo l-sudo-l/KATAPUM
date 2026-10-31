@@ -126,6 +126,8 @@ Abre el puerto UDP 5555 sin ventana. Mensajes de texto separados por `-`:
 
 Si un jugador pasa 5 segundos sin mandar nada, el servidor libera su lugar.
 
+Para probar la conexión en una sola PC: abrir una terminal con `gradlew.bat server:run`, otras dos con `gradlew.bat lwjgl3:run`, y en ambos juegos elegir PARTIDA LAN y conectar a `127.0.0.1`. El primero queda como Jugador 1 esperando y, al entrar el segundo, los dos ven "Sala completa". Entre dos PCs se escribe la IP local de la PC que corre el servidor (se ve con `ipconfig`).
+
 ### Cómo se separa la lógica del dibujo
 `Partida` decide todo: mueve los tanques según su `EntradaJugador`, mueve los proyectiles, aplica los impactos y define el ganador. Lo que antes reproducía sonidos lo anota como `EventoPartida`. `PantallaJuego` solo le pasa las entradas del teclado, lee los eventos para mostrar efectos y sonidos, y dibuja el estado con `DibujoArena`, `DibujoTanque` y `DibujoProyectil`. Así el modo local y el modo en red usan la misma simulación: el servidor decide, el cliente muestra.
 - `assets/`: sprites, texturas y audio del juego. Ver [`CREDITOS.md`](CREDITOS.md) para la atribución de los assets de audio de terceros (OpenGameArt.org).

@@ -7,6 +7,15 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.8.0] - 2026-10-30
+
+### Agregado
+- `HiloCliente` (core, paquete `red`): hilo con `DatagramSocket` que reintenta `CONECTAR` cada segundo hasta que la partida empieza y pasa cada mensaje recibido al hilo de LibGDX con `Gdx.app.postRunnable`. La pantalla activa lo atiende a través de la interfaz `OyenteRed`.
+- `PantallaConectar`: campo para escribir la IP del servidor y botones CONECTAR / VOLVER. Muestra si está conectando, el número de jugador asignado mientras espera al rival, sala completa o sala llena. Sus estados están en `EstadoConexion`.
+
+### Cambiado
+- Menú principal: el botón INICIAR PARTIDA pasa a llamarse PARTIDA LOCAL y se suma PARTIDA LAN.
+
 ## [0.7.0] - 2026-10-30
 
 ### Agregado
