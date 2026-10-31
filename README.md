@@ -32,7 +32,7 @@ Cada mapa es una grilla de texto en `DisenoMapa` (30 columnas por 17 filas de ti
 | Bosque | arbusto | piedra, con borde alrededor del mapa | `musica_bosque.wav` |
 | Desierto | palmera | arena, sin borde | `musica_desierto.wav` |
 
-La partida local se juega en el Bosque. En red, el anfitrión elige el mapa en CREAR PARTIDA.
+En la partida local el mapa se elige antes de empezar; en red lo elige el anfitrión en CREAR PARTIDA.
 
 ### Obstáculos destructibles
 | Obstáculo | Disparos para destruir | Spritesheet | Estado final |
