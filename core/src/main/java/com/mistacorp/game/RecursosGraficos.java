@@ -52,6 +52,24 @@ public class RecursosGraficos {
     private final TextureRegion REGION_BARRIL_DESTRUIDO;
     private final Texture TEXTURA_CORAZON;
 
+    private final Texture TEXTURA_MINIATURA_BOSQUE;
+    private final Texture TEXTURA_MARCO_MAPA;
+    private final Texture TEXTURA_MARCO_MAPA_SELECCIONADO;
+    private final Texture TEXTURA_SLOT_VACIO;
+    private final Texture TEXTURA_ICONO_HOST;
+    private final Texture TEXTURA_ICONO_LISTO;
+    private final Texture TEXTURA_ICONO_NO_LISTO;
+    private final Texture TEXTURA_ICONO_ACTUALIZAR;
+    private final Texture TEXTURA_ICONO_SALA_LLENA;
+    private final Texture TEXTURA_FLECHA_IZQUIERDA;
+    private final Texture TEXTURA_FLECHA_DERECHA;
+    private final Texture HOJA_ICONO_SENAL;
+    private final TextureRegion[] FRAMES_ICONO_SENAL;
+    private final Texture HOJA_ESPERANDO;
+    private final Texture HOJA_CONECTANDO;
+    private final Animation<TextureRegion> ANIMACION_ESPERANDO;
+    private final Animation<TextureRegion> ANIMACION_CONECTANDO;
+
     private final Texture TEXTURA_GANADOR_JUGADOR1;
     private final Texture TEXTURA_GANADOR_JUGADOR2;
     private final Texture TEXTURA_BOTON_VOLVER_JUGAR;
@@ -100,6 +118,24 @@ public class RecursosGraficos {
         REGION_CAJA_DESTRUIDA = new TextureRegion(TEXTURA_CAJA_DESTRUIDA);
         REGION_BARRIL_DESTRUIDO = new TextureRegion(TEXTURA_BARRIL_DESTRUIDO);
         TEXTURA_CORAZON = cargar("corazon.png");
+
+        TEXTURA_MINIATURA_BOSQUE = cargar("mapa_bosque_miniatura.png");
+        TEXTURA_MARCO_MAPA = cargar("marco_mapa.png");
+        TEXTURA_MARCO_MAPA_SELECCIONADO = cargar("marco_mapa_seleccionado.png");
+        TEXTURA_SLOT_VACIO = cargar("slot_vacio.png");
+        TEXTURA_ICONO_HOST = cargar("icono_host.png");
+        TEXTURA_ICONO_LISTO = cargar("icono_listo.png");
+        TEXTURA_ICONO_NO_LISTO = cargar("icono_no_listo.png");
+        TEXTURA_ICONO_ACTUALIZAR = cargar("icono_actualizar.png");
+        TEXTURA_ICONO_SALA_LLENA = cargar("icono_sala_llena.png");
+        TEXTURA_FLECHA_IZQUIERDA = cargar("flecha_izq.png");
+        TEXTURA_FLECHA_DERECHA = cargar("flecha_der.png");
+        HOJA_ICONO_SENAL = cargar("icono_senal.png");
+        FRAMES_ICONO_SENAL = crearFrames(HOJA_ICONO_SENAL, 16, 16, 3);
+        HOJA_ESPERANDO = cargar("esperando.png");
+        HOJA_CONECTANDO = cargar("conectando.png");
+        ANIMACION_ESPERANDO = crearAnimacion(HOJA_ESPERANDO, 16, 16, 4, 0.3f);
+        ANIMACION_CONECTANDO = crearAnimacion(HOJA_CONECTANDO, 16, 16, 4, 0.2f);
 
         TEXTURA_GANADOR_JUGADOR1 = cargar("ganador_jugador1.png");
         TEXTURA_GANADOR_JUGADOR2 = cargar("ganador_jugador2.png");
@@ -220,6 +256,62 @@ public class RecursosGraficos {
         return TEXTURA_CORAZON;
     }
 
+    public Texture obtenerTexturaMiniaturaBosque() {
+        return TEXTURA_MINIATURA_BOSQUE;
+    }
+
+    public Texture obtenerTexturaMarcoMapa() {
+        return TEXTURA_MARCO_MAPA;
+    }
+
+    public Texture obtenerTexturaMarcoMapaSeleccionado() {
+        return TEXTURA_MARCO_MAPA_SELECCIONADO;
+    }
+
+    public Texture obtenerTexturaSlotVacio() {
+        return TEXTURA_SLOT_VACIO;
+    }
+
+    public Texture obtenerTexturaIconoHost() {
+        return TEXTURA_ICONO_HOST;
+    }
+
+    public Texture obtenerTexturaIconoListo() {
+        return TEXTURA_ICONO_LISTO;
+    }
+
+    public Texture obtenerTexturaIconoNoListo() {
+        return TEXTURA_ICONO_NO_LISTO;
+    }
+
+    public Texture obtenerTexturaIconoActualizar() {
+        return TEXTURA_ICONO_ACTUALIZAR;
+    }
+
+    public Texture obtenerTexturaIconoSalaLlena() {
+        return TEXTURA_ICONO_SALA_LLENA;
+    }
+
+    public Texture obtenerTexturaFlechaIzquierda() {
+        return TEXTURA_FLECHA_IZQUIERDA;
+    }
+
+    public Texture obtenerTexturaFlechaDerecha() {
+        return TEXTURA_FLECHA_DERECHA;
+    }
+
+    public TextureRegion[] obtenerFramesIconoSenal() {
+        return FRAMES_ICONO_SENAL;
+    }
+
+    public Animation<TextureRegion> obtenerAnimacionEsperando() {
+        return ANIMACION_ESPERANDO;
+    }
+
+    public Animation<TextureRegion> obtenerAnimacionConectando() {
+        return ANIMACION_CONECTANDO;
+    }
+
     public Texture obtenerTexturaGanadorJugador1() {
         return TEXTURA_GANADOR_JUGADOR1;
     }
@@ -259,6 +351,20 @@ public class RecursosGraficos {
         TEXTURA_CAJA_DESTRUIDA.dispose();
         TEXTURA_BARRIL_DESTRUIDO.dispose();
         TEXTURA_CORAZON.dispose();
+        TEXTURA_MINIATURA_BOSQUE.dispose();
+        TEXTURA_MARCO_MAPA.dispose();
+        TEXTURA_MARCO_MAPA_SELECCIONADO.dispose();
+        TEXTURA_SLOT_VACIO.dispose();
+        TEXTURA_ICONO_HOST.dispose();
+        TEXTURA_ICONO_LISTO.dispose();
+        TEXTURA_ICONO_NO_LISTO.dispose();
+        TEXTURA_ICONO_ACTUALIZAR.dispose();
+        TEXTURA_ICONO_SALA_LLENA.dispose();
+        TEXTURA_FLECHA_IZQUIERDA.dispose();
+        TEXTURA_FLECHA_DERECHA.dispose();
+        HOJA_ICONO_SENAL.dispose();
+        HOJA_ESPERANDO.dispose();
+        HOJA_CONECTANDO.dispose();
         TEXTURA_GANADOR_JUGADOR1.dispose();
         TEXTURA_GANADOR_JUGADOR2.dispose();
         TEXTURA_BOTON_VOLVER_JUGAR.dispose();
