@@ -14,13 +14,13 @@ public class RecursosSonido {
     private final Music MUSICA_JUEGO;
 
     public RecursosSonido() {
-        SONIDO_DISPARO = Gdx.audio.newSound(Gdx.files.internal("disparo.wav"));
-        SONIDO_IMPACTO = Gdx.audio.newSound(Gdx.files.internal("impacto.wav"));
-        SONIDO_MUERTE = Gdx.audio.newSound(Gdx.files.internal("muerte.wav"));
-        SONIDO_GANAR = Gdx.audio.newSound(Gdx.files.internal("ganar.wav"));
+        SONIDO_DISPARO = Gdx.audio.newSound(Gdx.files.internal("sonidos/disparo.wav"));
+        SONIDO_IMPACTO = Gdx.audio.newSound(Gdx.files.internal("sonidos/impacto.wav"));
+        SONIDO_MUERTE = Gdx.audio.newSound(Gdx.files.internal("sonidos/muerte.wav"));
+        SONIDO_GANAR = Gdx.audio.newSound(Gdx.files.internal("sonidos/ganar.wav"));
 
-        MUSICA_MENU = Gdx.audio.newMusic(Gdx.files.internal("menu_juego.wav"));
-        MUSICA_JUEGO = Gdx.audio.newMusic(Gdx.files.internal("musica_juego.wav"));
+        MUSICA_MENU = Gdx.audio.newMusic(Gdx.files.internal("musica/menu_juego.wav"));
+        MUSICA_JUEGO = Gdx.audio.newMusic(Gdx.files.internal("musica/musica_bosque.wav"));
         MUSICA_MENU.setLooping(true);
         MUSICA_JUEGO.setLooping(true);
     }

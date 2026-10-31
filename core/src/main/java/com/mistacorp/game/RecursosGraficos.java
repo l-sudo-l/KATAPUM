@@ -78,69 +78,69 @@ public class RecursosGraficos {
     public RecursosGraficos() {
         TEXTURA_PIXEL = crearTexturaPixel();
 
-        TEXTURA_TANQUE_VERDE = cargar("tanque_verde.png");
-        TEXTURA_TANQUE_AZUL = cargar("tanque_azul.png");
-        TEXTURA_TANQUE_VERDE_DESTRUIDO = cargar("tanque_verde_muerto.png");
-        TEXTURA_TANQUE_AZUL_DESTRUIDO = cargar("tanque_azul_muerto.png");
+        TEXTURA_TANQUE_VERDE = cargar("imagenes/tanques/tanque_verde.png");
+        TEXTURA_TANQUE_AZUL = cargar("imagenes/tanques/tanque_azul.png");
+        TEXTURA_TANQUE_VERDE_DESTRUIDO = cargar("imagenes/tanques/tanque_verde_muerto.png");
+        TEXTURA_TANQUE_AZUL_DESTRUIDO = cargar("imagenes/tanques/tanque_azul_muerto.png");
 
-        HOJA_EXPLOSION_VERDE = cargar("explocion_tanque_verde.png");
-        HOJA_EXPLOSION_AZUL = cargar("explocion_tanque_azul.png");
+        HOJA_EXPLOSION_VERDE = cargar("imagenes/tanques/explocion_tanque_verde.png");
+        HOJA_EXPLOSION_AZUL = cargar("imagenes/tanques/explocion_tanque_azul.png");
         ANIMACION_EXPLOSION_VERDE = crearAnimacion(HOJA_EXPLOSION_VERDE, 48, 40, 4, 0.15f);
         ANIMACION_EXPLOSION_AZUL = crearAnimacion(HOJA_EXPLOSION_AZUL, 48, 40, 4, 0.15f);
 
-        TEXTURA_FLASH_ROJO = cargar("bola_fuego_roja_1.png");
-        TEXTURA_FLASH_AZUL = cargar("bola_fuego_azul_1.png");
+        TEXTURA_FLASH_ROJO = cargar("imagenes/proyectiles/bola_fuego_roja_1.png");
+        TEXTURA_FLASH_AZUL = cargar("imagenes/proyectiles/bola_fuego_azul_1.png");
 
-        HOJA_PROYECTIL_ROJO = cargar("bola_fuego_roja_2.png");
-        HOJA_PROYECTIL_AZUL = cargar("bola_fuego_azul_2.png");
+        HOJA_PROYECTIL_ROJO = cargar("imagenes/proyectiles/bola_fuego_roja_2.png");
+        HOJA_PROYECTIL_AZUL = cargar("imagenes/proyectiles/bola_fuego_azul_2.png");
         ANIMACION_PROYECTIL_ROJO = crearAnimacion(HOJA_PROYECTIL_ROJO, 16, 16, 2, 0.08f);
         ANIMACION_PROYECTIL_AZUL = crearAnimacion(HOJA_PROYECTIL_AZUL, 16, 16, 2, 0.08f);
 
-        TEXTURA_IMPACTO_ROJO = cargar("bola_fuego_roja_impacto.png");
-        TEXTURA_IMPACTO_AZUL = cargar("bola_fuego_azul_impacto.png");
+        TEXTURA_IMPACTO_ROJO = cargar("imagenes/proyectiles/bola_fuego_roja_impacto.png");
+        TEXTURA_IMPACTO_AZUL = cargar("imagenes/proyectiles/bola_fuego_azul_impacto.png");
 
-        TEXTURA_SUELO = cargar("suelo.png");
-        TEXTURA_ARBUSTO = cargar("arbusto.png");
+        TEXTURA_SUELO = cargar("imagenes/mapas/bosque/suelo.png");
+        TEXTURA_ARBUSTO = cargar("imagenes/mapas/bosque/arbusto.png");
         REGION_SUELO = new TextureRegion(TEXTURA_SUELO);
         REGION_ARBUSTO = new TextureRegion(TEXTURA_ARBUSTO);
 
-        HOJA_DESTRUCCION_PARED = cargar("pared_destruccion.png");
-        HOJA_DESTRUCCION_CAJA = cargar("caja_destruccion.png");
-        HOJA_DESTRUCCION_BARRIL = cargar("barril_destruccion.png");
+        HOJA_DESTRUCCION_PARED = cargar("imagenes/mapas/bosque/pared_destruccion.png");
+        HOJA_DESTRUCCION_CAJA = cargar("imagenes/mapas/bosque/caja_destruccion.png");
+        HOJA_DESTRUCCION_BARRIL = cargar("imagenes/mapas/bosque/barril_destruccion.png");
         FRAMES_DESTRUCCION_PARED = crearFrames(HOJA_DESTRUCCION_PARED, 32, 32, 6);
         FRAMES_DESTRUCCION_CAJA = crearFrames(HOJA_DESTRUCCION_CAJA, 32, 32, 3);
         FRAMES_DESTRUCCION_BARRIL = crearFrames(HOJA_DESTRUCCION_BARRIL, 32, 32, 3);
 
-        TEXTURA_PARED_DESTRUIDA = cargar("pared_destruida.png");
-        TEXTURA_CAJA_DESTRUIDA = cargar("caja_destruida.png");
-        TEXTURA_BARRIL_DESTRUIDO = cargar("barril_destruido.png");
+        TEXTURA_PARED_DESTRUIDA = cargar("imagenes/mapas/bosque/pared_destruida.png");
+        TEXTURA_CAJA_DESTRUIDA = cargar("imagenes/mapas/bosque/caja_destruida.png");
+        TEXTURA_BARRIL_DESTRUIDO = cargar("imagenes/mapas/bosque/barril_destruido.png");
         REGION_PARED_DESTRUIDA = new TextureRegion(TEXTURA_PARED_DESTRUIDA);
         REGION_CAJA_DESTRUIDA = new TextureRegion(TEXTURA_CAJA_DESTRUIDA);
         REGION_BARRIL_DESTRUIDO = new TextureRegion(TEXTURA_BARRIL_DESTRUIDO);
-        TEXTURA_CORAZON = cargar("corazon.png");
+        TEXTURA_CORAZON = cargar("imagenes/interfaz/corazon.png");
 
-        TEXTURA_MINIATURA_BOSQUE = cargar("mapa_bosque_miniatura.png");
-        TEXTURA_MARCO_MAPA = cargar("marco_mapa.png");
-        TEXTURA_MARCO_MAPA_SELECCIONADO = cargar("marco_mapa_seleccionado.png");
-        TEXTURA_SLOT_VACIO = cargar("slot_vacio.png");
-        TEXTURA_ICONO_HOST = cargar("icono_host.png");
-        TEXTURA_ICONO_LISTO = cargar("icono_listo.png");
-        TEXTURA_ICONO_NO_LISTO = cargar("icono_no_listo.png");
-        TEXTURA_ICONO_ACTUALIZAR = cargar("icono_actualizar.png");
-        TEXTURA_ICONO_SALA_LLENA = cargar("icono_sala_llena.png");
-        TEXTURA_FLECHA_IZQUIERDA = cargar("flecha_izq.png");
-        TEXTURA_FLECHA_DERECHA = cargar("flecha_der.png");
-        HOJA_ICONO_SENAL = cargar("icono_senal.png");
+        TEXTURA_MINIATURA_BOSQUE = cargar("imagenes/mapas/bosque/mapa_bosque_miniatura.png");
+        TEXTURA_MARCO_MAPA = cargar("imagenes/mapas/bosque/marco_mapa.png");
+        TEXTURA_MARCO_MAPA_SELECCIONADO = cargar("imagenes/mapas/bosque/marco_mapa_seleccionado.png");
+        TEXTURA_SLOT_VACIO = cargar("imagenes/interfaz/slot_vacio.png");
+        TEXTURA_ICONO_HOST = cargar("imagenes/interfaz/icono_host.png");
+        TEXTURA_ICONO_LISTO = cargar("imagenes/interfaz/icono_listo.png");
+        TEXTURA_ICONO_NO_LISTO = cargar("imagenes/interfaz/icono_no_listo.png");
+        TEXTURA_ICONO_ACTUALIZAR = cargar("imagenes/interfaz/icono_actualizar.png");
+        TEXTURA_ICONO_SALA_LLENA = cargar("imagenes/interfaz/icono_sala_llena.png");
+        TEXTURA_FLECHA_IZQUIERDA = cargar("imagenes/interfaz/flecha_izq.png");
+        TEXTURA_FLECHA_DERECHA = cargar("imagenes/interfaz/flecha_der.png");
+        HOJA_ICONO_SENAL = cargar("imagenes/interfaz/icono_senal.png");
         FRAMES_ICONO_SENAL = crearFrames(HOJA_ICONO_SENAL, 16, 16, 3);
-        HOJA_ESPERANDO = cargar("esperando.png");
-        HOJA_CONECTANDO = cargar("conectando.png");
+        HOJA_ESPERANDO = cargar("imagenes/interfaz/esperando.png");
+        HOJA_CONECTANDO = cargar("imagenes/interfaz/conectando.png");
         ANIMACION_ESPERANDO = crearAnimacion(HOJA_ESPERANDO, 16, 16, 4, 0.3f);
         ANIMACION_CONECTANDO = crearAnimacion(HOJA_CONECTANDO, 16, 16, 4, 0.2f);
 
-        TEXTURA_GANADOR_JUGADOR1 = cargar("ganador_jugador1.png");
-        TEXTURA_GANADOR_JUGADOR2 = cargar("ganador_jugador2.png");
-        TEXTURA_BOTON_VOLVER_JUGAR = cargar("volver_jugar.png");
-        TEXTURA_BOTON_VOLVER_MENU = cargar("volver_menu.png");
+        TEXTURA_GANADOR_JUGADOR1 = cargar("imagenes/interfaz/ganador_jugador1.png");
+        TEXTURA_GANADOR_JUGADOR2 = cargar("imagenes/interfaz/ganador_jugador2.png");
+        TEXTURA_BOTON_VOLVER_JUGAR = cargar("imagenes/interfaz/volver_jugar.png");
+        TEXTURA_BOTON_VOLVER_MENU = cargar("imagenes/interfaz/volver_menu.png");
     }
 
     private Texture cargar(String nombreArchivo) {
