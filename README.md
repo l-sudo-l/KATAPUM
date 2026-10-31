@@ -127,10 +127,12 @@ Abre el puerto UDP 5555 sin ventana. Mensajes de texto separados por `-`:
 | `EVENTO-tipo-x-y-n` | servidor | `DISPARO`, `IMPACTO` o `MUERTE`, para efectos y sonidos. |
 | `FIN-n-m` | servidor | Ganó el jugador `n`. Motivo `m`: 0 sin vidas, 1 el rival se desconectó. |
 | `DESCONECTAR` | cliente | Libera su lugar. |
+| `BUSCAR` | cliente (broadcast) | Pregunta qué partidas hay en la red local. |
+| `SALA-nombre-j-m-mapa` | servidor | Responde a `BUSCAR` con el nombre de la sala, jugadores conectados, máximo y mapa. |
 
 Si un jugador pasa 5 segundos sin mandar nada, el servidor libera su lugar y, si había una partida en curso, le da la victoria al otro. Al terminar la partida los dos clientes se desconectan y la sala queda libre para otra, sin reiniciar el servidor.
 
-Cómo jugar en red: un jugador va a PARTIDA LAN, CREAR PARTIDA, elige nombre y mapa y toca CREAR Y ESPERAR. Su juego levanta el servidor y lo deja en la sala. El otro va a PARTIDA LAN, CONECTAR POR IP y escribe la IP de la PC del anfitrión (se ve con `ipconfig`). También se puede usar un servidor aparte con `gradlew.bat server:run` y conectar los dos juegos por IP.
+Cómo jugar en red: un jugador va a PARTIDA LAN, CREAR PARTIDA, elige nombre y mapa y toca CREAR Y ESPERAR. Su juego levanta el servidor y lo deja en la sala. El otro va a PARTIDA LAN y la sala aparece sola en la lista (se busca por broadcast UDP); un clic y entra. Si no aparece (por ejemplo, si la red bloquea el broadcast), CONECTAR POR IP permite escribir la IP de la PC del anfitrión (se ve con `ipconfig`). También se puede usar un servidor aparte con `gradlew.bat server:run` y conectar los dos juegos por IP.
 
 Para probar en una sola PC: compilar una vez con `gradlew.bat lwjgl3:jar` y abrir dos juegos con `java -jar lwjgl3/build/libs/KATAPUM-<versión>.jar` (correr dos `lwjgl3:run` a la vez hace que Gradle compile dos veces sobre la misma carpeta). En uno crear la partida y en el otro conectar a `127.0.0.1`. El primero queda como Jugador 1 esperando y, al entrar el segundo, empieza la partida en las dos ventanas. En red cada jugador maneja su tanque con W/S/A/D y ESPACIO; ESC sale al menú.
 
