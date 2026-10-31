@@ -255,5 +255,6 @@ public class HiloServidor extends Thread {
 
     public void detener() {
         activo = false;
+        SOCKET.close();
     }
 }
