@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.mistacorp.game.ConfiguracionJuego;
 import com.mistacorp.game.RecursosGraficos;
+import com.mistacorp.game.compartido.ConfiguracionPartida;
 
 public class Arena {
 
@@ -16,7 +16,7 @@ public class Arena {
     private final Rectangle LIMITES_MUNDO;
 
     public Arena() {
-        this.LIMITES_MUNDO = new Rectangle(0, 0, ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO);
+        this.LIMITES_MUNDO = new Rectangle(0, 0, ConfiguracionPartida.ANCHO_MUNDO, ConfiguracionPartida.ALTO_MUNDO);
         construirDisposicion();
         construirDecoraciones();
     }

@@ -8,10 +8,10 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mistacorp.game.ConfiguracionJuego;
 import com.mistacorp.game.ControlVolumen;
 import com.mistacorp.game.RecursosGraficos;
 import com.mistacorp.game.entidades.Tanque;
+import com.mistacorp.game.compartido.ConfiguracionPartida;
 
 public class Hud {
 
@@ -66,7 +66,7 @@ public class Hud {
         float anchoNombre = LAYOUT.width;
         float altoNombre = LAYOUT.height;
 
-        float anchoBloqueCorazones = ConfiguracionJuego.VIDAS_MAXIMAS * SEPARACION_CORAZON;
+        float anchoBloqueCorazones = ConfiguracionPartida.VIDAS_MAXIMAS * SEPARACION_CORAZON;
         float xNombre;
         float xInicioCorazones;
 

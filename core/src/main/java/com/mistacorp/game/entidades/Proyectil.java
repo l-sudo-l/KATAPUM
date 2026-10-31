@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mistacorp.game.ConfiguracionJuego;
+import com.mistacorp.game.compartido.ConfiguracionPartida;
 
 public class Proyectil {
 
@@ -21,13 +21,13 @@ public class Proyectil {
     public Proyectil(Vector2 posicionInicial, float angulo, Tanque propietario,
                       Animation<TextureRegion> animacionVuelo) {
         this.POSICION = new Vector2(
-            posicionInicial.x - ConfiguracionJuego.TAMANO_PROYECTIL / 2f,
-            posicionInicial.y - ConfiguracionJuego.TAMANO_PROYECTIL / 2f
+            posicionInicial.x - ConfiguracionPartida.TAMANO_PROYECTIL / 2f,
+            posicionInicial.y - ConfiguracionPartida.TAMANO_PROYECTIL / 2f
         );
         this.ANGULO = angulo;
         this.VELOCIDAD = new Vector2(MathUtils.cosDeg(angulo), MathUtils.sinDeg(angulo))
-            .scl(ConfiguracionJuego.VELOCIDAD_PROYECTIL);
-        this.LIMITES = new Rectangle(POSICION.x, POSICION.y, ConfiguracionJuego.TAMANO_PROYECTIL, ConfiguracionJuego.TAMANO_PROYECTIL);
+            .scl(ConfiguracionPartida.VELOCIDAD_PROYECTIL);
+        this.LIMITES = new Rectangle(POSICION.x, POSICION.y, ConfiguracionPartida.TAMANO_PROYECTIL, ConfiguracionPartida.TAMANO_PROYECTIL);
         this.PROPIETARIO = propietario;
         this.ANIMACION_VUELO = animacionVuelo;
     }

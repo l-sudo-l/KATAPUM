@@ -10,18 +10,18 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mistacorp.game.ConfiguracionJuego;
 import com.mistacorp.game.ControlVolumen;
 import com.mistacorp.game.KatapumPrincipal;
 import com.mistacorp.game.interfaz.BotonMouse;
 import com.mistacorp.game.interfaz.SliderVolumen;
+import com.mistacorp.game.compartido.ConfiguracionPartida;
 
 public class PantallaMenu extends ScreenAdapter {
 
     private final KatapumPrincipal JUEGO;
 
     private final OrthographicCamera CAMARA = new OrthographicCamera();
-    private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionJuego.ANCHO_MUNDO, ConfiguracionJuego.ALTO_MUNDO, CAMARA);
+    private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionPartida.ANCHO_MUNDO, ConfiguracionPartida.ALTO_MUNDO, CAMARA);
 
     private final BotonMouse BOTON_INICIAR;
     private final SliderVolumen SLIDER;
@@ -31,7 +31,7 @@ public class PantallaMenu extends ScreenAdapter {
 
         float anchoBoton = 300f;
         float altoBoton = 64f;
-        float centroX = ConfiguracionJuego.ANCHO_MUNDO / 2f;
+        float centroX = ConfiguracionPartida.ANCHO_MUNDO / 2f;
 
         BOTON_INICIAR = new BotonMouse(centroX - anchoBoton / 2f, 330, anchoBoton, altoBoton, "INICIAR PARTIDA");
         SLIDER = new SliderVolumen(centroX - anchoBoton / 2f, 150, anchoBoton, 26f);
@@ -78,7 +78,7 @@ public class PantallaMenu extends ScreenAdapter {
 
         GlyphLayout titulo = new GlyphLayout(JUEGO.obtenerFuente(), "KATAPUM");
         JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(), "KATAPUM",
-            ConfiguracionJuego.ANCHO_MUNDO / 2f - titulo.width / 2f, ConfiguracionJuego.ALTO_MUNDO - 70);
+            ConfiguracionPartida.ANCHO_MUNDO / 2f - titulo.width / 2f, ConfiguracionPartida.ALTO_MUNDO - 70);
 
         BOTON_INICIAR.dibujar(JUEGO.obtenerLote(), JUEGO.obtenerRecursos().obtenerTexturaPixel(), JUEGO.obtenerFuente());
 
@@ -91,7 +91,7 @@ public class PantallaMenu extends ScreenAdapter {
     }
 
     private void dibujarControles() {
-        float x = ConfiguracionJuego.ANCHO_MUNDO / 2f - 220;
+        float x = ConfiguracionPartida.ANCHO_MUNDO / 2f - 220;
         float y = 95;
         float paso = 22;
 
