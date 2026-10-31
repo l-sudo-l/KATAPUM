@@ -7,7 +7,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -24,8 +23,6 @@ public class PantallaFinPartida extends ScreenAdapter {
 
     private final KatapumPrincipal JUEGO;
     private final Texture TEXTURA_BANNER;
-    private final boolean ES_PARTIDA_RED;
-    private final String AVISO;
 
     private final OrthographicCamera CAMARA = new OrthographicCamera();
     private final Viewport VENTANA_GRAFICA = new FitViewport(ConfiguracionPartida.ANCHO_MUNDO, ConfiguracionPartida.ALTO_MUNDO, CAMARA);
@@ -36,13 +33,7 @@ public class PantallaFinPartida extends ScreenAdapter {
     private boolean botonMenuResaltado = false;
 
     public PantallaFinPartida(KatapumPrincipal juego, String nombreGanador) {
-        this(juego, nombreGanador, false, "");
-    }
-
-    public PantallaFinPartida(KatapumPrincipal juego, String nombreGanador, boolean esPartidaRed, String aviso) {
         this.JUEGO = juego;
-        this.ES_PARTIDA_RED = esPartidaRed;
-        this.AVISO = aviso;
 
         RecursosGraficos recursos = juego.obtenerRecursos();
         this.TEXTURA_BANNER = "Jugador 1".equals(nombreGanador)
@@ -67,7 +58,7 @@ public class PantallaFinPartida extends ScreenAdapter {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.ENTER) {
-                    volverAJugar();
+                    JUEGO.setScreen(new PantallaJuego(JUEGO));
                     return true;
                 }
                 if (keycode == Input.Keys.ESCAPE) {
@@ -101,12 +92,6 @@ public class PantallaFinPartida extends ScreenAdapter {
         float yBanner = 300f;
         JUEGO.obtenerLote().draw(TEXTURA_BANNER, xBanner, yBanner, anchoBanner, altoBanner);
 
-        if (!AVISO.isEmpty()) {
-            GlyphLayout layoutAviso = new GlyphLayout(JUEGO.obtenerFuente(), AVISO);
-            JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(), AVISO,
-                ConfiguracionPartida.ANCHO_MUNDO / 2f - layoutAviso.width / 2f, yBanner - 20f);
-        }
-
         RecursosGraficos recursos = JUEGO.obtenerRecursos();
         Texture pixel = recursos.obtenerTexturaPixel();
 
@@ -132,14 +117,6 @@ public class PantallaFinPartida extends ScreenAdapter {
         JUEGO.obtenerLote().end();
     }
 
-    private void volverAJugar() {
-        if (ES_PARTIDA_RED) {
-            JUEGO.setScreen(new PantallaPartidasLan(JUEGO));
-        } else {
-            JUEGO.setScreen(new PantallaJuego(JUEGO));
-        }
-    }
-
     private void manejarMouse() {
         Vector2 mouseMundo = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         VENTANA_GRAFICA.unproject(mouseMundo);
@@ -149,7 +126,7 @@ public class PantallaFinPartida extends ScreenAdapter {
 
         if (Gdx.input.justTouched()) {
             if (botonJugarResaltado) {
-                volverAJugar();
+                JUEGO.setScreen(new PantallaJuego(JUEGO));
             } else if (botonMenuResaltado) {
                 JUEGO.setScreen(new PantallaMenu(JUEGO));
             }
