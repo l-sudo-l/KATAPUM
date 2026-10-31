@@ -7,18 +7,19 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mistacorp.game.compartido.ConfiguracionPartida;
+import com.mistacorp.game.compartido.entidades.EstadoTanque;
 
 public class Proyectil {
 
     private final Vector2 POSICION;
     private final Vector2 VELOCIDAD;
     private final Rectangle LIMITES;
-    private final Tanque PROPIETARIO;
+    private final EstadoTanque PROPIETARIO;
     private final float ANGULO;
     private final Animation<TextureRegion> ANIMACION_VUELO;
     private float tiempoTranscurrido = 0f;
 
-    public Proyectil(Vector2 posicionInicial, float angulo, Tanque propietario,
+    public Proyectil(Vector2 posicionInicial, float angulo, EstadoTanque propietario,
                       Animation<TextureRegion> animacionVuelo) {
         this.POSICION = new Vector2(
             posicionInicial.x - ConfiguracionPartida.TAMANO_PROYECTIL / 2f,
@@ -53,7 +54,7 @@ public class Proyectil {
         return LIMITES;
     }
 
-    public Tanque obtenerPropietario() {
+    public EstadoTanque obtenerPropietario() {
         return PROPIETARIO;
     }
 }
