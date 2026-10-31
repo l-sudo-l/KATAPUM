@@ -4,7 +4,7 @@
 - Rodriguez Marquez Luis Manuel 
 
 ## Descripción Corta del Videojuego
-Katapum es un videojuego de tanques en 2D con vista top-down (cenital). Dos jugadores se enfrentan controlando cada uno un tanque en un mapa de batalla, con el objetivo de eliminar al oponente disparando proyectiles y esquivando los ataques entrantes. El mapa cuenta con obstáculos fijos e indestructibles que funcionan como cobertura táctica. Cada tanque tiene 3 vidas; cuando un jugador las pierde todas, su oponente es declarado ganador.
+Katapum es un videojuego de tanques en 2D con vista top-down (cenital). Dos jugadores se enfrentan controlando cada uno un tanque en un mapa de batalla, con el objetivo de eliminar al oponente disparando proyectiles y esquivando los ataques entrantes. Hay dos mapas, Bosque y Desierto, con obstáculos que sirven de cobertura y se destruyen a disparos. Cada tanque tiene 3 vidas; cuando un jugador las pierde todas, su oponente es declarado ganador.
 
 
 
@@ -17,12 +17,22 @@ Funcionalidades implementadas hasta el momento:
 - Animación por spritesheet: cada tanque tiene una secuencia de 4 cuadros (normal → cargando → estallido → carcasa quemada) que se reproduce al perder su última vida, y el proyectil vuela con una animación de 2 cuadros.
 - Sistema de disparo: cada tanque dispara proyectiles animados en la dirección hacia la que está orientado, con fogonazo al salir y destello al impactar.
 - Detección de colisiones: proyectil contra pared/decoración (el proyectil desaparece y daña al obstáculo si es destructible), proyectil contra tanque rival (resta una vida) y tanque contra pared, decoración (arbusto/caja/barril) o tanque rival (bloquea el movimiento).
-- Mapa/arena con obstáculos colisionables: paredes, cajas y barriles se destruyen por disparos y los arbustos son indestructibles. Ver "Obstáculos destructibles" más abajo. Todo dentro de una cámara con `Viewport` (`FitViewport`) que se adapta al tamaño de la ventana.
+- Dos mapas (Bosque y Desierto) con obstáculos colisionables: paredes, cajas, barriles y vegetación se destruyen por disparos. Ver "Mapas" y "Obstáculos destructibles" más abajo. Todo dentro de una cámara con `Viewport` (`FitViewport`) que se adapta al tamaño de la ventana.
 - HUD fijo en pantalla: nombre de cada jugador con contorno y corazones de vida junto al nombre (a la derecha para Jugador 1, a la izquierda para Jugador 2), volumen actual, con su propio `Viewport` independiente de la cámara del mundo.
 - Música de fondo (menú y partida) y efectos de sonido (disparo, impacto, muerte, victoria), con controles de volumen y silencio (teclado y mouse).
 - Menú de inicio y menú de pausa interactivos con mouse (botones y control deslizante de volumen), con estética retro (paneles y botones dibujados en bloques de color, sin depender de imágenes extra).
 - Cooldown de 1.5s tras la animación de explosión antes de pasar a la pantalla de fin de partida, para que se alcance a ver la carcasa del tanque destruido.
 - Condición de victoria: al perder sus 3 vidas, un jugador pierde la partida (se reproduce su animación de explosión completa) y se muestra la pantalla de Fin de partida con el banner del ganador.
+
+### Mapas
+Cada mapa es una grilla de texto en `DisenoMapa` (30 columnas por 17 filas de tiles de 32×32): `#` pared, `v` vegetación, `c` caja, `b` barril y `.` suelo libre. `Arena` recorre la grilla y crea los obstáculos; `SpritesMapa` tiene los sprites de cada mapa.
+
+| Mapa | Vegetación | Paredes | Música |
+|---|---|---|---|
+| Bosque | arbusto | piedra, con borde alrededor del mapa | `musica_bosque.wav` |
+| Desierto | palmera | arena, sin borde | `musica_desierto.wav` |
+
+La partida local se juega en el Bosque. En red, el anfitrión elige el mapa en CREAR PARTIDA.
 
 ### Obstáculos destructibles
 | Obstáculo | Disparos para destruir | Spritesheet | Estado final |
@@ -30,9 +40,9 @@ Funcionalidades implementadas hasta el momento:
 | Caja | 2 | `caja_destruccion.png` (3 cuadros de 32×32) | `caja_destruida.png` |
 | Barril | 2 | `barril_destruccion.png` (3 cuadros de 32×32) | `barril_destruido.png` |
 | Pared | 5 | `pared_destruccion.png` (6 cuadros de 32×32) | `pared_destruida.png` |
-| Arbusto | indestructible | — | — |
+| Arbusto (Bosque) / palmera (Desierto) | 2 | `arbusto_destruccion.png` / `palmera_desierto_destruccion.png` (3 cuadros) | `arbusto_destruido.png` / `palmera_desierto_destruida.png` |
 
-Cada impacto avanza un cuadro de la hoja. Con el último impacto el obstáculo pasa a dibujarse con su sprite de destruido, deja de bloquear a tanques y proyectiles y queda como escombros en el suelo. Las paredes de varios tiles se dañan como una sola pieza.
+Cada impacto avanza un cuadro de la hoja. Con el último impacto el obstáculo pasa a dibujarse con su sprite de destruido, deja de bloquear a tanques y proyectiles y queda como escombros en el suelo. Cada tile de pared se daña por separado. En el Desierto la caja, el barril y la pared usan sus versiones de roble y arena.
 
 Pendiente para próximas entregas: la capa de red (cliente-servidor) que reemplace el modo local por partidas entre dos computadoras.
 
@@ -143,4 +153,4 @@ El servidor decide todo con la misma `Partida` del modo local (`HiloPartida`, un
 
 ### Cómo se separa la lógica del dibujo
 `Partida` decide todo: mueve los tanques según su `EntradaJugador`, mueve los proyectiles, aplica los impactos y define el ganador. Lo que antes reproducía sonidos lo anota como `EventoPartida`. `PantallaJuego` solo le pasa las entradas del teclado, lee los eventos para mostrar efectos y sonidos, y dibuja el estado con `DibujoArena`, `DibujoTanque` y `DibujoProyectil`. Así el modo local y el modo en red usan la misma simulación: el servidor decide, el cliente muestra.
-- `assets/`: sprites, texturas y audio del juego. Ver [`CREDITOS.md`](CREDITOS.md) para la atribución de los assets de audio de terceros (OpenGameArt.org).
+- `assets/`: sprites y audio del juego, en carpetas: `imagenes/tanques`, `imagenes/proyectiles`, `imagenes/mapas/bosque`, `imagenes/mapas/desierto`, `imagenes/interfaz`, `sonidos` y `musica`. Ver [`CREDITOS.md`](CREDITOS.md) para la atribución de los assets de audio de terceros (OpenGameArt.org).
