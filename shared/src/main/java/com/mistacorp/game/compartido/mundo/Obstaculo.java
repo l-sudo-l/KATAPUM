@@ -19,6 +19,10 @@ public class Obstaculo {
         }
     }
 
+    public void establecerImpactos(int impactos) {
+        impactosRecibidos = impactos;
+    }
+
     public boolean esDestructible() {
         return IMPACTOS_PARA_DESTRUIR > 0;
     }
