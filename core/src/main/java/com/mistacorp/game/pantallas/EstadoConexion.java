@@ -1,5 +1,5 @@
 package com.mistacorp.game.pantallas;
 
 public enum EstadoConexion {
-    ESCRIBIENDO_IP, CONECTANDO, ESPERANDO_RIVAL, SALA_COMPLETA, SALA_LLENA, ERROR
+    ESCRIBIENDO_IP, CONECTANDO, SALA_LLENA, ERROR
 }
