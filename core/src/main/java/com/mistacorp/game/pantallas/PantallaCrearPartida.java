@@ -14,8 +14,8 @@ import com.mistacorp.game.compartido.TipoMapa;
 import com.mistacorp.game.compartido.red.ConfiguracionRed;
 import com.mistacorp.game.interfaz.BotonMouse;
 import com.mistacorp.game.interfaz.CampoTexto;
+import com.mistacorp.game.interfaz.SelectorMapa;
 import com.mistacorp.game.interfaz.TipoCampoTexto;
-import com.mistacorp.game.mundo.SpritesMapa;
 
 public class PantallaCrearPartida extends PantallaBase {
 
@@ -26,13 +26,11 @@ public class PantallaCrearPartida extends PantallaBase {
     private final CampoTexto CAMPO_NOMBRE;
     private final Rectangle FLECHA_MENOS_JUGADORES;
     private final Rectangle FLECHA_MAS_JUGADORES;
-    private final Rectangle FLECHA_MAPA_ANTERIOR;
-    private final Rectangle FLECHA_MAPA_SIGUIENTE;
+    private final SelectorMapa SELECTOR_MAPA;
     private final BotonMouse BOTON_CREAR;
     private final BotonMouse BOTON_VOLVER;
 
     private int cantidadJugadores = ConfiguracionRed.MAXIMO_JUGADORES;
-    private int indiceMapa = 0;
     private String mensajeError = "";
 
     public PantallaCrearPartida(KatapumPrincipal juego) {
@@ -41,8 +39,7 @@ public class PantallaCrearPartida extends PantallaBase {
             ConfiguracionRed.LARGO_MAXIMO_NOMBRE_SALA, TipoCampoTexto.NOMBRE);
         FLECHA_MENOS_JUGADORES = new Rectangle(80f, 250f, TAMANO_FLECHA, TAMANO_FLECHA);
         FLECHA_MAS_JUGADORES = new Rectangle(220f, 250f, TAMANO_FLECHA, TAMANO_FLECHA);
-        FLECHA_MAPA_ANTERIOR = new Rectangle(X_MARCO, Y_MARCO - 60f, TAMANO_FLECHA, TAMANO_FLECHA);
-        FLECHA_MAPA_SIGUIENTE = new Rectangle(X_MARCO + 248f - TAMANO_FLECHA, Y_MARCO - 60f, TAMANO_FLECHA, TAMANO_FLECHA);
+        SELECTOR_MAPA = new SelectorMapa(X_MARCO, Y_MARCO);
         BOTON_CREAR = new BotonMouse(80f, 50f, 380f, 60f, "CREAR Y ESPERAR");
         BOTON_VOLVER = new BotonMouse(500f, 50f, 380f, 60f, "VOLVER");
     }
@@ -72,7 +69,7 @@ public class PantallaCrearPartida extends PantallaBase {
     }
 
     private void crear() {
-        TipoMapa mapa = TipoMapa.values()[indiceMapa];
+        TipoMapa mapa = SELECTOR_MAPA.obtenerMapa();
         String error = JUEGO.iniciarServidorLocal(CAMPO_NOMBRE.obtenerTexto(), mapa);
         if (error != null) {
             mensajeError = error;
@@ -84,11 +81,6 @@ public class PantallaCrearPartida extends PantallaBase {
     private void cambiarJugadores(int cambio) {
         cantidadJugadores = Math.max(ConfiguracionRed.MINIMO_JUGADORES,
             Math.min(ConfiguracionRed.MAXIMO_JUGADORES, cantidadJugadores + cambio));
-    }
-
-    private void cambiarMapa(int cambio) {
-        int cantidad = TipoMapa.values().length;
-        indiceMapa = (indiceMapa + cambio + cantidad) % cantidad;
     }
 
     @Override
@@ -111,14 +103,8 @@ public class PantallaCrearPartida extends PantallaBase {
         lote.draw(recursos.obtenerTexturaFlechaDerecha(), FLECHA_MAS_JUGADORES.x, FLECHA_MAS_JUGADORES.y, TAMANO_FLECHA, TAMANO_FLECHA);
         dibujarTexto("Maximo " + ConfiguracionRed.MAXIMO_JUGADORES + " jugadores", 80f, 230f);
 
-        TipoMapa mapa = TipoMapa.values()[indiceMapa];
         dibujarTexto("Mapa:", X_MARCO, Y_MARCO + 175f);
-        SpritesMapa sprites = recursos.obtenerSpritesMapa(mapa);
-        lote.draw(sprites.obtenerTexturaMarcoSeleccionado(), X_MARCO, Y_MARCO);
-        lote.draw(sprites.obtenerTexturaMiniatura(), X_MARCO + 4f, Y_MARCO + 4f);
-        lote.draw(recursos.obtenerTexturaFlechaIzquierda(), FLECHA_MAPA_ANTERIOR.x, FLECHA_MAPA_ANTERIOR.y, TAMANO_FLECHA, TAMANO_FLECHA);
-        dibujarCentrado(mapa.obtenerNombreVisible(), X_MARCO + 124f, FLECHA_MAPA_ANTERIOR.y + 22f);
-        lote.draw(recursos.obtenerTexturaFlechaDerecha(), FLECHA_MAPA_SIGUIENTE.x, FLECHA_MAPA_SIGUIENTE.y, TAMANO_FLECHA, TAMANO_FLECHA);
+        SELECTOR_MAPA.dibujar(lote, recursos, JUEGO.obtenerFuente());
 
         BOTON_CREAR.dibujar(lote, pixel, JUEGO.obtenerFuente());
         BOTON_VOLVER.dibujar(lote, pixel, JUEGO.obtenerFuente());
@@ -142,10 +128,8 @@ public class PantallaCrearPartida extends PantallaBase {
             cambiarJugadores(-1);
         } else if (FLECHA_MAS_JUGADORES.contains(mouse.x, mouse.y)) {
             cambiarJugadores(1);
-        } else if (FLECHA_MAPA_ANTERIOR.contains(mouse.x, mouse.y)) {
-            cambiarMapa(-1);
-        } else if (FLECHA_MAPA_SIGUIENTE.contains(mouse.x, mouse.y)) {
-            cambiarMapa(1);
+        } else {
+            SELECTOR_MAPA.manejarClick(mouse.x, mouse.y);
         }
     }
 }
