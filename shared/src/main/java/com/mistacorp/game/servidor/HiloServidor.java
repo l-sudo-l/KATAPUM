@@ -17,13 +17,12 @@ import java.nio.charset.StandardCharsets;
 
 public class HiloServidor extends Thread {
 
-    private static final int MAXIMO_JUGADORES = 2;
     private static final int REPETICIONES_AVISO_FIN = 3;
 
     private final DatagramSocket SOCKET;
     private final String NOMBRE_SALA;
     private final TipoMapa MAPA;
-    private final ClienteConectado[] CLIENTES = new ClienteConectado[MAXIMO_JUGADORES];
+    private final ClienteConectado[] CLIENTES = new ClienteConectado[ConfiguracionRed.MAXIMO_JUGADORES];
     private volatile boolean activo = true;
     private volatile HiloPartida partida = null;
 
