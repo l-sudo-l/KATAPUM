@@ -35,6 +35,7 @@ public class PantallaConectar extends PantallaBase implements OyenteRed {
     private HiloCliente cliente = null;
     private String mensajeError = "";
     private float tiempo = 0f;
+    private float tiempoConectando = 0f;
 
     public PantallaConectar(KatapumPrincipal juego) {
         this(juego, "127.0.0.1", false);
@@ -94,6 +95,7 @@ public class PantallaConectar extends PantallaBase implements OyenteRed {
             cliente = new HiloCliente(CAMPO_IP.obtenerTexto(), ConfiguracionRed.PUERTO_SERVIDOR, this);
             cliente.start();
             estado = EstadoConexion.CONECTANDO;
+            tiempoConectando = 0f;
         } catch (UnknownHostException e) {
             mostrarError("IP invalida");
         } catch (SocketException e) {
@@ -124,6 +126,17 @@ public class PantallaConectar extends PantallaBase implements OyenteRed {
         }
     }
 
+    private void revisarTiempoDeConexion(float delta) {
+        if (estado != EstadoConexion.CONECTANDO) {
+            return;
+        }
+        tiempoConectando += delta;
+        if (tiempoConectando * 1000f > ConfiguracionRed.MILISEGUNDOS_DESCONEXION) {
+            detenerCliente();
+            mostrarError("No hay ningun servidor en " + CAMPO_IP.obtenerTexto());
+        }
+    }
+
     private void detenerCliente() {
         if (cliente != null) {
             cliente.detener();
@@ -144,6 +157,7 @@ public class PantallaConectar extends PantallaBase implements OyenteRed {
     @Override
     public void render(float delta) {
         tiempo += delta;
+        revisarTiempoDeConexion(delta);
         CAMPO_IP.actualizar(delta);
         manejarMouse();
 
