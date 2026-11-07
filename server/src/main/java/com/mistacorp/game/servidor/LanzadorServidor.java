@@ -7,16 +7,26 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.SocketException;
+import java.util.Arrays;
 
 public class LanzadorServidor {
 
     private static final String COMANDO_SALIR = "salir";
 
     public static void main(String[] args) {
-        String nombreSala = args.length > 0 ? String.join(" ", args) : ConfiguracionRed.NOMBRE_SALA_POR_DEFECTO;
+        TipoMapa mapa = TipoMapa.BOSQUE;
+        int primerPalabraNombre = 0;
+        if (args.length > 0 && buscarMapa(args[0]) != null) {
+            mapa = buscarMapa(args[0]);
+            primerPalabraNombre = 1;
+        }
+        String nombreSala = ConfiguracionRed.NOMBRE_SALA_POR_DEFECTO;
+        if (args.length > primerPalabraNombre) {
+            nombreSala = String.join(" ", Arrays.copyOfRange(args, primerPalabraNombre, args.length));
+        }
         final HiloServidor servidor;
         try {
-            servidor = new HiloServidor(ConfiguracionRed.PUERTO_SERVIDOR, nombreSala, TipoMapa.BOSQUE);
+            servidor = new HiloServidor(ConfiguracionRed.PUERTO_SERVIDOR, nombreSala, mapa);
         } catch (SocketException e) {
             System.out.println("No se pudo abrir el puerto " + ConfiguracionRed.PUERTO_SERVIDOR + ": " + e.getMessage());
             return;
@@ -28,12 +38,22 @@ public class LanzadorServidor {
             }
         });
         servidor.start();
-        System.out.println("Servidor KATAPUM \"" + servidor.obtenerNombreSala() + "\" escuchando en el puerto " + ConfiguracionRed.PUERTO_SERVIDOR);
+        System.out.println("Servidor KATAPUM \"" + servidor.obtenerNombreSala() + "\" escuchando en el puerto " + ConfiguracionRed.PUERTO_SERVIDOR
+            + " con el mapa " + mapa.obtenerNombreVisible());
         System.out.println("Escribi \"" + COMANDO_SALIR + "\" y ENTER (o Ctrl+C) para cerrarlo");
         if (esperarComandoSalir()) {
             servidor.detener();
         }
         esperarFin(servidor);
+    }
+
+    private static TipoMapa buscarMapa(String texto) {
+        for (TipoMapa mapa : TipoMapa.values()) {
+            if (mapa.name().equalsIgnoreCase(texto)) {
+                return mapa;
+            }
+        }
+        return null;
     }
 
     private static boolean esperarComandoSalir() {
