@@ -71,6 +71,8 @@ public class PantallaSala extends PantallaBase implements OyenteRed {
         tiempoSinRespuesta = 0f;
         if (tipo == TipoMensaje.EMPEZAR) {
             salaCompleta = true;
+        } else if (tipo == TipoMensaje.SERVIDOR_CERRADO) {
+            volverAConectar("El servidor se cerro");
         }
     }
 
