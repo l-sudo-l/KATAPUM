@@ -7,6 +7,19 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.18.0] - 2026-11-07
+
+### Agregado
+- Mensaje `SERVIDOR_CERRADO`: al cerrarse el servidor (dedicado o del anfitrión) avisa a los jugadores, que vuelven a la pantalla de conexión sin esperar el timeout.
+- Servidor dedicado: se cierra limpio con `salir` + ENTER o Ctrl+C, y el primer argumento elige el mapa (`bosque`, `desierto` o `ciudad`).
+
+### Cambiado
+- El jar del servidor se llama `KATAPUM-server-<version>.jar` (antes tenía el mismo nombre que el del cliente).
+
+### Corregido
+- CONECTAR POR IP ya no queda esperando para siempre: a los 5 segundos sin respuesta avisa que no hay servidor en esa IP.
+- La sala de espera detecta si el servidor se cayó y vuelve a la pantalla de conexión.
+
 ## [0.17.1] - 2026-10-31
 
 ### Agregado

@@ -121,11 +121,12 @@ En Linux/macOS:
 - `server/`: servidor UDP sin ventana (`HiloServidor`, `ClienteConectado`). Clase principal: `LanzadorServidor`.
 - `shared/` también tiene el protocolo de red (`com.mistacorp.game.compartido.red`: `ConfiguracionRed`, `TipoMensaje`, `Protocolo`).
 
-### Servidor de red (en desarrollo)
+### Servidor de red
 ```bash
 gradlew.bat server:run
+java -jar KATAPUM-server-0.18.0.jar [bosque|desierto|ciudad] [nombre de la sala]
 ```
-Abre el puerto UDP 5555 sin ventana. Mensajes de texto separados por `-`:
+Abre el puerto UDP 5555 sin ventana. El primer argumento opcional elige el mapa (por defecto Bosque) y el resto es el nombre de la sala. Para cerrarlo se escribe `salir` y ENTER, o Ctrl+C: en los dos casos avisa a los jugadores con `SERVIDOR_CERRADO`, cierra el socket y termina el hilo. Si el puerto ya está ocupado lo informa y no arranca. Mensajes de texto separados por `-`:
 
 | Mensaje | Quién lo manda | Significado |
 |---|---|---|
@@ -140,13 +141,16 @@ Abre el puerto UDP 5555 sin ventana. Mensajes de texto separados por `-`:
 | `REVANCHA-p` | cliente | En la pantalla de fin, cada medio segundo: `p` 1 si pide la revancha, 0 si no. |
 | `ESTADO_REVANCHA-a-b` | servidor | Quién pide la revancha (jugador 1 y jugador 2). Con los dos en 1 manda `EMPEZAR` y arranca otra partida. |
 | `RIVAL_SALIO` | servidor | El rival dejó la pantalla de fin. |
+| `SERVIDOR_CERRADO` | servidor | El servidor se está cerrando. El cliente vuelve a la pantalla de conexión. |
 | `DESCONECTAR` | cliente | Libera su lugar. |
 | `BUSCAR` | cliente (broadcast) | Pregunta qué partidas hay en la red local. |
 | `SALA-nombre-j-m-mapa` | servidor | Responde a `BUSCAR` con el nombre de la sala, jugadores conectados, máximo y mapa. |
 
-Si un jugador pasa 5 segundos sin mandar nada, el servidor libera su lugar y, si había una partida en curso, le da la victoria al otro. Al terminar la partida los dos quedan en la pantalla de fin: si ambos tocan VOLVER A JUGAR, arranca la revancha; si uno sale, su lugar queda libre para otro jugador, sin reiniciar el servidor.
+Si un jugador pasa 5 segundos sin mandar nada, el servidor libera su lugar y, si había una partida en curso, le da la victoria al otro. Del lado del cliente también hay un límite de 5 segundos: al conectar (si no hay servidor en esa IP lo avisa), en la sala, en la partida y en la pantalla de fin; pasado ese tiempo sin respuesta vuelve a la pantalla de conexión. Al terminar la partida los dos quedan en la pantalla de fin: si ambos tocan VOLVER A JUGAR, arranca la revancha; si uno sale, su lugar queda libre para otro jugador, sin reiniciar el servidor.
 
-Cómo jugar en red: un jugador va a PARTIDA LAN, CREAR PARTIDA, elige nombre y mapa y toca CREAR Y ESPERAR. Su juego levanta el servidor y lo deja en la sala. El otro va a PARTIDA LAN y la sala aparece sola en la lista (se busca por broadcast UDP); un clic y entra. Si no aparece (por ejemplo, si la red bloquea el broadcast), CONECTAR POR IP permite escribir la IP de la PC del anfitrión (se ve con `ipconfig`). También se puede usar un servidor aparte con `gradlew.bat server:run` y conectar los dos juegos por IP.
+Cómo jugar en red: un jugador va a PARTIDA LAN, CREAR PARTIDA, elige nombre y mapa y toca CREAR Y ESPERAR. Su juego levanta el servidor y lo deja en la sala. El otro va a PARTIDA LAN y la sala aparece sola en la lista (se busca por broadcast UDP); un clic y entra. Si no aparece (por ejemplo, si la red bloquea el broadcast), CONECTAR POR IP permite escribir la IP de la PC del anfitrión (se ve con `ipconfig`). También se puede usar un servidor aparte en otra PC (`java -jar KATAPUM-server-0.18.0.jar`): responde al broadcast igual que el anfitrión, así que aparece en la lista de PARTIDA LAN, y también se puede entrar por IP.
+
+Con tres PCs (servidor y dos clientes): `gradlew.bat server:jar lwjgl3:jar` genera `server/build/libs/KATAPUM-server-<versión>.jar` y `lwjgl3/build/libs/KATAPUM-<versión>.jar`. En la PC servidor se corre el primero desde CMD y en las otras dos el segundo; los clientes encuentran la sala en PARTIDA LAN. El firewall de Windows tiene que permitir Java en UDP 5555.
 
 Para probar en una sola PC: compilar una vez con `gradlew.bat lwjgl3:jar` y abrir dos juegos con `java -jar lwjgl3/build/libs/KATAPUM-<versión>.jar` (correr dos `lwjgl3:run` a la vez hace que Gradle compile dos veces sobre la misma carpeta). En uno crear la partida y en el otro conectar a `127.0.0.1`. El primero queda como Jugador 1 esperando y, al entrar el segundo, empieza la partida en las dos ventanas. En red cada jugador maneja su tanque con W/S/A/D y ESPACIO; ESC sale al menú.
 
