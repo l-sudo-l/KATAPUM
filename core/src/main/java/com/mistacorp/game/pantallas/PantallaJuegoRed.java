@@ -137,6 +137,12 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
             case FIN:
                 registrarFin(Integer.parseInt(partes[1]), MotivoFin.values()[Integer.parseInt(partes[2])]);
                 break;
+            case SERVIDOR_CERRADO:
+                if (numeroGanador == 0) {
+                    CLIENTE.detener();
+                    JUEGO.setScreen(new PantallaConectar(JUEGO, "El servidor se cerro"));
+                }
+                break;
             case EVENTO:
                 REPRODUCTOR.reproducir(TipoEvento.valueOf(partes[1]), Float.parseFloat(partes[2]),
                     Float.parseFloat(partes[3]), Integer.parseInt(partes[4]));

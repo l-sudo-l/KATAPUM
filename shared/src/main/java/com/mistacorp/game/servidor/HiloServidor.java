@@ -315,7 +315,19 @@ public class HiloServidor extends Thread {
     }
 
     public void detener() {
+        if (!activo) {
+            return;
+        }
+        avisarCierre();
         activo = false;
         SOCKET.close();
+    }
+
+    private synchronized void avisarCierre() {
+        String mensaje = Protocolo.armar(TipoMensaje.SERVIDOR_CERRADO);
+        for (int i = 0; i < REPETICIONES_AVISO_FIN; i++) {
+            enviarATodos(mensaje);
+        }
+        System.out.println("Servidor cerrado, se aviso a los jugadores");
     }
 }

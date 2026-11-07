@@ -90,6 +90,11 @@ public class PantallaFinPartidaRed extends PantallaBase implements OyenteRed {
                 rivalSeFue = true;
                 rivalPideRevancha = false;
                 break;
+            case SERVIDOR_CERRADO:
+                clienteEntregado = true;
+                CLIENTE.detener();
+                JUEGO.setScreen(new PantallaConectar(JUEGO, "El servidor se cerro"));
+                break;
             case EMPEZAR:
                 clienteEntregado = true;
                 JUEGO.setScreen(new PantallaJuegoRed(JUEGO, CLIENTE, NUMERO_JUGADOR, MAPA));
