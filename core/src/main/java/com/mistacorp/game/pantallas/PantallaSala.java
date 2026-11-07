@@ -13,6 +13,7 @@ import com.mistacorp.game.KatapumPrincipal;
 import com.mistacorp.game.RecursosGraficos;
 import com.mistacorp.game.compartido.ConfiguracionPartida;
 import com.mistacorp.game.compartido.TipoMapa;
+import com.mistacorp.game.compartido.red.ConfiguracionRed;
 import com.mistacorp.game.compartido.red.TipoMensaje;
 import com.mistacorp.game.interfaz.BotonMouse;
 import com.mistacorp.game.mundo.SpritesMapa;
@@ -37,6 +38,7 @@ public class PantallaSala extends PantallaBase implements OyenteRed {
     private boolean clienteEntregado = false;
     private float tiempo = 0f;
     private float tiempoDesdeCompleta = 0f;
+    private float tiempoSinRespuesta = 0f;
 
     public PantallaSala(KatapumPrincipal juego, HiloCliente cliente, int numeroJugador, String nombreSala, TipoMapa mapa) {
         super(juego);
@@ -66,6 +68,7 @@ public class PantallaSala extends PantallaBase implements OyenteRed {
 
     @Override
     public void mensajeRecibido(TipoMensaje tipo, String[] partes) {
+        tiempoSinRespuesta = 0f;
         if (tipo == TipoMensaje.EMPEZAR) {
             salaCompleta = true;
         }
@@ -74,6 +77,11 @@ public class PantallaSala extends PantallaBase implements OyenteRed {
     @Override
     public void render(float delta) {
         tiempo += delta;
+        tiempoSinRespuesta += delta;
+        if (tiempoSinRespuesta * 1000f > ConfiguracionRed.MILISEGUNDOS_DESCONEXION) {
+            volverAConectar("Se perdio la conexion con el servidor");
+            return;
+        }
         if (salaCompleta) {
             tiempoDesdeCompleta += delta;
             if (tiempoDesdeCompleta >= ConfiguracionJuego.RETRASO_FIN_PARTIDA) {
@@ -144,6 +152,12 @@ public class PantallaSala extends PantallaBase implements OyenteRed {
         if (Gdx.input.justTouched() && BOTON_SALIR.contienePunto(mouse.x, mouse.y)) {
             salir();
         }
+    }
+
+    private void volverAConectar(String aviso) {
+        clienteEntregado = true;
+        CLIENTE.detener();
+        JUEGO.setScreen(new PantallaConectar(JUEGO, aviso));
     }
 
     private void salir() {
