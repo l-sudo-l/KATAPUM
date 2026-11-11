@@ -12,6 +12,9 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 ### Cambiado
 - Las cuatro músicas (`menu_juego`, `musica_bosque`, `musica_desierto` y `musica_ciudad_abandonada`) pasan de `.wav` a `.ogg` (Vorbis, calidad 4). Juntas bajan de unos 69 MB a 6,4 MB, con la misma duración, y el juego pesa mucho menos. Los efectos de sonido siguen en `.wav` porque son cortos.
 
+### Documentación
+- `CREDITOS.md` indica que las músicas del Desierto y de la Ciudad abandonada se generaron con IA (ChatGPT, de OpenAI) para este proyecto.
+
 ## [0.20.0] - 2026-11-11
 
 ### Agregado
