@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -29,7 +30,9 @@ public class PantallaFinPartidaRed extends PantallaBase implements OyenteRed {
     private final HiloCliente CLIENTE;
     private final int NUMERO_JUGADOR;
     private final TipoMapa MAPA;
+    private final boolean EMPATE;
     private final Texture TEXTURA_BANNER;
+    private final Rectangle LIMITES_BANNER;
     private final Rectangle LIMITES_BOTON_REVANCHA;
     private final Rectangle LIMITES_BOTON_SALIR;
 
@@ -42,14 +45,16 @@ public class PantallaFinPartidaRed extends PantallaBase implements OyenteRed {
     private float tiempo = 0f;
 
     public PantallaFinPartidaRed(KatapumPrincipal juego, HiloCliente cliente, int numeroJugador, TipoMapa mapa,
-                                 int numeroGanador, boolean rivalSeFue) {
+                                 int numeroGanador, boolean empate, boolean rivalSeFue) {
         super(juego);
         this.MAPA = mapa;
         this.CLIENTE = cliente;
         this.NUMERO_JUGADOR = numeroJugador;
+        this.EMPATE = empate;
         this.rivalSeFue = rivalSeFue;
         RecursosGraficos recursos = juego.obtenerRecursos();
         this.TEXTURA_BANNER = numeroGanador == 1 ? recursos.obtenerTexturaGanadorJugador1() : recursos.obtenerTexturaGanadorJugador2();
+        this.LIMITES_BANNER = new Rectangle(CENTRO_X - ANCHO_BANNER / 2f, Y_BANNER, ANCHO_BANNER, ALTO_BANNER);
 
         float anchoBoton = 220f;
         float altoBoton = 60f;
@@ -152,7 +157,11 @@ public class PantallaFinPartidaRed extends PantallaBase implements OyenteRed {
         RecursosGraficos recursos = JUEGO.obtenerRecursos();
         Texture pixel = recursos.obtenerTexturaPixel();
 
-        lote.draw(TEXTURA_BANNER, CENTRO_X - ANCHO_BANNER / 2f, Y_BANNER, ANCHO_BANNER, ALTO_BANNER);
+        if (EMPATE) {
+            dibujarBannerEmpate();
+        } else {
+            lote.draw(TEXTURA_BANNER, LIMITES_BANNER.x, LIMITES_BANNER.y, LIMITES_BANNER.width, LIMITES_BANNER.height);
+        }
         dibujarCentrado(textoDeRevancha(), CENTRO_X, Y_BANNER - 40f);
 
         lote.draw(recursos.obtenerTexturaBotonVolverJugar(), LIMITES_BOTON_REVANCHA.x, LIMITES_BOTON_REVANCHA.y,
@@ -173,6 +182,16 @@ public class PantallaFinPartidaRed extends PantallaBase implements OyenteRed {
         dibujarCentrado("ENTER: revancha", LIMITES_BOTON_REVANCHA.x + LIMITES_BOTON_REVANCHA.width / 2f, LIMITES_BOTON_REVANCHA.y - 12f);
         dibujarCentrado("ESC: salir", LIMITES_BOTON_SALIR.x + LIMITES_BOTON_SALIR.width / 2f, LIMITES_BOTON_SALIR.y - 12f);
         lote.end();
+    }
+
+    private void dibujarBannerEmpate() {
+        dibujarPanel(LIMITES_BANNER);
+        BitmapFont fuente = JUEGO.obtenerFuente();
+        float escalaPrevia = fuente.getData().scaleX;
+        fuente.getData().setScale(escalaPrevia * 2f);
+        dibujarCentrado("EMPATE", CENTRO_X, LIMITES_BANNER.y + LIMITES_BANNER.height / 2f + 16f);
+        fuente.getData().setScale(escalaPrevia);
+        dibujarCentrado("Los dos tanques cayeron", CENTRO_X, LIMITES_BANNER.y + 30f);
     }
 
     private String textoDeRevancha() {

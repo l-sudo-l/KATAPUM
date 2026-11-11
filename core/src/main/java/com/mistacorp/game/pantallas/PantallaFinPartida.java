@@ -7,6 +7,8 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -21,9 +23,11 @@ import com.mistacorp.game.compartido.TipoMapa;
 public class PantallaFinPartida extends ScreenAdapter {
 
     private static final Color COLOR_RESALTADO = new Color(1f, 1f, 1f, 0.25f);
+    private static final Color COLOR_PANEL = new Color(0.16f, 0.16f, 0.22f, 1f);
 
     private final KatapumPrincipal JUEGO;
     private final Texture TEXTURA_BANNER;
+    private final boolean EMPATE;
     private final TipoMapa MAPA;
 
     private final OrthographicCamera CAMARA = new OrthographicCamera();
@@ -34,12 +38,13 @@ public class PantallaFinPartida extends ScreenAdapter {
     private boolean botonJugarResaltado = false;
     private boolean botonMenuResaltado = false;
 
-    public PantallaFinPartida(KatapumPrincipal juego, String nombreGanador, TipoMapa mapa) {
+    public PantallaFinPartida(KatapumPrincipal juego, int numeroGanador, boolean empate, TipoMapa mapa) {
         this.JUEGO = juego;
         this.MAPA = mapa;
+        this.EMPATE = empate;
 
         RecursosGraficos recursos = juego.obtenerRecursos();
-        this.TEXTURA_BANNER = "Jugador 1".equals(nombreGanador)
+        this.TEXTURA_BANNER = numeroGanador == 1
             ? recursos.obtenerTexturaGanadorJugador1()
             : recursos.obtenerTexturaGanadorJugador2();
 
@@ -93,7 +98,11 @@ public class PantallaFinPartida extends ScreenAdapter {
         float altoBanner = 110f;
         float xBanner = ConfiguracionPartida.ANCHO_MUNDO / 2f - anchoBanner / 2f;
         float yBanner = 300f;
-        JUEGO.obtenerLote().draw(TEXTURA_BANNER, xBanner, yBanner, anchoBanner, altoBanner);
+        if (EMPATE) {
+            dibujarBannerEmpate(xBanner, yBanner, anchoBanner, altoBanner);
+        } else {
+            JUEGO.obtenerLote().draw(TEXTURA_BANNER, xBanner, yBanner, anchoBanner, altoBanner);
+        }
 
         RecursosGraficos recursos = JUEGO.obtenerRecursos();
         Texture pixel = recursos.obtenerTexturaPixel();
@@ -118,6 +127,29 @@ public class PantallaFinPartida extends ScreenAdapter {
         JUEGO.obtenerFuente().draw(JUEGO.obtenerLote(), "ESC", LIMITES_BOTON_MENU.x + 90, LIMITES_BOTON_MENU.y - 12);
 
         JUEGO.obtenerLote().end();
+    }
+
+    private void dibujarBannerEmpate(float x, float y, float ancho, float alto) {
+        float borde = 3f;
+        Texture pixel = JUEGO.obtenerRecursos().obtenerTexturaPixel();
+        JUEGO.obtenerLote().setColor(Color.WHITE);
+        JUEGO.obtenerLote().draw(pixel, x, y, ancho, alto);
+        JUEGO.obtenerLote().setColor(COLOR_PANEL);
+        JUEGO.obtenerLote().draw(pixel, x + borde, y + borde, ancho - borde * 2f, alto - borde * 2f);
+        JUEGO.obtenerLote().setColor(Color.WHITE);
+
+        BitmapFont fuente = JUEGO.obtenerFuente();
+        float escalaPrevia = fuente.getData().scaleX;
+        fuente.getData().setScale(escalaPrevia * 2f);
+        dibujarTextoCentrado("EMPATE", x + ancho / 2f, y + alto / 2f + 16f);
+        fuente.getData().setScale(escalaPrevia);
+        dibujarTextoCentrado("Los dos tanques cayeron", x + ancho / 2f, y + 28f);
+    }
+
+    private void dibujarTextoCentrado(String texto, float centroX, float y) {
+        BitmapFont fuente = JUEGO.obtenerFuente();
+        GlyphLayout layout = new GlyphLayout(fuente, texto);
+        fuente.draw(JUEGO.obtenerLote(), texto, centroX - layout.width / 2f, y);
     }
 
     private void manejarMouse() {

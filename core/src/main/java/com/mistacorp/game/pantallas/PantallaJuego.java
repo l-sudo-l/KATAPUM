@@ -20,7 +20,6 @@ import com.mistacorp.game.compartido.EventoPartida;
 import com.mistacorp.game.compartido.Partida;
 import com.mistacorp.game.compartido.TipoMapa;
 import com.mistacorp.game.compartido.entidades.EstadoProyectil;
-import com.mistacorp.game.compartido.entidades.EstadoTanque;
 import com.mistacorp.game.entidades.DibujoProyectil;
 import com.mistacorp.game.entidades.DibujoTanque;
 import com.mistacorp.game.entidades.Efecto;
@@ -189,18 +188,25 @@ public class PantallaJuego extends ScreenAdapter {
     }
 
     private void revisarFinDePartida(float delta) {
-        EstadoTanque ganador = PARTIDA.obtenerGanador();
-        if (ganador == null) {
+        if (!PARTIDA.estaDecidida()) {
             return;
         }
-        DibujoTanque tanqueDestruido = ganador.obtenerNumeroJugador() == 1 ? DIBUJO_JUGADOR2 : DIBUJO_JUGADOR1;
-        if (!tanqueDestruido.explosionTerminada()) {
+        if (!explosionesListas()) {
             return;
         }
         tiempoEsperaFinPartida += delta;
         if (tiempoEsperaFinPartida >= ConfiguracionJuego.RETRASO_FIN_PARTIDA) {
-            JUEGO.setScreen(new PantallaFinPartida(JUEGO, ganador.obtenerNombre(), MAPA));
+            int numeroGanador = PARTIDA.hayEmpate() ? 0 : PARTIDA.obtenerGanador().obtenerNumeroJugador();
+            JUEGO.setScreen(new PantallaFinPartida(JUEGO, numeroGanador, PARTIDA.hayEmpate(), MAPA));
         }
+    }
+
+    private boolean explosionesListas() {
+        if (PARTIDA.hayEmpate()) {
+            return DIBUJO_JUGADOR1.explosionTerminada() && DIBUJO_JUGADOR2.explosionTerminada();
+        }
+        DibujoTanque tanqueDestruido = PARTIDA.obtenerGanador().obtenerNumeroJugador() == 1 ? DIBUJO_JUGADOR2 : DIBUJO_JUGADOR1;
+        return tanqueDestruido.explosionTerminada();
     }
 
     private void manejarControlesDeVolumen() {
