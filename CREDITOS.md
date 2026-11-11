@@ -9,9 +9,13 @@ El audio proviene de OpenGameArt.org. El detalle de cada pista, su autor y licen
 | `impacto.wav` | Synthesized explosion | megaboots | CC0 | https://opengameart.org/content/synthesized-explosion |
 | `disparo.wav` | Rumble/explosion | Michel Baradari | **CC-BY 3.0** | https://opengameart.org/content/rumbleexplosion |
 | `muerte.wav` | Chunky Explosion | Joth | CC0 | https://opengameart.org/content/chunky-explosion |
-| `musica_bosque.wav` (antes `musica_juego.wav`) | NES Shooter Music (5 tracks, 3 jingles) | SketchyLogic | CC0 (dominio público) | https://opengameart.org/content/nes-shooter-music-5-tracks-3-jingles |
-| `menu_juego.wav` | CC0 Scraps | celestialghost8 | CC0 | https://opengameart.org/content/cc0-scraps |
+| `musica_bosque.ogg` (antes `musica_juego.wav`) | NES Shooter Music (5 tracks, 3 jingles) | SketchyLogic | CC0 (dominio público) | https://opengameart.org/content/nes-shooter-music-5-tracks-3-jingles |
+| `menu_juego.ogg` | CC0 Scraps | celestialghost8 | CC0 | https://opengameart.org/content/cc0-scraps |
 | `ganar.wav` | CC0 Scraps | celestialghost8 | CC0 | https://opengameart.org/content/cc0-scraps |
+| `musica_desierto.ogg` | *pendiente* | *pendiente* | *pendiente* | *pendiente* |
+| `musica_ciudad_abandonada.ogg` | *pendiente* | *pendiente* | *pendiente* | *pendiente* |
+
+Las músicas se guardan en `.ogg` (Vorbis) desde la versión 0.20.1 para que el juego pese menos; el sonido es el mismo que el `.wav` original.
 
 ## Nota sobre la licencia CC-BY
 

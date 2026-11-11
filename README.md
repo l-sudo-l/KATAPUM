@@ -29,9 +29,9 @@ Cada mapa es una grilla de texto en `DisenoMapa` (30 columnas por 17 filas de ti
 
 | Mapa | Vegetación | Paredes | Música |
 |---|---|---|---|
-| Bosque | arbusto | piedra, con borde alrededor del mapa | `musica_bosque.wav` |
-| Desierto | palmera | arena, sin borde | `musica_desierto.wav` |
-| Ciudad abandonada | arbusto seco | ladrillo, edificios en L y bloques en C | `musica_ciudad_abandonada.wav` |
+| Bosque | arbusto | piedra, con borde alrededor del mapa | `musica_bosque.ogg` |
+| Desierto | palmera | arena, sin borde | `musica_desierto.ogg` |
+| Ciudad abandonada | arbusto seco | ladrillo, edificios en L y bloques en C | `musica_ciudad_abandonada.ogg` |
 
 En la partida local el mapa se elige antes de empezar; en red lo elige el anfitrión en CREAR PARTIDA.
 
