@@ -15,4 +15,5 @@ public final class ConfiguracionPartida {
 
     public static final float TAMANO_PROYECTIL = 10f;
     public static final float VELOCIDAD_PROYECTIL = 420f;
+    public static final float SEGUNDOS_RECARGA_DISPARO = 0.6f;
 }

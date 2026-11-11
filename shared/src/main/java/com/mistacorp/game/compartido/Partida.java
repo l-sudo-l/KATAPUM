@@ -17,6 +17,9 @@ public class Partida {
     private final Array<EstadoProyectil> PROYECTILES = new Array<>();
     private final Array<EventoPartida> EVENTOS = new Array<>();
     private EstadoTanque ganador = null;
+    private boolean empate = false;
+    private float recargaJugador1 = 0f;
+    private float recargaJugador2 = 0f;
 
     public Partida(TipoMapa mapa) {
         ARENA = new Arena(mapa);
@@ -27,9 +30,12 @@ public class Partida {
     }
 
     public void actualizar(float delta, EntradaJugador entrada1, EntradaJugador entrada2) {
+        recargaJugador1 = Math.max(0f, recargaJugador1 - delta);
+        recargaJugador2 = Math.max(0f, recargaJugador2 - delta);
         manejarJugador(delta, entrada1, JUGADOR1, JUGADOR2);
         manejarJugador(delta, entrada2, JUGADOR2, JUGADOR1);
         actualizarProyectiles(delta);
+        evaluarResultado();
     }
 
     private void manejarJugador(float delta, EntradaJugador entrada, EstadoTanque tanque, EstadoTanque otro) {
@@ -49,11 +55,47 @@ public class Partida {
             tanque.retroceder(delta, ARENA, otro);
         }
 
-        if (entrada.consumirDisparo()) {
+        if (entrada.consumirDisparo() && puedeDisparar(tanque.obtenerNumeroJugador())) {
+            reiniciarRecarga(tanque.obtenerNumeroJugador());
             Vector2 posicionCanon = tanque.obtenerPosicionCanon();
             PROYECTILES.add(new EstadoProyectil(posicionCanon, tanque.obtenerAngulo(), tanque));
             EVENTOS.add(new EventoPartida(TipoEvento.DISPARO, posicionCanon.x, posicionCanon.y, tanque.obtenerNumeroJugador()));
         }
+    }
+
+    private boolean puedeDisparar(int numeroJugador) {
+        return numeroJugador == 1 ? recargaJugador1 <= 0f : recargaJugador2 <= 0f;
+    }
+
+    private void reiniciarRecarga(int numeroJugador) {
+        if (numeroJugador == 1) {
+            recargaJugador1 = ConfiguracionPartida.SEGUNDOS_RECARGA_DISPARO;
+        } else {
+            recargaJugador2 = ConfiguracionPartida.SEGUNDOS_RECARGA_DISPARO;
+        }
+    }
+
+    private void evaluarResultado() {
+        if (estaDecidida()) {
+            return;
+        }
+        boolean vive1 = JUGADOR1.estaVivo();
+        boolean vive2 = JUGADOR2.estaVivo();
+        if (!vive1 && !vive2) {
+            empate = true;
+        } else if (!vive1) {
+            ganador = JUGADOR2;
+        } else if (!vive2) {
+            ganador = JUGADOR1;
+        }
+    }
+
+    public boolean estaDecidida() {
+        return ganador != null || empate;
+    }
+
+    public boolean hayEmpate() {
+        return empate;
     }
 
     private void actualizarProyectiles(float delta) {
@@ -74,7 +116,6 @@ public class Partida {
                     agregarEventoImpacto(proyectil);
 
                     if (!objetivo.estaVivo()) {
-                        ganador = proyectil.obtenerPropietario();
                         Vector2 centro = proyectil.obtenerCentro();
                         EVENTOS.add(new EventoPartida(TipoEvento.MUERTE, centro.x, centro.y, objetivo.obtenerNumeroJugador()));
                     }
