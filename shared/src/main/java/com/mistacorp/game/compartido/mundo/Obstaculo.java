@@ -38,4 +38,8 @@ public class Obstaculo {
     public Rectangle obtenerLimites() {
         return LIMITES;
     }
+
+    public Rectangle obtenerLimitesColision() {
+        return LIMITES;
+    }
 }

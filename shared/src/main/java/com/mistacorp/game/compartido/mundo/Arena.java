@@ -68,12 +68,12 @@ public class Arena {
 
     private Obstaculo buscarObstaculoEn(Rectangle limites) {
         for (Pared pared : PAREDES) {
-            if (!pared.estaDestruido() && pared.obtenerLimites().overlaps(limites)) {
+            if (!pared.estaDestruido() && pared.obtenerLimitesColision().overlaps(limites)) {
                 return pared;
             }
         }
         for (Decoracion decoracion : DECORACIONES) {
-            if (!decoracion.estaDestruido() && decoracion.obtenerLimites().overlaps(limites)) {
+            if (!decoracion.estaDestruido() && decoracion.obtenerLimitesColision().overlaps(limites)) {
                 return decoracion;
             }
         }
