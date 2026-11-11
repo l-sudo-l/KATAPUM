@@ -22,10 +22,10 @@ public class RecursosSonido {
         SONIDO_MUERTE = Gdx.audio.newSound(Gdx.files.internal("sonidos/muerte.wav"));
         SONIDO_GANAR = Gdx.audio.newSound(Gdx.files.internal("sonidos/ganar.wav"));
 
-        MUSICA_MENU = Gdx.audio.newMusic(Gdx.files.internal("musica/menu_juego.wav"));
-        MUSICA_BOSQUE = Gdx.audio.newMusic(Gdx.files.internal("musica/musica_bosque.wav"));
-        MUSICA_DESIERTO = Gdx.audio.newMusic(Gdx.files.internal("musica/musica_desierto.wav"));
-        MUSICA_CIUDAD = Gdx.audio.newMusic(Gdx.files.internal("musica/musica_ciudad_abandonada.wav"));
+        MUSICA_MENU = Gdx.audio.newMusic(Gdx.files.internal("musica/menu_juego.ogg"));
+        MUSICA_BOSQUE = Gdx.audio.newMusic(Gdx.files.internal("musica/musica_bosque.ogg"));
+        MUSICA_DESIERTO = Gdx.audio.newMusic(Gdx.files.internal("musica/musica_desierto.ogg"));
+        MUSICA_CIUDAD = Gdx.audio.newMusic(Gdx.files.internal("musica/musica_ciudad_abandonada.ogg"));
         MUSICA_MENU.setLooping(true);
         MUSICA_BOSQUE.setLooping(true);
         MUSICA_DESIERTO.setLooping(true);
