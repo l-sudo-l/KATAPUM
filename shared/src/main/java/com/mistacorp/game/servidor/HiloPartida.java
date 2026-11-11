@@ -12,6 +12,7 @@ import com.mistacorp.game.compartido.red.TipoMensaje;
 public class HiloPartida extends Thread {
 
     private static final float DELTA_MAXIMO = 0.1f;
+    private static final int ENVIOS_FIN = 30;
 
     private final HiloServidor SERVIDOR;
     private final Partida PARTIDA;
@@ -20,6 +21,7 @@ public class HiloPartida extends Thread {
     private volatile boolean activo = true;
     private volatile boolean terminada = false;
     private int secuenciaEstado = 0;
+    private int enviosFinRestantes = ENVIOS_FIN;
 
     public HiloPartida(HiloServidor servidor) {
         this.SERVIDOR = servidor;
@@ -36,27 +38,33 @@ public class HiloPartida extends Thread {
             float delta = Math.min((ahora - anterior) / 1000000000f, DELTA_MAXIMO);
             anterior = ahora;
 
-            PARTIDA.actualizar(delta, ENTRADA1, ENTRADA2);
-            enviarEventos();
+            if (!PARTIDA.estaDecidida()) {
+                PARTIDA.actualizar(delta, ENTRADA1, ENTRADA2);
+                enviarEventos();
+            }
 
             tiempoDesdeEnvio += delta;
             if (tiempoDesdeEnvio >= intervaloEnvio) {
                 tiempoDesdeEnvio -= intervaloEnvio;
                 secuenciaEstado++;
                 SERVIDOR.enviarATodos(CodificadorEstado.codificar(PARTIDA, secuenciaEstado));
-                avisarFinSiHayGanador();
+                avisarFinSiHayResultado();
             }
             esperar();
         }
     }
 
-    private void avisarFinSiHayGanador() {
-        if (PARTIDA.obtenerGanador() == null) {
+    private void avisarFinSiHayResultado() {
+        if (!PARTIDA.estaDecidida()) {
             return;
         }
         terminada = true;
-        String ganador = String.valueOf(PARTIDA.obtenerGanador().obtenerNumeroJugador());
+        String ganador = PARTIDA.hayEmpate() ? "0" : String.valueOf(PARTIDA.obtenerGanador().obtenerNumeroJugador());
         SERVIDOR.enviarATodos(Protocolo.armar(TipoMensaje.FIN, ganador, String.valueOf(MotivoFin.SIN_VIDAS.ordinal())));
+        enviosFinRestantes--;
+        if (enviosFinRestantes <= 0) {
+            activo = false;
+        }
     }
 
     public boolean estaTerminada() {

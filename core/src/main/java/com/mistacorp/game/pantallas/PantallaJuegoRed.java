@@ -65,6 +65,7 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
     private int ultimaSecuenciaEstado = 0;
     private float tiempoDesdeEnvio = 0f;
     private int numeroGanador = 0;
+    private boolean empate = false;
     private boolean rivalSeFue = false;
     private float tiempoEsperaFin = 0f;
     private float tiempoSinEstado = 0f;
@@ -138,7 +139,7 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
                 registrarFin(Integer.parseInt(partes[1]), MotivoFin.values()[Integer.parseInt(partes[2])]);
                 break;
             case SERVIDOR_CERRADO:
-                if (numeroGanador == 0) {
+                if (!partidaDecidida()) {
                     CLIENTE.detener();
                     JUEGO.setScreen(new PantallaConectar(JUEGO, "El servidor se cerro"));
                 }
@@ -153,31 +154,51 @@ public class PantallaJuegoRed extends ScreenAdapter implements OyenteRed {
     }
 
     private void registrarFin(int ganador, MotivoFin motivo) {
-        if (numeroGanador != 0) {
+        if (partidaDecidida()) {
             return;
         }
-        numeroGanador = ganador;
-        if (motivo == MotivoFin.RIVAL_DESCONECTADO) {
+        boolean porDesconexion = motivo == MotivoFin.RIVAL_DESCONECTADO;
+        boolean alguienMurio = !PARTIDA.obtenerJugador1().estaVivo() || !PARTIDA.obtenerJugador2().estaVivo();
+        if (!porDesconexion && !alguienMurio) {
+            return;
+        }
+        if (ganador == 0) {
+            empate = true;
+        } else {
+            numeroGanador = ganador;
+        }
+        if (porDesconexion) {
             rivalSeFue = true;
         }
     }
 
-    private void revisarFinDePartida(float delta) {
-        if (numeroGanador == 0) {
-            return;
+    private boolean partidaDecidida() {
+        return numeroGanador != 0 || empate;
+    }
+
+    private boolean explosionesListas() {
+        if (empate) {
+            return DIBUJO_JUGADOR1.explosionTerminada() && DIBUJO_JUGADOR2.explosionTerminada();
         }
         DibujoTanque perdedor = numeroGanador == 1 ? DIBUJO_JUGADOR2 : DIBUJO_JUGADOR1;
-        if (!rivalSeFue && !perdedor.explosionTerminada()) {
+        return perdedor.explosionTerminada();
+    }
+
+    private void revisarFinDePartida(float delta) {
+        if (!partidaDecidida()) {
+            return;
+        }
+        if (!rivalSeFue && !explosionesListas()) {
             return;
         }
         tiempoEsperaFin += delta;
         if (tiempoEsperaFin >= ConfiguracionJuego.RETRASO_FIN_PARTIDA) {
-            JUEGO.setScreen(new PantallaFinPartidaRed(JUEGO, CLIENTE, NUMERO_JUGADOR, MAPA, numeroGanador, rivalSeFue));
+            JUEGO.setScreen(new PantallaFinPartidaRed(JUEGO, CLIENTE, NUMERO_JUGADOR, MAPA, numeroGanador, empate, rivalSeFue));
         }
     }
 
     private void revisarConexionConServidor(float delta) {
-        if (numeroGanador != 0) {
+        if (partidaDecidida()) {
             return;
         }
         tiempoSinEstado += delta;
