@@ -14,16 +14,22 @@ public class LanzadorServidor {
     private static final String COMANDO_SALIR = "salir";
 
     public static void main(String[] args) {
-        TipoMapa mapa = TipoMapa.BOSQUE;
-        int primerPalabraNombre = 0;
+        BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
+
+        TipoMapa mapa;
+        int primerPalabraNombre;
         if (args.length > 0 && buscarMapa(args[0]) != null) {
             mapa = buscarMapa(args[0]);
             primerPalabraNombre = 1;
+        } else {
+            mapa = elegirMapa(lector);
+            primerPalabraNombre = 0;
         }
         String nombreSala = ConfiguracionRed.NOMBRE_SALA_POR_DEFECTO;
         if (args.length > primerPalabraNombre) {
             nombreSala = String.join(" ", Arrays.copyOfRange(args, primerPalabraNombre, args.length));
         }
+
         final HiloServidor servidor;
         try {
             servidor = new HiloServidor(ConfiguracionRed.PUERTO_SERVIDOR, nombreSala, mapa);
@@ -41,10 +47,37 @@ public class LanzadorServidor {
         System.out.println("Servidor KATAPUM \"" + servidor.obtenerNombreSala() + "\" escuchando en el puerto " + ConfiguracionRed.PUERTO_SERVIDOR
             + " con el mapa " + mapa.obtenerNombreVisible());
         System.out.println("Escribi \"" + COMANDO_SALIR + "\" y ENTER (o Ctrl+C) para cerrarlo");
-        if (esperarComandoSalir()) {
+        if (esperarComandoSalir(lector)) {
             servidor.detener();
         }
         esperarFin(servidor);
+    }
+
+    private static TipoMapa elegirMapa(BufferedReader lector) {
+        System.out.println("Elegi el mapa del servidor:");
+        System.out.println("  1) Bosque");
+        System.out.println("  2) Desierto");
+        System.out.println("  3) Ciudad abandonada");
+        System.out.print("Numero (ENTER = Bosque): ");
+        try {
+            String linea = lector.readLine();
+            if (linea != null) {
+                String opcion = linea.trim();
+                if (opcion.equals("2")) {
+                    return TipoMapa.DESIERTO;
+                }
+                if (opcion.equals("3")) {
+                    return TipoMapa.CIUDAD;
+                }
+                TipoMapa porNombre = buscarMapa(opcion);
+                if (porNombre != null) {
+                    return porNombre;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("No se puede leer la consola, se usa Bosque: " + e.getMessage());
+        }
+        return TipoMapa.BOSQUE;
     }
 
     private static TipoMapa buscarMapa(String texto) {
@@ -56,8 +89,7 @@ public class LanzadorServidor {
         return null;
     }
 
-    private static boolean esperarComandoSalir() {
-        BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
+    private static boolean esperarComandoSalir(BufferedReader lector) {
         try {
             String linea = lector.readLine();
             while (linea != null) {
