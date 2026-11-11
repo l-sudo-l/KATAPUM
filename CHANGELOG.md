@@ -7,6 +7,14 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.20.0] - 2026-11-11
+
+### Agregado
+- El servidor dedicado muestra un menu en la consola para elegir el mapa (1 Bosque, 2 Desierto, 3 Ciudad) cuando no se le pasa el mapa por argumento.
+
+### Corregido
+- Descubrimiento de salas en LAN: la busqueda ahora manda `BUSCAR` por la direccion de broadcast de cada interfaz de red, no solo a `255.255.255.255`. Antes, con una VPN como Radmin u otra placa de red, el broadcast salia por el adaptador equivocado y la sala del otro jugador no aparecia en la lista.
+
 ## [0.19.0] - 2026-11-11
 
 ### Agregado
