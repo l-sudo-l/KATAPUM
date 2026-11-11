@@ -7,6 +7,11 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.20.1] - 2026-11-11
+
+### Cambiado
+- Las cuatro músicas (`menu_juego`, `musica_bosque`, `musica_desierto` y `musica_ciudad_abandonada`) pasan de `.wav` a `.ogg` (Vorbis, calidad 4). Juntas bajan de unos 69 MB a 6,4 MB, con la misma duración, y el juego pesa mucho menos. Los efectos de sonido siguen en `.wav` porque son cortos.
+
 ## [0.20.0] - 2026-11-11
 
 ### Agregado
