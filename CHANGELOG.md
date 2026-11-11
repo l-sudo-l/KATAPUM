@@ -7,6 +7,19 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.19.0] - 2026-11-11
+
+### Agregado
+- Tiempo de recarga entre disparos (0,6 s): mantener o aporrear la tecla de disparo ya no spamea proyectiles. Vale para la partida local y la de red (lo decide la simulacion del servidor).
+- Resultado de empate: si los dos tanques quedan sin vidas en el mismo instante, la partida termina en empate con su propio cartel "EMPATE", en local y en red.
+
+### Cambiado
+- Las decoraciones (arbustos, cajas, barriles) tienen una caja de colision mas chica que su dibujo, asi los tanques pueden pasar entre ellas por los huecos de un tile.
+- El ganador ahora es quien sobrevive a la primera muerte, no el ultimo tanque en caer.
+
+### Corregido
+- Revancha en red: el servidor reenviaba FIN sin parar y un FIN viejo cortaba la partida nueva al instante. Ahora FIN se manda una cantidad acotada de veces y el cliente ignora un FIN mientras los dos tanques sigan vivos.
+
 ## [0.18.0] - 2026-11-07
 
 ### Agregado
