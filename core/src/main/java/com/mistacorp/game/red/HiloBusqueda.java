@@ -10,9 +10,14 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
+import java.util.Enumeration;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class HiloBusqueda extends Thread {
 
@@ -45,8 +50,33 @@ public class HiloBusqueda extends Thread {
             return;
         }
         ultimaBusqueda = ahora;
-        enviarBusqueda(ConfiguracionRed.DIRECCION_BROADCAST);
         enviarBusqueda("127.0.0.1");
+        enviarBusqueda(ConfiguracionRed.DIRECCION_BROADCAST);
+        for (String direccion : obtenerDireccionesBroadcast()) {
+            enviarBusqueda(direccion);
+        }
+    }
+
+    private Set<String> obtenerDireccionesBroadcast() {
+        Set<String> direcciones = new LinkedHashSet<>();
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface interfaz = interfaces.nextElement();
+                if (!interfaz.isUp() || interfaz.isLoopback()) {
+                    continue;
+                }
+                for (InterfaceAddress direccion : interfaz.getInterfaceAddresses()) {
+                    InetAddress broadcast = direccion.getBroadcast();
+                    if (broadcast != null) {
+                        direcciones.add(broadcast.getHostAddress());
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            System.out.println("No se pudieron leer las interfaces de red: " + e.getMessage());
+        }
+        return direcciones;
     }
 
     private void enviarBusqueda(String direccion) {
