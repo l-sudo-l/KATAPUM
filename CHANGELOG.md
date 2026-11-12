@@ -7,6 +7,11 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.20.2] - 2026-11-11
+
+### Corregido
+- Revancha en red: al empezar la partida nueva los tanques quedaban congelados. Cada cliente vuelve a numerar sus controles desde 0 en la partida nueva, pero el servidor recordaba el numero mas alto de la anterior y descartaba todos los `INPUT` hasta alcanzarlo (unos segundos por cada partida ya jugada). Ahora `HiloServidor.iniciarPartida` reinicia la secuencia y el contador de disparos de cada `ClienteConectado`.
+
 ## [0.20.1] - 2026-11-11
 
 ### Cambiado
