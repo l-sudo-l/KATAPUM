@@ -3,6 +3,7 @@ package com.mistacorp.game.servidor;
 import com.mistacorp.game.compartido.TipoMapa;
 import com.mistacorp.game.compartido.red.ConfiguracionRed;
 
+import java.awt.GraphicsEnvironment;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,7 +14,16 @@ public class LanzadorServidor {
 
     private static final String COMANDO_SALIR = "salir";
 
+    private static final String OPCION_CONSOLA = "--consola";
+
     public static void main(String[] args) {
+        if (args.length == 0 && !GraphicsEnvironment.isHeadless()) {
+            VentanaServidor.abrir();
+            return;
+        }
+        if (args.length > 0 && OPCION_CONSOLA.equalsIgnoreCase(args[0])) {
+            args = Arrays.copyOfRange(args, 1, args.length);
+        }
         BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
 
         TipoMapa mapa;
