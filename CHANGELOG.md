@@ -7,6 +7,12 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+## [0.21.0] - 2026-11-11
+
+### Agregado
+- Ventana del servidor dedicado: si el `.jar` del servidor se abre sin argumentos (por ejemplo con doble clic, donde Windows no muestra consola), aparece una ventana para elegir el mapa y el nombre de la sala, y despues otra con el registro del servidor y el boton "Cerrar servidor". Antes, con doble clic el servidor arrancaba siempre en el Bosque y quedaba corriendo sin ventana.
+- Opcion `--consola` para usar el menu de texto: `java -jar KATAPUM-server-0.21.0.jar --consola`. Pasar el mapa por argumento (`desierto`, `ciudad`) sigue funcionando por consola, y sin pantalla (por ejemplo en un Linux sin escritorio) se usa el menu de texto.
+
 ## [0.20.2] - 2026-11-11
 
 ### Corregido
