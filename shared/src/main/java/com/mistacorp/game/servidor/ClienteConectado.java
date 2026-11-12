@@ -43,6 +43,11 @@ public class ClienteConectado {
         return false;
     }
 
+    public void reiniciarEntrada() {
+        ultimaSecuenciaEntrada = 0;
+        disparosProcesados = 0;
+    }
+
     public void establecerPideRevancha(boolean pide) {
         pideRevancha = pide;
     }
