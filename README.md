@@ -118,15 +118,17 @@ En Linux/macOS:
   - `com.mistacorp.game.entrada`: teclado (`ManejadorEntradaJugador`, que llena una `EntradaJugador`).
   - `com.mistacorp.game.interfaz`: interfaz de usuario en pantalla (`Hud`, `MenuPausa`, `BotonMouse`, `SliderVolumen`).
 - `lwjgl3/`: cliente de escritorio (LibGDX + LWJGL3). Clase principal: `LanzadorLwjgl3`.
-- `server/`: servidor UDP sin ventana (`HiloServidor`, `ClienteConectado`). Clase principal: `LanzadorServidor`.
+- `server/`: servidor dedicado (`LanzadorServidor`, que abre `VentanaServidor` o el menu de consola). `HiloServidor`, `HiloPartida` y `ClienteConectado` estan en `shared/`. Clase principal: `LanzadorServidor`.
 - `shared/` también tiene el protocolo de red (`com.mistacorp.game.compartido.red`: `ConfiguracionRed`, `TipoMensaje`, `Protocolo`).
 
 ### Servidor de red
 ```bash
 gradlew.bat server:run
-java -jar KATAPUM-server-0.20.0.jar [bosque|desierto|ciudad] [nombre de la sala]
+java -jar KATAPUM-server-0.21.0.jar
+java -jar KATAPUM-server-0.21.0.jar --consola
+java -jar KATAPUM-server-0.21.0.jar [bosque|desierto|ciudad] [nombre de la sala]
 ```
-Abre el puerto UDP 5555 sin ventana. El primer argumento opcional elige el mapa (por defecto Bosque) y el resto es el nombre de la sala. Si no se pasa un mapa por argumento, el servidor muestra un menu en la consola para elegirlo (1 Bosque, 2 Desierto, 3 Ciudad). Para cerrarlo se escribe `salir` y ENTER, o Ctrl+C: en los dos casos avisa a los jugadores con `SERVIDOR_CERRADO`, cierra el socket y termina el hilo. Si el puerto ya está ocupado lo informa y no arranca. Mensajes de texto separados por `-`:
+Abre el puerto UDP 5555. Sin argumentos (o con doble clic sobre el `.jar`) aparece una ventana para elegir el mapa y el nombre de la sala; despues queda otra ventana con el registro del servidor y el boton "Cerrar servidor". Con `--consola`, o en una PC sin pantalla, se elige el mapa con un menu de texto (1 Bosque, 2 Desierto, 3 Ciudad). Si se pasa el mapa por argumento arranca directo en la consola, y el resto de los argumentos es el nombre de la sala. Para cerrarlo se escribe `salir` y ENTER, o Ctrl+C: en los dos casos avisa a los jugadores con `SERVIDOR_CERRADO`, cierra el socket y termina el hilo. Si el puerto ya está ocupado lo informa y no arranca. Mensajes de texto separados por `-`:
 
 | Mensaje | Quién lo manda | Significado |
 |---|---|---|
@@ -148,7 +150,7 @@ Abre el puerto UDP 5555 sin ventana. El primer argumento opcional elige el mapa 
 
 Si un jugador pasa 5 segundos sin mandar nada, el servidor libera su lugar y, si había una partida en curso, le da la victoria al otro. Del lado del cliente también hay un límite de 5 segundos: al conectar (si no hay servidor en esa IP lo avisa), en la sala, en la partida y en la pantalla de fin; pasado ese tiempo sin respuesta vuelve a la pantalla de conexión. Al terminar la partida los dos quedan en la pantalla de fin: si ambos tocan VOLVER A JUGAR, arranca la revancha; si uno sale, su lugar queda libre para otro jugador, sin reiniciar el servidor.
 
-Cómo jugar en red: un jugador va a PARTIDA LAN, CREAR PARTIDA, elige nombre y mapa y toca CREAR Y ESPERAR. Su juego levanta el servidor y lo deja en la sala. El otro va a PARTIDA LAN y la sala aparece sola en la lista; un clic y entra. La búsqueda manda `BUSCAR` por la dirección de broadcast de cada interfaz de red (no solo a `255.255.255.255`), así la sala aparece aunque la PC tenga varias placas o una VPN como Radmin. Si igual no aparece (por ejemplo, si el firewall bloquea el broadcast), CONECTAR POR IP permite escribir la IP de la PC del anfitrión (se ve con `ipconfig`). También se puede usar un servidor aparte en otra PC (`java -jar KATAPUM-server-0.20.0.jar`): responde al broadcast igual que el anfitrión, así que aparece en la lista de PARTIDA LAN, y también se puede entrar por IP.
+Cómo jugar en red: un jugador va a PARTIDA LAN, CREAR PARTIDA, elige nombre y mapa y toca CREAR Y ESPERAR. Su juego levanta el servidor y lo deja en la sala. El otro va a PARTIDA LAN y la sala aparece sola en la lista; un clic y entra. La búsqueda manda `BUSCAR` por la dirección de broadcast de cada interfaz de red (no solo a `255.255.255.255`), así la sala aparece aunque la PC tenga varias placas o una VPN como Radmin. Si igual no aparece (por ejemplo, si el firewall bloquea el broadcast), CONECTAR POR IP permite escribir la IP de la PC del anfitrión (se ve con `ipconfig`). También se puede usar un servidor aparte en otra PC (`java -jar KATAPUM-server-0.21.0.jar`, o doble clic sobre el `.jar`): responde al broadcast igual que el anfitrión, así que aparece en la lista de PARTIDA LAN, y también se puede entrar por IP.
 
 Con tres PCs (servidor y dos clientes): `gradlew.bat server:jar lwjgl3:jar` genera `server/build/libs/KATAPUM-server-<versión>.jar` y `lwjgl3/build/libs/KATAPUM-<versión>.jar`. En la PC servidor se corre el primero desde CMD y en las otras dos el segundo; los clientes encuentran la sala en PARTIDA LAN. El firewall de Windows tiene que permitir Java en UDP 5555.
 
