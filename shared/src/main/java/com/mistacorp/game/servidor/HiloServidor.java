@@ -180,6 +180,7 @@ public class HiloServidor extends Thread {
         for (ClienteConectado cliente : CLIENTES) {
             if (cliente != null) {
                 cliente.establecerPideRevancha(false);
+                cliente.reiniciarEntrada();
             }
         }
         partida = new HiloPartida(this);
